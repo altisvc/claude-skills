@@ -1,0 +1,88 @@
+[
+  {
+    "id": "meeting-sync",
+    "name": "Meeting Sync",
+    "type": "skill",
+    "description": "Sync meetings from Granola or Otter to your local vault. Classifies by type (investor, prospect, recruiting, team, board, partner, discovery), extracts follow-ups with owner tags, and flags meetings for GitHub knowledge sharing.",
+    "when_to_use": "After meetings to capture notes, action items, and intelligence. Run daily or use overnight automation.",
+    "requires": ["claude-code", "granola|otter"],
+    "optional": ["trello", "hubspot", "github"],
+    "example_prompts": [
+      "/meeting-sync",
+      "/meeting-sync --days=7",
+      "/meeting-sync --dry-run"
+    ],
+    "path": "skills/meeting-sync",
+    "author": "Christopher",
+    "version": "1.0",
+    "category": "operations"
+  },
+  {
+    "id": "checkin",
+    "name": "Morning Check-in",
+    "type": "skill",
+    "description": "Structured morning briefing that sweeps Slack, Gmail, calendar, Thoughtful, and task lists. Runs a silent data gather, surfaces questions you need to answer, then delivers a tight 1-2 day briefing.",
+    "when_to_use": "Start of day. Replaces manual tab-switching across Slack, email, calendar, and task tools.",
+    "requires": ["claude-code", "slack"],
+    "optional": ["google-calendar", "gmail", "trello", "thoughtful", "granola|otter"],
+    "example_prompts": [
+      "/checkin",
+      "/checkin --quick"
+    ],
+    "path": "skills/checkin",
+    "author": "Christopher",
+    "version": "6.0",
+    "category": "operations"
+  },
+  {
+    "id": "wrap",
+    "name": "Session Wrap",
+    "type": "skill",
+    "description": "End-of-session command that archives your work, updates your daily log with forward implications, and pushes open items to your task tracker. Prevents context loss between sessions.",
+    "when_to_use": "End of any working session. Captures decisions, action items, and what downstream work is affected.",
+    "requires": ["claude-code"],
+    "optional": ["trello"],
+    "example_prompts": [
+      "/wrap",
+      "/wrap strategy brainstorm",
+      "/wrap client call follow-up"
+    ],
+    "path": "skills/wrap",
+    "author": "Christopher",
+    "version": "1.0",
+    "category": "operations"
+  },
+  {
+    "id": "trello-sync",
+    "name": "Trello Sync",
+    "type": "shell",
+    "description": "Deterministic Trello card creation and completion from JSON payloads. Creates cards with owner prefixes, deduplicates against existing cards, and supports cross-board promotion.",
+    "when_to_use": "When skills or automations need to create or complete Trello cards programmatically. Used by check-in and wrap under the hood.",
+    "requires": ["trello"],
+    "optional": [],
+    "example_prompts": [
+      ".claude/scripts/trello-sync.sh '{\"creates\": [{\"name\": \"Jason: Review deck\", \"list\": \"review\"}]}'",
+      ".claude/scripts/trello-promote.sh"
+    ],
+    "path": "shell/trello-sync",
+    "author": "Christopher",
+    "version": "1.0",
+    "category": "integrations"
+  },
+  {
+    "id": "setup",
+    "name": "Setup",
+    "type": "skill",
+    "description": "Interactive onboarding skill that configures your Claude Code environment. Walks you through connecting Granola/Otter, Slack, Thoughtful, Trello, and other integrations.",
+    "when_to_use": "First time setting up Claude Code skills, or when adding a new integration.",
+    "requires": ["claude-code"],
+    "optional": [],
+    "example_prompts": [
+      "/setup"
+    ],
+    "path": "setup",
+    "author": "Christopher",
+    "version": "0.1",
+    "category": "meta"
+  }
+]
