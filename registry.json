@@ -442,7 +442,7 @@
       "example": "Opens automatically with every new Terminal.app window"
     },
     "requires": [],
-    "integrations": [],
+    "integrations": ["macOS", "Terminal.app"],
     "calibration": {
       "level": "light",
       "items": [
@@ -469,7 +469,7 @@
       "example": "Copy text from terminal, then run: c"
     },
     "requires": [],
-    "integrations": [],
+    "integrations": ["macOS"],
     "calibration": {
       "level": "none"
     },
