@@ -14,7 +14,7 @@
       "example": "/meeting-sync"
     },
     "requires": ["setup"],
-    "integrations": ["granola", "trello", "hubspot", "github"],
+    "integrations": [{"name": "granola", "required": true}, {"name": "trello", "required": false}, {"name": "hubspot", "required": false}, {"name": "github", "required": false}],
     "calibration": {
       "level": "full",
       "items": [
@@ -44,7 +44,7 @@
       "example": "/checkin"
     },
     "requires": ["setup"],
-    "integrations": ["slack", "google-calendar", "gmail", "trello"],
+    "integrations": [{"name": "slack", "required": true}, {"name": "google-calendar", "required": true}, {"name": "gmail", "required": false}, {"name": "trello", "required": false}],
     "calibration": {
       "level": "full",
       "items": [
@@ -74,7 +74,7 @@
       "example": "/wrap strategy brainstorm"
     },
     "requires": [],
-    "integrations": ["trello"],
+    "integrations": [{"name": "trello", "required": false}],
     "calibration": {
       "level": "light",
       "items": [
@@ -102,7 +102,7 @@
       "example": ".claude/scripts/trello-sync.sh '{\"creates\": [{\"name\": \"Jason: Review deck\", \"list\": \"review\"}]}'"
     },
     "requires": ["setup"],
-    "integrations": ["trello"],
+    "integrations": [{"name": "trello", "required": true}],
     "calibration": {
       "level": "full",
       "items": [
@@ -354,7 +354,7 @@
       "example": "/week-in-review"
     },
     "requires": ["setup"],
-    "integrations": ["slack", "github"],
+    "integrations": [{"name": "slack", "required": true}, {"name": "github", "required": false}],
     "calibration": {
       "level": "full",
       "items": [
@@ -384,7 +384,7 @@
       "example": "/audit"
     },
     "requires": ["setup"],
-    "integrations": ["trello", "slack"],
+    "integrations": [{"name": "trello", "required": true}, {"name": "slack", "required": true}],
     "calibration": {
       "level": "full",
       "items": [
@@ -413,7 +413,7 @@
       "example": "Runs automatically on 15-minute cron. Manual run: python3 auto_booker.py"
     },
     "requires": [],
-    "integrations": ["google-calendar"],
+    "integrations": [{"name": "google-calendar", "required": true}],
     "calibration": {
       "level": "full",
       "items": [
@@ -442,7 +442,7 @@
       "example": "Opens automatically with every new Terminal.app window"
     },
     "requires": [],
-    "integrations": ["macOS", "Terminal.app"],
+    "integrations": [{"name": "macOS", "required": true}, {"name": "Terminal.app", "required": true}],
     "calibration": {
       "level": "light",
       "items": [
@@ -469,7 +469,7 @@
       "example": "Copy text from terminal, then run: c"
     },
     "requires": [],
-    "integrations": ["macOS"],
+    "integrations": [{"name": "macOS", "required": true}],
     "calibration": {
       "level": "none"
     },
