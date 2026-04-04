@@ -1,88 +1,421 @@
 [
   {
     "id": "meeting-sync",
+    "slug": "meeting-sync",
     "name": "Meeting Sync",
     "type": "skill",
-    "description": "Sync meetings from Granola or Otter to your local vault. Classifies by type (investor, prospect, recruiting, team, board, partner, discovery), extracts follow-ups with owner tags, and flags meetings for GitHub knowledge sharing.",
-    "when_to_use": "After meetings to capture notes, action items, and intelligence. Run daily or use overnight automation.",
-    "requires": ["claude-code", "granola|otter"],
-    "optional": ["trello", "hubspot", "github"],
-    "example_prompts": [
-      "/meeting-sync",
-      "/meeting-sync --days=7",
-      "/meeting-sync --dry-run"
-    ],
-    "path": "skills/meeting-sync",
-    "author": "Christopher",
-    "version": "1.0",
-    "category": "operations"
+    "category": "operations",
+    "summary": "Sync meetings from Granola or Otter to your local vault. Classifies by type (investor, prospect, recruiting, team, board, partner, discovery), extracts follow-ups with owner tags, and flags meetings for GitHub knowledge sharing.",
+    "whenToUse": "After meetings to capture notes, action items, and intelligence. Run daily or use overnight automation.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Meeting Sync skill from github.com/altisvc/claude-skills. This needs the SKILL.md, meeting type templates, and supporting agents. Place everything in .claude/skills/meeting-sync/ and .claude/agents/. Then walk me through configuring my Granola API access, Trello board IDs, and Slack channels in .claude/user.yaml. Test the connection to each service before finishing.",
+    "invocation": {
+      "command": "/meeting-sync",
+      "example": "/meeting-sync"
+    },
+    "requires": ["setup"],
+    "integrations": ["granola", "trello", "hubspot", "github"],
+    "calibration": {
+      "level": "full",
+      "items": [
+        { "key": "granola_access", "label": "Granola API access", "description": "Connect your Granola account so the skill can pull meeting transcripts", "required": true },
+        { "key": "trello_boards", "label": "Trello board IDs", "description": "The board and list IDs where follow-ups get staged and promoted", "required": true },
+        { "key": "slack_channels", "label": "Slack channels", "description": "Channel IDs for posting sync summaries and flagging items", "required": false },
+        { "key": "vault_paths", "label": "Vault directory structure", "description": "Where meetings, daily logs, and wiki articles live in your repo", "required": true }
+      ]
+    },
+    "badge": "core",
+    "status": "stable",
+    "version": "6.2",
+    "updatedAt": "2026-04-03"
   },
   {
     "id": "checkin",
+    "slug": "checkin",
     "name": "Morning Check-in",
     "type": "skill",
-    "description": "Structured morning briefing that sweeps Slack, Gmail, calendar, Thoughtful, and task lists. Runs a silent data gather, surfaces questions you need to answer, then delivers a tight 1-2 day briefing.",
-    "when_to_use": "Start of day. Replaces manual tab-switching across Slack, email, calendar, and task tools.",
-    "requires": ["claude-code", "slack"],
-    "optional": ["google-calendar", "gmail", "trello", "thoughtful", "granola|otter"],
-    "example_prompts": [
-      "/checkin",
-      "/checkin --quick"
-    ],
-    "path": "skills/checkin",
-    "author": "Christopher",
+    "category": "operations",
+    "summary": "Structured morning briefing that sweeps Slack, Gmail, calendar, and task lists. Runs a silent data gather, cross-references all sources, surfaces questions you need to answer, then delivers a tight 1-2 day briefing.",
+    "whenToUse": "Start of day. Replaces manual tab-switching across Slack, email, calendar, and task tools.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Morning Check-in skill from github.com/altisvc/claude-skills. Place the SKILL.md in .claude/skills/checkin/ and the command in .claude/commands/. Then walk me through configuring my Slack workspace channels, Google Calendar access, Gmail triage, and Trello board in .claude/user.yaml. Test each integration before finishing.",
+    "invocation": {
+      "command": "/checkin",
+      "example": "/checkin"
+    },
+    "requires": ["setup"],
+    "integrations": ["slack", "google-calendar", "gmail", "trello"],
+    "calibration": {
+      "level": "full",
+      "items": [
+        { "key": "slack_channels", "label": "Slack channels", "description": "Map your workspace channels — which ones to sweep, which to skip", "required": true },
+        { "key": "calendar_access", "label": "Google Calendar", "description": "Calendar ID and auth for reading your agenda", "required": true },
+        { "key": "gmail_access", "label": "Gmail read access", "description": "Read-only Gmail triage via gws CLI or equivalent", "required": false },
+        { "key": "trello_boards", "label": "Trello board IDs", "description": "Board and list IDs for task review stage", "required": false }
+      ]
+    },
+    "badge": "core",
+    "status": "stable",
     "version": "6.0",
-    "category": "operations"
+    "updatedAt": "2026-03-08"
   },
   {
     "id": "wrap",
+    "slug": "wrap",
     "name": "Session Wrap",
     "type": "skill",
-    "description": "End-of-session command that archives your work, updates your daily log with forward implications, and pushes open items to your task tracker. Prevents context loss between sessions.",
-    "when_to_use": "End of any working session. Captures decisions, action items, and what downstream work is affected.",
-    "requires": ["claude-code"],
-    "optional": ["trello"],
-    "example_prompts": [
-      "/wrap",
-      "/wrap strategy brainstorm",
-      "/wrap client call follow-up"
-    ],
-    "path": "skills/wrap",
-    "author": "Christopher",
-    "version": "1.0",
-    "category": "operations"
+    "category": "operations",
+    "summary": "End-of-session command that archives your work, updates your daily log with forward implications, compiles new knowledge into wiki articles, and pushes open items to your task tracker.",
+    "whenToUse": "End of any working session. Captures decisions, action items, and what downstream work is affected. Prevents context loss between sessions.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Session Wrap skill from github.com/altisvc/claude-skills. Place the command in .claude/commands/wrap.md. If you use Trello for task tracking, also configure your board IDs in .claude/user.yaml. If you want the wiki compilation step, create a wiki directory in your vault.",
+    "invocation": {
+      "command": "/wrap",
+      "example": "/wrap strategy brainstorm"
+    },
+    "requires": [],
+    "integrations": ["trello"],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "vault_paths", "label": "Vault directory structure", "description": "Where daily logs, archives, and wiki articles live", "required": true },
+        { "key": "trello_boards", "label": "Trello board IDs", "description": "Optional — for pushing open items to your task tracker", "required": false }
+      ]
+    },
+    "badge": "core",
+    "status": "stable",
+    "version": "2.0",
+    "updatedAt": "2026-04-03"
   },
   {
     "id": "trello-sync",
+    "slug": "trello-sync",
     "name": "Trello Sync",
-    "type": "shell",
-    "description": "Deterministic Trello card creation and completion from JSON payloads. Creates cards with owner prefixes, deduplicates against existing cards, and supports cross-board promotion.",
-    "when_to_use": "When skills or automations need to create or complete Trello cards programmatically. Used by check-in and wrap under the hood.",
-    "requires": ["trello"],
-    "optional": [],
-    "example_prompts": [
-      ".claude/scripts/trello-sync.sh '{\"creates\": [{\"name\": \"Jason: Review deck\", \"list\": \"review\"}]}'",
-      ".claude/scripts/trello-promote.sh"
-    ],
-    "path": "shell/trello-sync",
-    "author": "Christopher",
+    "type": "utility",
+    "category": "operations",
+    "summary": "Deterministic Trello card creation and completion from JSON payloads. Creates cards with owner prefixes, deduplicates against existing cards, and supports cross-board promotion. Used by check-in and wrap under the hood.",
+    "whenToUse": "When skills or automations need to create or complete Trello cards programmatically.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Trello Sync scripts from github.com/altisvc/claude-skills. Place trello-sync.sh and trello-promote.sh in .claude/scripts/. Then configure your Trello API key, token, board ID, and list IDs in .claude/user.yaml.",
+    "invocation": {
+      "command": ".claude/scripts/trello-sync.sh",
+      "example": ".claude/scripts/trello-sync.sh '{\"creates\": [{\"name\": \"Jason: Review deck\", \"list\": \"review\"}]}'"
+    },
+    "requires": ["setup"],
+    "integrations": ["trello"],
+    "calibration": {
+      "level": "full",
+      "items": [
+        { "key": "trello_api_key", "label": "Trello API credentials", "description": "API key and token from trello.com/power-ups/admin", "required": true },
+        { "key": "trello_boards", "label": "Board and list IDs", "description": "Your Trello board ID and the list IDs for each stage (review, action, waiting, done)", "required": true }
+      ]
+    },
+    "status": "stable",
     "version": "1.0",
-    "category": "integrations"
+    "updatedAt": "2026-03-15"
   },
   {
     "id": "setup",
+    "slug": "setup",
     "name": "Setup",
     "type": "skill",
-    "description": "Interactive onboarding skill that configures your Claude Code environment. Walks you through connecting Granola/Otter, Slack, Thoughtful, Trello, and other integrations.",
-    "when_to_use": "First time setting up Claude Code skills, or when adding a new integration.",
-    "requires": ["claude-code"],
-    "optional": [],
-    "example_prompts": [
-      "/setup"
-    ],
-    "path": "setup",
-    "author": "Christopher",
+    "category": "operations",
+    "summary": "Interactive onboarding skill that configures your Claude Code environment. Walks you through connecting your integrations and writes a user.yaml config file that all other skills read from.",
+    "whenToUse": "First time setting up Claude Code skills, or when adding a new integration. Required before installing meeting-sync, checkin, or any skill that connects to external services.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Setup skill from github.com/altisvc/claude-skills. Place the SKILL.md in .claude/skills/setup/ and the command in .claude/commands/setup.md. Then run /setup to start the interactive configuration wizard.",
+    "invocation": {
+      "command": "/setup",
+      "example": "/setup"
+    },
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "core",
+    "status": "beta",
     "version": "0.1",
-    "category": "meta"
+    "updatedAt": "2026-04-04"
+  },
+  {
+    "id": "wiki-compiler",
+    "slug": "wiki-compiler",
+    "name": "Knowledge Wiki",
+    "type": "skill",
+    "category": "operations",
+    "summary": "Builds a structured, searchable knowledge wiki from your vault. Backfills from existing notes, then compounds automatically — every /wrap session updates wiki articles with new evidence. Turns scattered meeting notes and daily logs into durable institutional knowledge.",
+    "whenToUse": "When you want to turn months of accumulated notes into organized, queryable knowledge. Run once to backfill, then it compounds automatically via /wrap.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Help me set up a knowledge wiki in my vault. Create a wiki/ directory, scan my existing notes and meeting logs for recurring topics, and generate structured articles for each topic with sections for current position, key inputs, and open questions. Then add a compile step to my /wrap command so future sessions automatically update the wiki.",
+    "invocation": {
+      "command": "/wrap",
+      "example": "The wiki compiles automatically as Step 6 of /wrap"
+    },
+    "requires": ["wrap"],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "vault_paths", "label": "Vault directory structure", "description": "Where your notes, meeting logs, and daily logs live — the wiki scans these for knowledge", "required": true },
+        { "key": "topic_clusters", "label": "Topic clusters", "description": "Define the knowledge domains that matter to your work (e.g., Strategy, Sales, Product, People)", "required": true }
+      ]
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0",
+    "updatedAt": "2026-04-03"
+  },
+  {
+    "id": "advisor-collison",
+    "slug": "advisor-collison",
+    "name": "Patrick Collison",
+    "type": "advisor",
+    "category": "leadership",
+    "summary": "Leadership coaching as Patrick Collison. Draws from a decade+ leading Stripe to $159B — thinks in decades, obsesses over craft, and challenges you on hiring, culture, and decision-making. Grounded in actual words, applied to your specific situation.",
+    "whenToUse": "When pressure-testing leadership decisions — hiring calls, culture questions, strategic prioritization, or when you need a reframing question that shifts how you see a problem.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Patrick Collison leadership advisor from github.com/altisvc/claude-skills. Download advisor-collison.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then open the agent spec, find the '## Altis Context' section, and help me replace the team bios, company description, and current phase with my own company's context.",
+    "invocation": {
+      "command": "/consult advisor-collison",
+      "example": "What should I prioritize in my first 90 days as a founding engineer?"
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "company_context", "label": "Company context", "description": "Replace the Altis team bios, company stage, and positioning with your own. This is what the advisor uses to give contextual coaching.", "required": true },
+        { "key": "leadership_dynamics", "label": "Leadership dynamics", "description": "Replace team communication preferences and working styles so the advisor understands your team's dynamics", "required": false }
+      ]
+    },
+    "persona": {
+      "role": "Leadership Coach",
+      "voice": "Thoughtful and candid, uses concrete examples over abstract principles, thinks in contrasts and inversions, asks reframing questions",
+      "lenses": ["Craft & Beauty", "Founder Humility", "Hiring as Value Investing", "Culture as Dynamic", "Decisions at 2x Speed 0.5x Precision", "Long-Term Thinking"]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-04"
+  },
+  {
+    "id": "advisor-ben-sun",
+    "slug": "advisor-ben-sun",
+    "name": "Ben Sun",
+    "type": "advisor",
+    "category": "research",
+    "summary": "Argumentative coherence reviewer. Reads your deck the way a time-pressed GP reads it — checks whether key points actually jump off the page and whether anything in the deck creates dissonance that muddles the message. In standalone mode, a thinking partner who challenges framing and pushes on distribution.",
+    "whenToUse": "Before shipping a research deck or investment memo. Also useful as a standalone advisor for GTM strategy, distribution thinking, and founder-level prioritization.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Ben Sun advisor from github.com/altisvc/claude-skills. Download advisor-ben-sun.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/.",
+    "invocation": {
+      "command": "/consult advisor-ben-sun",
+      "example": "Review this deck for argumentative coherence — do the key points land?"
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "persona": {
+      "role": "Deck Reviewer & Distribution Strategist",
+      "voice": "Direct and energetic, no hedging, vivid metaphors, quantifies claims, willing to say hard truths",
+      "lenses": ["Water Cooler Prominence", "Dissonance Detection", "Distribution vs Product", "Skim-ability for Time-Pressed VCs"]
+    },
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-04"
+  },
+  {
+    "id": "advisor-emily",
+    "slug": "advisor-emily",
+    "name": "Emily Man",
+    "type": "advisor",
+    "category": "research",
+    "summary": "Investment rigor voice. Pressure-tests whether evidence actually supports the positions taken — challenges claims that rest on thin sourcing and asks whether market assumptions hold under Series A+ investor scrutiny.",
+    "whenToUse": "When evaluating research quality, reviewing investment memos, or stress-testing a company's market positioning and business model assumptions.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Emily Man investment rigor advisor from github.com/altisvc/claude-skills. Download advisor-emily.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/.",
+    "invocation": {
+      "command": "/consult advisor-emily",
+      "example": "Evaluate the evidence quality in this report — where are we overreaching?"
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "persona": {
+      "role": "Investment Rigor",
+      "voice": "Evidence-first, specific and actionable, honest about uncertainty, avoids labels without substance",
+      "lenses": ["Market Structure Assessment", "TAM Methodology", "Evidence Quality Rating", "Business Model & Unit Economics", "Expansion Path Credibility", "Got to Believe"]
+    },
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-04"
+  },
+  {
+    "id": "advisor-shuman",
+    "slug": "advisor-shuman",
+    "name": "Jason Shuman",
+    "type": "advisor",
+    "category": "research",
+    "summary": "Conviction architecture voice. Evaluates whether structural conditions exist for a venture-scale outcome — founder quality, defensibility via 7 Powers, critical assumptions, and whether conviction is building or eroding.",
+    "whenToUse": "When assessing a company's venture-scale potential, evaluating founder quality, mapping defensibility, or building a Got to Believe framework for an investment decision.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Jason Shuman conviction advisor from github.com/altisvc/claude-skills. Download advisor-shuman.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/.",
+    "invocation": {
+      "command": "/consult advisor-shuman",
+      "example": "Build a Got to Believe framework for this company — what must be true for a venture-scale outcome?"
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "persona": {
+      "role": "Conviction Architecture",
+      "voice": "Conviction-driven, takes positions and explains what would change his mind, structurally-minded, direct about uncertainty",
+      "lenses": ["Vision Assessment", "Got to Believe", "Founder/Team Assessment", "7 Powers (Hamilton Helmer)", "Operator Lens", "Key Question Framing"]
+    },
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-04"
+  },
+  {
+    "id": "advisor-freeberg",
+    "slug": "advisor-freeberg",
+    "name": "Freeberg",
+    "type": "advisor",
+    "category": "research",
+    "summary": "Quality standard and language audit voice. Runs the 9-dimension researcher checksum on investment research — catches AI-sounding prose, hedge words, topic-label headlines, and evidence gaps. Ensures every sentence passes the 'would a VC analyst write this?' test.",
+    "whenToUse": "Before publishing any investment research. Catches the patterns that make AI-assisted writing obvious — staccato sentences, colon-fragment assertions, consultant gloss, and claims without sourcing.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Freeberg quality advisor from github.com/altisvc/claude-skills. Download commander.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then customize the voice checksum file to match your firm's writing standards — replace references to the Altis researcher voice with your own quality bar.",
+    "invocation": {
+      "command": "/consult advisor-freeberg",
+      "example": "Run the quality checksum on this research report"
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "voice_standard", "label": "Writing quality standard", "description": "Replace the Altis researcher voice checksum with your firm's writing standards and quality bar", "required": true },
+        { "key": "company_positioning", "label": "Company positioning", "description": "Replace references to 'Altis does not render verdicts' with your firm's editorial stance", "required": true }
+      ]
+    },
+    "persona": {
+      "role": "Quality Standard",
+      "voice": "Professional analyst-level prose, catches AI patterns, demands compound sentences over staccato fragments, evidence over assertion",
+      "lenses": ["9-Dimension Checksum", "AI Pattern Detection", "Evidence Grounding", "Investor Frame", "Intellectual Honesty", "Decision Usefulness"]
+    },
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-04"
+  },
+  {
+    "id": "consult-advisor",
+    "slug": "consult-advisor",
+    "name": "Consult (Advisor Framework)",
+    "type": "skill",
+    "category": "research",
+    "summary": "The invocation framework that powers all advisor personas. Runs advisors in full context isolation — the advisor sees only its spec and your question, never your main conversation. Prevents persona bleed across sessions.",
+    "whenToUse": "Installed automatically when you install any advisor. You don't invoke this directly — use /consult <advisor-name> instead.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the /consult advisor framework from github.com/altisvc/claude-skills. Place consult.md in .claude/commands/ and SKILL.md in .claude/skills/consult-advisor/. This is the shared infrastructure that all advisors use — install it once, then add as many advisor specs as you want to .claude/agents/.",
+    "invocation": {
+      "command": "/consult <advisor-name>",
+      "example": "/consult advisor-collison What should I prioritize this quarter?"
+    },
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "core",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-03-15"
+  },
+  {
+    "id": "room-booker",
+    "slug": "room-booker",
+    "name": "Meeting Room Booker",
+    "type": "utility",
+    "category": "operations",
+    "summary": "Dual-account Google Calendar room auto-booker. Scans your next 7 days, finds events with in-office guests but no room, checks availability across all conference rooms, and books the best fit. Runs on a 15-minute cron.",
+    "whenToUse": "When your office has shared meeting rooms and you're tired of manually booking them. Set it up once and rooms get assigned automatically.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Help me set up an automatic meeting room booker. I need a Python script that scans my Google Calendar for upcoming events with in-office guests but no room assigned, checks room availability via FreeBusy, and books the best available room. It should run on a cron schedule. Walk me through the Google Calendar API OAuth setup and room resource configuration.",
+    "invocation": {
+      "command": "python3 auto_booker.py",
+      "example": "Runs automatically on 15-minute cron. Manual run: python3 auto_booker.py"
+    },
+    "requires": [],
+    "integrations": ["google-calendar"],
+    "calibration": {
+      "level": "full",
+      "items": [
+        { "key": "google_oauth", "label": "Google Calendar OAuth", "description": "Set up OAuth credentials with Calendar API access for your Google Workspace domain", "required": true },
+        { "key": "room_resources", "label": "Room resource calendars", "description": "Configure the list of meeting room resource calendar IDs and their priority order", "required": true },
+        { "key": "domain_filter", "label": "Office domain filter", "description": "Set which email domains count as 'in-office' guests (e.g., @yourcompany.com)", "required": true }
+      ]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-03"
+  },
+  {
+    "id": "terminal-colors",
+    "slug": "terminal-colors",
+    "name": "Terminal Color Cycling + Auto-Launch",
+    "type": "utility",
+    "category": "developer-tools",
+    "summary": "Every new Terminal.app window auto-launches Claude Code in your project directory and gets a unique background color from a 10-color rotation — alternating dark and light so adjacent windows are always visually distinct.",
+    "whenToUse": "When you work with multiple terminal windows and want instant visual differentiation plus Claude Code as your default shell experience.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Add a block to my .zshrc that (1) auto-launches claude in my project directory on every new interactive Terminal.app window, and (2) cycles the background color through 10 alternating dark/light colors using AppleScript with TTY matching so each window targets itself. Use a persistent index file at ~/.terminal_bg_index.",
+    "invocation": {
+      "command": "Automatic",
+      "example": "Opens automatically with every new Terminal.app window"
+    },
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "project_directory", "label": "Default project directory", "description": "The directory Claude Code should open in by default", "required": true }
+      ]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-03"
+  },
+  {
+    "id": "clipboard-cleaner",
+    "slug": "clipboard-cleaner",
+    "name": "Clipboard Cleaner",
+    "type": "utility",
+    "category": "developer-tools",
+    "summary": "Fix broken formatting when copying from Terminal or Claude Code. One command — 'c' — strips invisible control characters, ANSI escape codes, and prompt artifacts from your clipboard so pasted text is clean.",
+    "whenToUse": "When you copy output from Terminal or Claude Code and paste it somewhere (Slack, docs, email) and it comes out with weird formatting, invisible characters, or garbled text.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the clipboard cleaner from github.com/altisvc/clean-terminal-paste. Clone the repo, run the install script, and add the 'c' alias to my shell profile. Test it by copying some terminal output and running 'c' to clean the clipboard.",
+    "invocation": {
+      "command": "c",
+      "example": "Copy text from terminal, then run: c"
+    },
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-03-24"
   }
 ]
