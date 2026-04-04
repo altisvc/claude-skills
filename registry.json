@@ -340,6 +340,65 @@
     "updatedAt": "2026-03-15"
   },
   {
+    "id": "week-in-review",
+    "slug": "week-in-review",
+    "name": "Week in Review",
+    "type": "skill",
+    "category": "operations",
+    "summary": "Automated weekly company summary. Sweeps Slack for CEO-level activity, pulls GitHub commit history, and produces a narrative digest posted to Slack plus a detailed markdown archive. Runs on a Friday 2am cron so it's waiting when you wake up.",
+    "whenToUse": "End of each week. Gives leadership a single-page view of what happened across the company — no manual assembly required.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Week in Review skill from github.com/altisvc/claude-skills. Place SKILL.md in .claude/skills/week-in-review/ and the command in .claude/commands/. Then configure your Slack channels (which ones to sweep, where to post the digest), GitHub repos to track, and the overnight cron schedule. Walk me through the Slack bot token setup if I don't have one.",
+    "invocation": {
+      "command": "/week-in-review",
+      "example": "/week-in-review"
+    },
+    "requires": ["setup"],
+    "integrations": ["slack", "github"],
+    "calibration": {
+      "level": "full",
+      "items": [
+        { "key": "slack_channels", "label": "Slack channels to sweep", "description": "Which channels contain meaningful company activity — skip social/random", "required": true },
+        { "key": "slack_post_channel", "label": "Digest destination", "description": "Where to post the weekly summary (e.g., #leadership, #general)", "required": true },
+        { "key": "github_repos", "label": "GitHub repos to track", "description": "Which repos to pull commit history from for the technical summary", "required": false },
+        { "key": "cron_schedule", "label": "Cron schedule", "description": "When to run automatically — default is Friday 2am", "required": false }
+      ]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-03-22"
+  },
+  {
+    "id": "audit",
+    "slug": "audit",
+    "name": "Task Audit",
+    "type": "skill",
+    "category": "operations",
+    "summary": "Weekly task list integrity check. Scans Trello, Slack commitments, and daily logs to find unlogged action items, stale cards that haven't moved in 5+ days, duplicate entries, and drift between what was promised and what's tracked.",
+    "whenToUse": "Weekly on Monday, or whenever you suspect your task list has drifted from reality. Catches the commitments that slip through the cracks.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Task Audit skill from github.com/altisvc/claude-skills. Place SKILL.md in .claude/skills/audit/ and the command in .claude/commands/. Then configure your Trello board IDs and Slack channels to scan. The audit cross-references task cards against recent Slack messages and daily logs to find drift.",
+    "invocation": {
+      "command": "/audit",
+      "example": "/audit"
+    },
+    "requires": ["setup"],
+    "integrations": ["trello", "slack"],
+    "calibration": {
+      "level": "full",
+      "items": [
+        { "key": "trello_boards", "label": "Trello board IDs", "description": "The boards to audit for stale, duplicate, and untracked cards", "required": true },
+        { "key": "slack_channels", "label": "Slack channels to scan", "description": "Channels where commitments are made — audit checks for 'I'll send', 'action item', etc.", "required": true },
+        { "key": "stale_threshold", "label": "Stale card threshold", "description": "Days without activity before a card is flagged — default is 5", "required": false }
+      ]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "2.0",
+    "updatedAt": "2026-04-01"
+  },
+  {
     "id": "room-booker",
     "slug": "room-booker",
     "name": "Meeting Room Booker",
