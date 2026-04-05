@@ -478,6 +478,33 @@
     "updatedAt": "2026-03-24"
   },
   {
+    "id": "wiki-lint",
+    "slug": "wiki-lint",
+    "name": "Wiki Lint",
+    "type": "skill",
+    "category": "operations",
+    "summary": "Periodic health check for your knowledge wiki. Identifies stale articles, internal contradictions, thin sections, orphan pages, and missing cross-references. Produces a prioritized health report.",
+    "whenToUse": "Weekly or after a burst of wiki updates. Catches decay before it compounds — stale articles that contradict recent decisions, thin sections that need evidence, orphan pages no one links to.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Wiki Lint skill from github.com/altisvc/claude-skills. Place SKILL.md in .claude/skills/wiki-lint/ and the command in .claude/commands/. Requires an existing knowledge wiki directory with markdown articles. Run /wiki-lint to generate your first health report.",
+    "invocation": {
+      "command": "/wiki-lint",
+      "example": "/wiki-lint"
+    },
+    "requires": ["wiki-compiler"],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "wiki_path", "label": "Wiki directory", "description": "Path to your knowledge wiki articles", "required": true }
+      ]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-04"
+  },
+  {
     "id": "brand-guidelines",
     "slug": "brand-guidelines",
     "name": "Altis Brand Guidelines",
