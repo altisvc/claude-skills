@@ -485,7 +485,7 @@
     "category": "developer-tools",
     "summary": "Complete Altis design system — tokens, typography, colors, icons, logos, patterns, and templates for branded output across web, slides, PDF, and email.",
     "whenToUse": "Before building any branded output — websites, decks, reports, emails, or Lovable projects. Includes machine-readable tokens, CSS/SCSS/Tailwind builds, and 32 SVG icons.",
-    "author": "Christopher Petrescu-Prahova",
+    "author": "Christopher Freeberg",
     "installPrompt": "Install the Altis Brand Guidelines from github.com/altisvc/claude-skills. Download the full design-system/ directory to your project root. Then run `npm run build-tokens` to generate CSS, SCSS, and Tailwind outputs. Read design-system/brand-guidelines.md for usage rules and design-system/tokens.json for the machine-readable token spec.",
     "requires": [],
     "integrations": [],
