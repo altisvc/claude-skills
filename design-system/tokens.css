@@ -1,0 +1,134 @@
+/* Altis Design System — CSS Custom Properties
+ * Generated from: Figma Brand Toolkit Shareout (NRmjBmJBIGJj5DTw3Lfe4a)
+ * Last extracted: 2026-03-01
+ * Source of truth: tokens.json — update that first, regenerate this file.
+ */
+
+:root {
+
+  /* ============================================================
+   * CORE COLORS
+   * ============================================================ */
+  --color-navy:  #030F1F;   /* Primary dark — backgrounds, body text */
+  --color-blue:  #015AE9;   /* Hero brand color — CTAs, key UI, icon fills */
+  --color-cyan:  #01B2F4;   /* Secondary accent — highlights, links */
+  --color-white: #FFFFFF;   /* Light backgrounds, reverse text */
+
+  /* ============================================================
+   * SECONDARY COLORS
+   * ============================================================ */
+  --color-purple: #814DC6;
+  --color-teal:   #00A6A6;
+  --color-coral:  #FF6663;
+  --color-orange: #F28C59;
+  --color-yellow: #F2DA3D;
+  --color-green:  #4BD66A;
+
+  /* ============================================================
+   * EXPANDED PALETTE — Navy family
+   * ============================================================ */
+  --color-navy-dark:  #030F1F;
+  --color-navy-mid:   #0A3166;
+  --color-navy-light: #0F4A99;
+
+  /* Blue family */
+  --color-blue-core:  #015AE9;
+  --color-blue-mid:   #4089FF;
+  --color-blue-light: #AAC5F2;
+
+  /* Sky/Cyan family */
+  --color-sky-core:  #01B2F4;
+  --color-sky-mid:   #86D6F4;
+  --color-sky-light: #ACD6E5;
+
+  /* Teal family */
+  --color-teal-core:  #00A6A6;
+  --color-teal-mid:   #60BFBF;
+  --color-teal-light: #A3D9D9;
+
+  /* Purple family */
+  --color-purple-core:  #814DC6;
+  --color-purple-mid:   #AD92D1;
+  --color-purple-light: #DECEF2;
+
+  /* Coral/Red family */
+  --color-coral-core:  #FF6663;
+  --color-coral-mid:   #FF8987;
+  --color-coral-light: #FFC0BF;
+
+  /* Orange family */
+  --color-orange-core:  #F28C59;
+  --color-orange-mid:   #F2A985;
+  --color-orange-light: #FFCCB2;
+
+  /* Yellow family */
+  --color-yellow-core:  #F2DA3D;
+  --color-yellow-mid:   #F2E279;
+  --color-yellow-light: #F2ECC2;
+
+  /* Green family */
+  --color-green-core:  #4BD66A;
+  --color-green-mid:   #82ED9A;
+  --color-green-light: #B8F5C5;
+
+  /* ============================================================
+   * TYPOGRAPHY
+   * ============================================================
+   * Primary (body/UI): Inter — native Google Slides font, free via Google Fonts
+   * Heading:           Inter Tight — native Google Slides font, free via Google Fonts
+   * Logo font:         PROPRIETARY — embedded in logo SVG only. Never use outside the SVG.
+   * ============================================================ */
+  --font-primary: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Inter Tight', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-email:   Inter, Arial, Helvetica, sans-serif;
+
+  /* Font sizes */
+  --text-display: 48px;
+  --text-h1:      36px;
+  --text-h2:      28px;
+  --text-h3:      22px;
+  --text-h4:      18px;
+  --text-body:    16px;
+  --text-small:   14px;
+  --text-label:   12px;
+  --text-caption: 11px;
+
+  /* Font weights */
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-bold:    700;
+  --weight-black:   800;
+
+  /* Line heights */
+  --leading-tight:   1.1;
+  --leading-snug:    1.2;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.6;
+
+  /* ============================================================
+   * SPACING (8px base unit)
+   * ============================================================ */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ============================================================
+   * BORDER RADIUS
+   * ============================================================ */
+  --radius-none: 0;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+}

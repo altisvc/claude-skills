@@ -1,0 +1,37 @@
+{
+  "font": {
+    "primary": {
+      "$value": "Inter",
+      "$type": "fontFamily",
+      "comment": "Body text, bullets, captions, UI elements. Native Google Slides font."
+    },
+    "heading": {
+      "$value": "Inter Tight",
+      "$type": "fontFamily",
+      "comment": "Headlines, section headers, slide titles. Native Google Slides font."
+    }
+  },
+  "text": {
+    "display": { "$value": "48px", "$type": "dimension" },
+    "h1":      { "$value": "36px", "$type": "dimension" },
+    "h2":      { "$value": "28px", "$type": "dimension" },
+    "h3":      { "$value": "22px", "$type": "dimension" },
+    "h4":      { "$value": "18px", "$type": "dimension" },
+    "body":    { "$value": "16px", "$type": "dimension" },
+    "small":   { "$value": "14px", "$type": "dimension" },
+    "label":   { "$value": "12px", "$type": "dimension" },
+    "caption": { "$value": "11px", "$type": "dimension" }
+  },
+  "weight": {
+    "regular": { "$value": 400, "$type": "number" },
+    "medium":  { "$value": 500, "$type": "number" },
+    "semibold":{ "$value": 600, "$type": "number" },
+    "bold":    { "$value": 700, "$type": "number" }
+  },
+  "leading": {
+    "tight":   { "$value": 1.1, "$type": "number" },
+    "snug":    { "$value": 1.2, "$type": "number" },
+    "normal":  { "$value": 1.5, "$type": "number" },
+    "relaxed": { "$value": 1.6, "$type": "number" }
+  }
+}

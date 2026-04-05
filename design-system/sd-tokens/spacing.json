@@ -1,0 +1,52 @@
+{
+  "space": {
+    "s1": {
+      "$value": "4px",
+      "$type": "dimension"
+    },
+    "s2": {
+      "$value": "8px",
+      "$type": "dimension"
+    },
+    "s3": {
+      "$value": "12px",
+      "$type": "dimension"
+    },
+    "s4": {
+      "$value": "16px",
+      "$type": "dimension"
+    },
+    "s5": {
+      "$value": "20px",
+      "$type": "dimension"
+    },
+    "s6": {
+      "$value": "24px",
+      "$type": "dimension"
+    },
+    "s8": {
+      "$value": "32px",
+      "$type": "dimension"
+    },
+    "s10": {
+      "$value": "40px",
+      "$type": "dimension"
+    },
+    "s12": {
+      "$value": "48px",
+      "$type": "dimension"
+    },
+    "s16": {
+      "$value": "64px",
+      "$type": "dimension"
+    },
+    "s20": {
+      "$value": "80px",
+      "$type": "dimension"
+    },
+    "s24": {
+      "$value": "96px",
+      "$type": "dimension"
+    }
+  }
+}

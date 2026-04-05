@@ -1,0 +1,640 @@
+/**
+ * Altis Ghost Theme — CSS
+ * Add to your Ghost theme's assets/css/ directory or inject via Ghost Admin → Code Injection.
+ *
+ * Fonts required (add to theme's default.hbs <head>):
+ *   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Inter+Tight:wght@500;600;700&display=swap" rel="stylesheet">
+ *
+ * Source of truth: design-system/tokens.json
+ * Last updated: 2026-03-01
+ */
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  /* Core colors */
+  --altis-navy:  #030F1F;
+  --altis-blue:  #015AE9;
+  --altis-cyan:  #01B2F4;
+  --altis-white: #FFFFFF;
+
+  /* Expanded palette — for tags and data viz */
+  --altis-purple: #814DC6;
+  --altis-teal:   #00A6A6;
+  --altis-coral:  #FF6663;
+  --altis-orange: #F28C59;
+  --altis-yellow: #F2DA3D;
+  --altis-green:  #4BD66A;
+
+  /* Tints */
+  --altis-blue-light:   #AAC5F2;
+  --altis-purple-light: #DECEF2;
+  --altis-teal-light:   #A3D9D9;
+  --altis-coral-light:  #FFC0BF;
+  --altis-yellow-light: #F2ECC2;
+  --altis-green-light:  #B8F5C5;
+
+  /* UI grays */
+  --altis-gray-100: #F5F7FA;
+  --altis-gray-200: #E8ECF2;
+  --altis-gray-300: #CDD4E0;
+  --altis-gray-500: #7A8899;
+  --altis-gray-700: #3D4E63;
+
+  /* Typography */
+  --altis-font-heading: 'Inter Tight', Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --altis-font-body:    Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Type scale */
+  --altis-text-display: 48px;
+  --altis-text-h1:      36px;
+  --altis-text-h2:      28px;
+  --altis-text-h3:      22px;
+  --altis-text-h4:      18px;
+  --altis-text-body:    16px;
+  --altis-text-small:   14px;
+  --altis-text-label:   12px;
+
+  /* Spacing */
+  --altis-space-1:   4px;
+  --altis-space-2:   8px;
+  --altis-space-3:   12px;
+  --altis-space-4:   16px;
+  --altis-space-6:   24px;
+  --altis-space-8:   32px;
+  --altis-space-12:  48px;
+  --altis-space-16:  64px;
+  --altis-space-24:  96px;
+
+  /* Radius */
+  --altis-radius-sm:   4px;
+  --altis-radius-md:   8px;
+  --altis-radius-lg:   16px;
+  --altis-radius-full: 9999px;
+
+  /* Shadows */
+  --altis-shadow-sm: 0 1px 3px rgba(3, 15, 31, 0.08), 0 1px 2px rgba(3, 15, 31, 0.06);
+  --altis-shadow-md: 0 4px 12px rgba(3, 15, 31, 0.10), 0 2px 4px rgba(3, 15, 31, 0.06);
+  --altis-shadow-lg: 0 8px 24px rgba(3, 15, 31, 0.12), 0 4px 8px rgba(3, 15, 31, 0.08);
+}
+
+/* ============================================================
+   GLOBAL RESET + BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--altis-font-body);
+  font-size: var(--altis-text-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--altis-navy);
+  background: var(--altis-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   SITE HEADER
+   ============================================================ */
+.gh-head {
+  background: var(--altis-blue);
+  padding: var(--altis-space-4) var(--altis-space-8);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(1, 90, 233, 0.3);
+}
+
+.gh-head-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--altis-space-6);
+}
+
+/* Logo in header */
+.gh-head-logo {
+  font-family: var(--altis-font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--altis-white);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.gh-head-logo img {
+  height: 32px;
+  width: auto;
+}
+
+/* Nav links */
+.gh-head-menu .nav a,
+.gh-head-actions a {
+  font-family: var(--altis-font-body);
+  font-size: var(--altis-text-small);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.gh-head-menu .nav a:hover,
+.gh-head-actions a:hover {
+  color: var(--altis-white);
+}
+
+/* Subscribe button */
+.gh-head-button {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--altis-white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: var(--altis-space-2) var(--altis-space-4);
+  border-radius: var(--altis-radius-full);
+  font-size: var(--altis-text-small);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.gh-head-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+.gh-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--altis-space-12) var(--altis-space-8);
+}
+
+/* ============================================================
+   POST CARDS (index / listing pages)
+   ============================================================ */
+.gh-card {
+  background: var(--altis-white);
+  border: 1px solid var(--altis-gray-200);
+  border-radius: var(--altis-radius-lg);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.gh-card:hover {
+  box-shadow: var(--altis-shadow-md);
+  transform: translateY(-2px);
+}
+
+.gh-card-image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.gh-card-content {
+  padding: var(--altis-space-6);
+}
+
+.gh-card-tag {
+  font-family: var(--altis-font-body);
+  font-size: var(--altis-text-label);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--altis-blue);
+  margin-bottom: var(--altis-space-2);
+  display: inline-block;
+}
+
+.gh-card-title {
+  font-family: var(--altis-font-heading);
+  font-size: var(--altis-text-h3);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--altis-navy);
+  margin: 0 0 var(--altis-space-3);
+  text-decoration: none;
+}
+
+.gh-card-title a { color: inherit; text-decoration: none; }
+.gh-card-title a:hover { color: var(--altis-blue); }
+
+.gh-card-excerpt {
+  font-size: var(--altis-text-small);
+  color: var(--altis-gray-700);
+  line-height: 1.55;
+  margin: 0 0 var(--altis-space-4);
+}
+
+.gh-card-meta {
+  font-size: var(--altis-text-label);
+  color: var(--altis-gray-500);
+  display: flex;
+  align-items: center;
+  gap: var(--altis-space-3);
+}
+
+/* ============================================================
+   POST ARTICLE — Typography
+   ============================================================ */
+.gh-content {
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+/* Post title */
+.gh-post-title,
+.article-title {
+  font-family: var(--altis-font-heading);
+  font-size: var(--altis-text-h1);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--altis-navy);
+  margin: 0 0 var(--altis-space-6);
+  letter-spacing: -0.02em;
+}
+
+/* Headings within post body */
+.gh-content h1 {
+  font-family: var(--altis-font-heading);
+  font-size: var(--altis-text-h1);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--altis-navy);
+  margin: var(--altis-space-12) 0 var(--altis-space-4);
+}
+
+.gh-content h2 {
+  font-family: var(--altis-font-heading);
+  font-size: var(--altis-text-h2);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--altis-navy);
+  margin: var(--altis-space-8) 0 var(--altis-space-3);
+}
+
+.gh-content h3 {
+  font-family: var(--altis-font-heading);
+  font-size: var(--altis-text-h3);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--altis-navy);
+  margin: var(--altis-space-6) 0 var(--altis-space-3);
+}
+
+.gh-content h4 {
+  font-family: var(--altis-font-heading);
+  font-size: var(--altis-text-h4);
+  font-weight: 600;
+  color: var(--altis-navy);
+  margin: var(--altis-space-6) 0 var(--altis-space-2);
+}
+
+/* Body text */
+.gh-content p {
+  font-size: var(--altis-text-body);
+  line-height: 1.6;
+  color: var(--altis-navy);
+  margin: 0 0 var(--altis-space-4);
+}
+
+/* Links */
+.gh-content a {
+  color: var(--altis-cyan);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease;
+}
+
+.gh-content a:hover {
+  border-bottom-color: var(--altis-cyan);
+}
+
+/* Bullet lists */
+.gh-content ul,
+.gh-content ol {
+  margin: 0 0 var(--altis-space-4);
+  padding-left: var(--altis-space-6);
+}
+
+.gh-content li {
+  font-size: var(--altis-text-body);
+  line-height: 1.6;
+  margin-bottom: var(--altis-space-2);
+}
+
+/* Blockquotes */
+.gh-content blockquote {
+  border-left: 4px solid var(--altis-blue);
+  margin: var(--altis-space-8) 0;
+  padding: var(--altis-space-4) var(--altis-space-6);
+  background: var(--altis-gray-100);
+  border-radius: 0 var(--altis-radius-md) var(--altis-radius-md) 0;
+}
+
+.gh-content blockquote p {
+  font-family: var(--altis-font-heading);
+  font-size: var(--altis-text-h4);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--altis-navy);
+  margin: 0;
+}
+
+/* Code — inline */
+.gh-content code {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.875em;
+  background: var(--altis-gray-100);
+  color: var(--altis-navy);
+  padding: 0.15em 0.4em;
+  border-radius: var(--altis-radius-sm);
+  border: 1px solid var(--altis-gray-200);
+}
+
+/* Code — block */
+.gh-content pre {
+  background: var(--altis-gray-100);
+  border: 1px solid var(--altis-gray-200);
+  border-radius: var(--altis-radius-md);
+  padding: var(--altis-space-6);
+  overflow-x: auto;
+  margin: var(--altis-space-6) 0;
+}
+
+.gh-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--altis-text-small);
+  line-height: 1.6;
+}
+
+/* Tables */
+.gh-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--altis-space-6) 0;
+  font-size: var(--altis-text-small);
+}
+
+.gh-content th {
+  font-family: var(--altis-font-heading);
+  font-weight: 600;
+  font-size: var(--altis-text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--altis-gray-100);
+  color: var(--altis-navy);
+  padding: var(--altis-space-3) var(--altis-space-4);
+  border-bottom: 2px solid var(--altis-blue);
+  text-align: left;
+}
+
+.gh-content td {
+  padding: var(--altis-space-3) var(--altis-space-4);
+  border-bottom: 1px solid var(--altis-gray-200);
+  vertical-align: top;
+}
+
+.gh-content tr:last-child td { border-bottom: none; }
+
+/* ============================================================
+   TAGS
+   ============================================================ */
+.gh-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--altis-space-1) var(--altis-space-3);
+  border-radius: var(--altis-radius-full);
+  font-size: var(--altis-text-label);
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.gh-tag:hover { opacity: 0.8; }
+
+/* Tag color assignments by slug */
+.tag-ai,
+.tag-research        { background: var(--altis-blue-light);   color: var(--altis-navy); }
+.tag-market          { background: var(--altis-teal-light);    color: var(--altis-navy); }
+.tag-founders        { background: var(--altis-purple-light);  color: var(--altis-navy); }
+.tag-diligence       { background: var(--altis-yellow-light);  color: var(--altis-navy); }
+.tag-portfolio       { background: var(--altis-green-light);   color: var(--altis-navy); }
+.tag-operations      { background: var(--altis-coral-light);   color: var(--altis-navy); }
+.tag-default         { background: var(--altis-gray-200);      color: var(--altis-navy); }
+
+/* ============================================================
+   REPORT POST TEMPLATE  (.post-template-report)
+   Add this class to Ghost post body via template
+   ============================================================ */
+
+/* Report hero — blue bg with pattern overlay */
+.post-template-report .gh-post-header {
+  background: var(--altis-blue);
+  color: var(--altis-white);
+  padding: var(--altis-space-24) var(--altis-space-8);
+  position: relative;
+  overflow: hidden;
+}
+
+.post-template-report .gh-post-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../icons/icon-signal-dark.svg'),
+                    url('../icons/icon-peak-dark.svg'),
+                    url('../icons/icon-orbit-dark.svg');
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: 5% 20%, 90% 70%, 75% 15%;
+  background-size: 120px, 140px, 100px;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.post-template-report .gh-post-title {
+  font-family: var(--altis-font-heading);
+  font-size: var(--altis-text-display);
+  font-weight: 700;
+  color: var(--altis-white);
+  max-width: 780px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Confidential label */
+.post-template-report .report-confidential {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--altis-space-2);
+  font-family: var(--altis-font-body);
+  font-size: var(--altis-text-label);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: var(--altis-space-4);
+  position: relative;
+  z-index: 1;
+}
+
+.post-template-report .report-confidential::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--altis-cyan);
+  border-radius: 50%;
+}
+
+/* Report layout with ToC sidebar */
+.post-template-report .report-layout {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: var(--altis-space-16);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--altis-space-12) var(--altis-space-8);
+  align-items: start;
+}
+
+/* Table of contents */
+.post-template-report .report-toc {
+  position: sticky;
+  top: calc(60px + var(--altis-space-8));
+  background: var(--altis-gray-100);
+  border: 1px solid var(--altis-gray-200);
+  border-radius: var(--altis-radius-lg);
+  padding: var(--altis-space-6);
+}
+
+.post-template-report .report-toc h4 {
+  font-family: var(--altis-font-heading);
+  font-size: var(--altis-text-label);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--altis-gray-500);
+  margin: 0 0 var(--altis-space-4);
+}
+
+.post-template-report .report-toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: toc;
+}
+
+.post-template-report .report-toc li {
+  counter-increment: toc;
+  margin-bottom: var(--altis-space-3);
+}
+
+.post-template-report .report-toc a {
+  font-size: var(--altis-text-small);
+  color: var(--altis-navy);
+  text-decoration: none;
+  display: flex;
+  gap: var(--altis-space-2);
+  align-items: baseline;
+  transition: color 0.15s ease;
+}
+
+.post-template-report .report-toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  font-size: var(--altis-text-label);
+  color: var(--altis-blue);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.post-template-report .report-toc a:hover { color: var(--altis-blue); }
+
+/* ============================================================
+   SITE FOOTER
+   ============================================================ */
+.gh-foot {
+  background: var(--altis-navy);
+  color: rgba(255, 255, 255, 0.6);
+  padding: var(--altis-space-12) var(--altis-space-8);
+  margin-top: var(--altis-space-24);
+}
+
+.gh-foot-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--altis-space-6);
+}
+
+.gh-foot-brand {
+  font-family: var(--altis-font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--altis-white);
+}
+
+.gh-foot-nav a {
+  font-size: var(--altis-text-small);
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  margin-left: var(--altis-space-6);
+  transition: color 0.15s ease;
+}
+
+.gh-foot-nav a:hover { color: var(--altis-white); }
+
+/* ============================================================
+   RESPONSIVE — Tablet (≤1024px)
+   ============================================================ */
+@media (max-width: 1024px) {
+  .gh-main { padding: var(--altis-space-8) var(--altis-space-6); }
+
+  .post-template-report .report-layout {
+    grid-template-columns: 1fr;
+    gap: var(--altis-space-8);
+  }
+
+  .post-template-report .report-toc {
+    position: static;
+    order: -1;
+  }
+
+  .gh-post-title,
+  .article-title { font-size: var(--altis-text-h2); }
+
+  .post-template-report .gh-post-title { font-size: var(--altis-text-h1); }
+}
+
+/* ============================================================
+   RESPONSIVE — Mobile (≤768px)
+   ============================================================ */
+@media (max-width: 768px) {
+  .gh-head { padding: var(--altis-space-3) var(--altis-space-4); }
+  .gh-main { padding: var(--altis-space-6) var(--altis-space-4); }
+
+  .gh-head-menu { display: none; }
+
+  .post-template-report .gh-post-header {
+    padding: var(--altis-space-16) var(--altis-space-4);
+  }
+
+  .post-template-report .gh-post-title {
+    font-size: var(--altis-text-h2);
+  }
+
+  .post-template-report .report-layout {
+    padding: var(--altis-space-6) var(--altis-space-4);
+  }
+
+  .gh-foot-inner { flex-direction: column; align-items: flex-start; gap: var(--altis-space-4); }
+  .gh-foot-nav a:first-child { margin-left: 0; }
+}

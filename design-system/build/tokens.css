@@ -1,0 +1,80 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --altis-radius-none: 0px;
+  --altis-radius-sm: 4px;
+  --altis-radius-md: 8px;
+  --altis-radius-lg: 16px;
+  --altis-radius-xl: 24px;
+  --altis-radius-full: 9999px;
+  --altis-color-core-navy: #030f1f; /** Primary dark background, body text on light, headings */
+  --altis-color-core-blue: #015ae9; /** Hero brand color — CTAs, primary backgrounds, key UI elements, icon fills */
+  --altis-color-core-cyan: #01b2f4; /** Secondary accent — highlights, secondary links, data callouts */
+  --altis-color-core-white: #ffffff; /** Light backgrounds, reverse text on dark, icon fills on dark backgrounds */
+  --altis-color-secondary-purple: #814dc6; /** Secondary palette — data viz, charts, accent elements */
+  --altis-color-secondary-teal: #00a6a6; /** Secondary palette — data viz, supplemental UI */
+  --altis-color-secondary-coral: #ff6663; /** Secondary palette — alerts, data viz warm accents */
+  --altis-color-secondary-orange: #f28c59; /** Secondary palette — warm accent, data viz */
+  --altis-color-secondary-yellow: #f2da3d; /** Secondary palette — highlight, data viz */
+  --altis-color-secondary-green: #4bd66a; /** Secondary palette — positive signals, data viz */
+  --altis-color-expanded-navy-dark: #030f1f;
+  --altis-color-expanded-navy-mid: #0a3166;
+  --altis-color-expanded-navy-light: #0f4a99;
+  --altis-color-expanded-blue-core: #015ae9;
+  --altis-color-expanded-blue-mid: #4089ff;
+  --altis-color-expanded-blue-light: #aac5f2;
+  --altis-color-expanded-sky-core: #01b2f4;
+  --altis-color-expanded-sky-mid: #86d6f4;
+  --altis-color-expanded-sky-light: #acd6e5;
+  --altis-color-expanded-teal-core: #00a6a6;
+  --altis-color-expanded-teal-mid: #60bfbf;
+  --altis-color-expanded-teal-light: #a3d9d9;
+  --altis-color-expanded-purple-core: #814dc6;
+  --altis-color-expanded-purple-mid: #ad92d1;
+  --altis-color-expanded-purple-light: #decef2;
+  --altis-color-expanded-coral-core: #ff6663;
+  --altis-color-expanded-coral-mid: #ff8987;
+  --altis-color-expanded-coral-light: #ffc0bf;
+  --altis-color-expanded-orange-core: #f28c59;
+  --altis-color-expanded-orange-mid: #f2a985;
+  --altis-color-expanded-orange-light: #ffccb2;
+  --altis-color-expanded-yellow-core: #f2da3d;
+  --altis-color-expanded-yellow-mid: #f2e279;
+  --altis-color-expanded-yellow-light: #f2ecc2;
+  --altis-color-expanded-green-core: #4bd66a;
+  --altis-color-expanded-green-mid: #82ed9a;
+  --altis-color-expanded-green-light: #b8f5c5;
+  --altis-space-s1: 4px;
+  --altis-space-s2: 8px;
+  --altis-space-s3: 12px;
+  --altis-space-s4: 16px;
+  --altis-space-s5: 20px;
+  --altis-space-s6: 24px;
+  --altis-space-s8: 32px;
+  --altis-space-s10: 40px;
+  --altis-space-s12: 48px;
+  --altis-space-s16: 64px;
+  --altis-space-s20: 80px;
+  --altis-space-s24: 96px;
+  --altis-font-primary: Inter; /** Body text, bullets, captions, UI elements. Native Google Slides font. */
+  --altis-font-heading: 'Inter Tight'; /** Headlines, section headers, slide titles. Native Google Slides font. */
+  --altis-text-display: 48px;
+  --altis-text-h1: 36px;
+  --altis-text-h2: 28px;
+  --altis-text-h3: 22px;
+  --altis-text-h4: 18px;
+  --altis-text-body: 16px;
+  --altis-text-small: 14px;
+  --altis-text-label: 12px;
+  --altis-text-caption: 11px;
+  --altis-weight-regular: 400;
+  --altis-weight-medium: 500;
+  --altis-weight-semibold: 600;
+  --altis-weight-bold: 700;
+  --altis-leading-tight: 1.1;
+  --altis-leading-snug: 1.2;
+  --altis-leading-normal: 1.5;
+  --altis-leading-relaxed: 1.6;
+}

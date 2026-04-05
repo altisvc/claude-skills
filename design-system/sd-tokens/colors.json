@@ -1,0 +1,168 @@
+{
+  "color": {
+    "core": {
+      "navy": {
+        "$value": "#030F1F",
+        "$type": "color",
+        "comment": "Primary dark background, body text on light, headings"
+      },
+      "blue": {
+        "$value": "#015AE9",
+        "$type": "color",
+        "comment": "Hero brand color \u2014 CTAs, primary backgrounds, key UI elements, icon fills"
+      },
+      "cyan": {
+        "$value": "#01B2F4",
+        "$type": "color",
+        "comment": "Secondary accent \u2014 highlights, secondary links, data callouts"
+      },
+      "white": {
+        "$value": "#FFFFFF",
+        "$type": "color",
+        "comment": "Light backgrounds, reverse text on dark, icon fills on dark backgrounds"
+      }
+    },
+    "secondary": {
+      "purple": {
+        "$value": "#814DC6",
+        "$type": "color",
+        "comment": "Secondary palette \u2014 data viz, charts, accent elements"
+      },
+      "teal": {
+        "$value": "#00A6A6",
+        "$type": "color",
+        "comment": "Secondary palette \u2014 data viz, supplemental UI"
+      },
+      "coral": {
+        "$value": "#FF6663",
+        "$type": "color",
+        "comment": "Secondary palette \u2014 alerts, data viz warm accents"
+      },
+      "orange": {
+        "$value": "#F28C59",
+        "$type": "color",
+        "comment": "Secondary palette \u2014 warm accent, data viz"
+      },
+      "yellow": {
+        "$value": "#F2DA3D",
+        "$type": "color",
+        "comment": "Secondary palette \u2014 highlight, data viz"
+      },
+      "green": {
+        "$value": "#4BD66A",
+        "$type": "color",
+        "comment": "Secondary palette \u2014 positive signals, data viz"
+      }
+    },
+    "expanded": {
+      "navy-dark": {
+        "$value": "#030F1F",
+        "$type": "color"
+      },
+      "navy-mid": {
+        "$value": "#0A3166",
+        "$type": "color"
+      },
+      "navy-light": {
+        "$value": "#0F4A99",
+        "$type": "color"
+      },
+      "blue-core": {
+        "$value": "#015AE9",
+        "$type": "color"
+      },
+      "blue-mid": {
+        "$value": "#4089FF",
+        "$type": "color"
+      },
+      "blue-light": {
+        "$value": "#AAC5F2",
+        "$type": "color"
+      },
+      "sky-core": {
+        "$value": "#01B2F4",
+        "$type": "color"
+      },
+      "sky-mid": {
+        "$value": "#86D6F4",
+        "$type": "color"
+      },
+      "sky-light": {
+        "$value": "#ACD6E5",
+        "$type": "color"
+      },
+      "teal-core": {
+        "$value": "#00A6A6",
+        "$type": "color"
+      },
+      "teal-mid": {
+        "$value": "#60BFBF",
+        "$type": "color"
+      },
+      "teal-light": {
+        "$value": "#A3D9D9",
+        "$type": "color"
+      },
+      "purple-core": {
+        "$value": "#814DC6",
+        "$type": "color"
+      },
+      "purple-mid": {
+        "$value": "#AD92D1",
+        "$type": "color"
+      },
+      "purple-light": {
+        "$value": "#DECEF2",
+        "$type": "color"
+      },
+      "coral-core": {
+        "$value": "#FF6663",
+        "$type": "color"
+      },
+      "coral-mid": {
+        "$value": "#FF8987",
+        "$type": "color"
+      },
+      "coral-light": {
+        "$value": "#FFC0BF",
+        "$type": "color"
+      },
+      "orange-core": {
+        "$value": "#F28C59",
+        "$type": "color"
+      },
+      "orange-mid": {
+        "$value": "#F2A985",
+        "$type": "color"
+      },
+      "orange-light": {
+        "$value": "#FFCCB2",
+        "$type": "color"
+      },
+      "yellow-core": {
+        "$value": "#F2DA3D",
+        "$type": "color"
+      },
+      "yellow-mid": {
+        "$value": "#F2E279",
+        "$type": "color"
+      },
+      "yellow-light": {
+        "$value": "#F2ECC2",
+        "$type": "color"
+      },
+      "green-core": {
+        "$value": "#4BD66A",
+        "$type": "color"
+      },
+      "green-mid": {
+        "$value": "#82ED9A",
+        "$type": "color"
+      },
+      "green-light": {
+        "$value": "#B8F5C5",
+        "$type": "color"
+      }
+    }
+  }
+}

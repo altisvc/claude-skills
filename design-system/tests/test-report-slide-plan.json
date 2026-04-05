@@ -1,0 +1,170 @@
+{
+  "title": "Acme Corp — Day 10 Diligence Report",
+  "source": "test-report.md",
+  "generated": "2026-03-02T02:05:44.073Z",
+  "slideCount": 18,
+  "compiled": [
+    {
+      "layoutIndex": 0,
+      "layoutName": "cover-dark",
+      "replacements": {
+        "Rise above the noise.": "Acme Corp — Day 10 Diligence Report"
+      },
+      "title": "Acme Corp — Day 10 Diligence Report",
+      "note": "Cover"
+    },
+    {
+      "layoutIndex": 11,
+      "layoutName": "chapter-divider-1",
+      "replacements": {
+        "Chapter title lorem ipsum": "Executive Summary"
+      },
+      "title": "Executive Summary",
+      "note": "Section divider for execSummary"
+    },
+    {
+      "layoutIndex": 28,
+      "layoutName": "evidence-light-list",
+      "replacements": {
+        "Lorem ipsum  dolor sit amet": "Section 1: Executive Summary"
+      },
+      "title": "Section 1: Executive Summary",
+      "note": "Default evidence-light-list"
+    },
+    {
+      "layoutIndex": 28,
+      "layoutName": "evidence-light-list",
+      "replacements": {
+        "Lorem ipsum  dolor sit amet": "Market / TAM"
+      },
+      "title": "Market / TAM",
+      "note": "Bullet list chunk 1/1"
+    },
+    {
+      "layoutIndex": 28,
+      "layoutName": "evidence-light-list",
+      "replacements": {
+        "Lorem ipsum  dolor sit amet": "Company / Product / GTM"
+      },
+      "title": "Company / Product / GTM",
+      "note": "Bullet list chunk 1/1"
+    },
+    {
+      "layoutIndex": 28,
+      "layoutName": "evidence-light-list",
+      "replacements": {
+        "Lorem ipsum  dolor sit amet": "Altis Assessment"
+      },
+      "title": "Altis Assessment",
+      "note": "Default evidence-light-list",
+      "_rhythmWarning": "Consider inserting a visual break (kpi-stat, pull-quote, or half-image)"
+    },
+    {
+      "layoutIndex": 11,
+      "layoutName": "chapter-divider-1",
+      "replacements": {
+        "Chapter title lorem ipsum": "Key Debates"
+      },
+      "title": "Key Debates",
+      "note": "Section divider for keyDebates"
+    },
+    {
+      "layoutIndex": 28,
+      "layoutName": "evidence-light-list",
+      "replacements": {
+        "Lorem ipsum  dolor sit amet": "Section 2: Key Debates"
+      },
+      "title": "Section 2: Key Debates",
+      "note": "Default evidence-light-list"
+    },
+    {
+      "layoutIndex": 28,
+      "layoutName": "evidence-light-list",
+      "replacements": {
+        "Lorem ipsum  dolor sit amet": "Debate 1: Can Acme defend against AWS and GCP bundling managed ops into their core platforms?"
+      },
+      "title": "Debate 1: Can Acme defend against AWS and GCP bundling managed ops into their core platforms?",
+      "note": "Bullet list chunk 1/1"
+    },
+    {
+      "layoutIndex": 11,
+      "layoutName": "chapter-divider-1",
+      "replacements": {
+        "Chapter title lorem ipsum": "Key Stats"
+      },
+      "title": "Key Stats",
+      "note": "Section divider for keyStats"
+    },
+    {
+      "layoutIndex": 28,
+      "layoutName": "evidence-light-list",
+      "replacements": {
+        "Lorem ipsum  dolor sit amet": "Section 3: Key Stats"
+      },
+      "title": "Section 3: Key Stats",
+      "note": "Default evidence-light-list"
+    },
+    {
+      "layoutIndex": 39,
+      "layoutName": "table-grid",
+      "replacements": {
+        "Lorem ipsum dolor sit  amet lorem ipsum": "Acme Corp — Key Metrics Dashboard"
+      },
+      "title": "Acme Corp — Key Metrics Dashboard",
+      "note": "Comparison table"
+    },
+    {
+      "layoutIndex": 11,
+      "layoutName": "chapter-divider-1",
+      "replacements": {
+        "Chapter title lorem ipsum": "Team & Culture"
+      },
+      "title": "Team & Culture",
+      "note": "Section divider for teamCulture"
+    },
+    {
+      "layoutIndex": 28,
+      "layoutName": "evidence-light-list",
+      "replacements": {
+        "Lorem ipsum  dolor sit amet": "Section 4: Team & Culture"
+      },
+      "title": "Section 4: Team & Culture",
+      "note": "Default evidence-light-list"
+    },
+    {
+      "layoutIndex": 39,
+      "layoutName": "table-grid",
+      "replacements": {
+        "Lorem ipsum dolor sit  amet lorem ipsum": "Leadership"
+      },
+      "title": "Leadership",
+      "note": "Comparison table"
+    },
+    {
+      "layoutIndex": 23,
+      "layoutName": "pull-quote-1",
+      "replacements": {
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco lorem laboris nisi ut aliquip ipsum dolor": "**\"Jane is one of the most technically credible founders I've met in infrastructure.\"** --- Series A lead partner",
+        "Subheader lorem ipsum dolor": "Founder Signal"
+      },
+      "title": "**\"Jane is one of the most technically credible founders I've met in infrastructure.\"** --- Series A lead partner",
+      "note": "Expert quote"
+    },
+    {
+      "layoutIndex": 28,
+      "layoutName": "evidence-light-list",
+      "replacements": {
+        "Lorem ipsum  dolor sit amet": "Culture Indicators"
+      },
+      "title": "Culture Indicators",
+      "note": "Bullet list chunk 1/1"
+    },
+    {
+      "layoutIndex": 41,
+      "layoutName": "closing-blank",
+      "replacements": {},
+      "title": "",
+      "note": "Closing"
+    }
+  ]
+}

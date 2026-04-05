@@ -1,0 +1,183 @@
+{
+  "templateId": "1pY6SoMTTG1bzg_99v1-xwzLxVEVZSx-T3X-gMx4tBz0",
+  "generated": "2026-03-01",
+  "note": "Placeholder text per template slide. Keys are layout names from SLIDE_LAYOUTS. Values map placeholder type to the exact text string to find/replace.",
+  "layouts": {
+    "cover-dark": {
+      "index": 0,
+      "placeholders": {
+        "TITLE": "Rise above the noise."
+      }
+    },
+    "cover-light": {
+      "index": 1,
+      "placeholders": {
+        "TITLE": "Rise above the noise."
+      }
+    },
+    "chapter-divider-1": {
+      "index": 11,
+      "placeholders": {
+        "TITLE": "Chapter title lorem ipsum",
+        "SUBTITLE": "Subheader lorem ipsum dolor"
+      }
+    },
+    "chapter-divider-2": {
+      "index": 12,
+      "placeholders": {
+        "TITLE": "Chapter title lorem ipsum",
+        "SUBTITLE": "Subheader lorem ipsum dolor"
+      }
+    },
+    "headline-only-1": {
+      "index": 16,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "headline-only-2": {
+      "index": 17,
+      "placeholders": {
+        "TITLE": "Chapter title lorem ipsum"
+      }
+    },
+    "headline-only-3": {
+      "index": 18,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "4-up-grid-header": {
+      "index": 19,
+      "placeholders": {
+        "TITLE": "Lorem ipsum dolor sit amet",
+        "SUBTITLE": "Subheader lorem ipsum dolor"
+      }
+    },
+    "4-up-grid-body": {
+      "index": 20,
+      "placeholders": {
+        "TITLE": "Lorem ipsum dolor sit amet",
+        "SUBTITLE": "Subheader lorem ipsum dolor"
+      }
+    },
+    "text-narrative": {
+      "index": 22,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "pull-quote-1": {
+      "index": 23,
+      "placeholders": {
+        "TITLE": "Ut enim ad minim veniam, quis nostrud exercitation ullamco lorem laboris nisi ut aliquip ipsum dolor",
+        "SUBTITLE": "Subheader lorem ipsum dolor"
+      }
+    },
+    "pull-quote-2": {
+      "index": 24,
+      "placeholders": {
+        "TITLE": "Ut enim ad minim veniam, quis nostrud exercitation ullamco lorem laboris nisi ut aliquip ipsum dolor",
+        "SUBTITLE": "Subheader lorem ipsum dolor"
+      }
+    },
+    "kpi-stat": {
+      "index": 26,
+      "placeholders": {
+        "TITLE": "Ut enim ad minim veniam.",
+        "SUBTITLE": "Subheader lorem ipsum dolor"
+      }
+    },
+    "evidence-dark-4img": {
+      "index": 27,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "evidence-light-list": {
+      "index": 28,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "evidence-dark-list": {
+      "index": 29,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "numbered-3-light": {
+      "index": 30,
+      "placeholders": {
+        "TITLE": "Faster revullam quis velit nec ipsum  vehicula fermentum",
+        "SUBTITLE": "Mauris et lorem ultricies nisl vesti bulum sit amet a lectus ex vestibu."
+      }
+    },
+    "evidence-dark-bullets": {
+      "index": 31,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "evidence-dark-bullets-2": {
+      "index": 32,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "checklist-light": {
+      "index": 33,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "numbered-3-with-images": {
+      "index": 34,
+      "placeholders": {
+        "TITLE": "Faster revullam quis velit nec ipsum  vehicula fermentum",
+        "SUBTITLE": "Mauris et lorem ultricies nisl vesti bulum sit amet a lectus ex vestibu."
+      }
+    },
+    "numbered-3-no-images": {
+      "index": 35,
+      "placeholders": {
+        "TITLE": "Faster revullam quis velit nec ipsum  vehicula fermentum",
+        "SUBTITLE": "Mauris et lorem ultricies nisl vesti bulum sit amet a lectus ex vestibu."
+      }
+    },
+    "half-image-right": {
+      "index": 36,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "half-image-left": {
+      "index": 37,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "half-image-callout": {
+      "index": 38,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "table-grid": {
+      "index": 39,
+      "placeholders": {
+        "TITLE": "Lorem ipsum dolor sit  amet lorem ipsum"
+      }
+    },
+    "extended-content": {
+      "index": 40,
+      "placeholders": {
+        "TITLE": "Lorem ipsum  dolor sit amet"
+      }
+    },
+    "closing-blank": {
+      "index": 41,
+      "placeholders": {}
+    }
+  }
+}

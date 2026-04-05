@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>Altis Email Template</title>
+  <!--
+  =====================================================================
+  ALTIS EMAIL TEMPLATE
+  Table-based layout — 600px max-width — all styles inline
+  Fonts: Inter with Arial/Helvetica fallbacks (email-safe)
+  Tokens: design-system/tokens.json
+  Colors: navy #030F1F · blue #015AE9 · cyan #01B2F4 · white #FFFFFF
+  HubSpot placeholders: {{ contact.firstname }}, {{ company.name }}
+
+  SECTIONS:
+    1. Preheader text (hidden preview)
+    2. Email wrapper (outer bg)
+    3. Header (blue bar + Altis logo)
+    4. Body (greeting + headline + body text)
+    5. CTA button
+    6. Divider
+    7. Secondary content block (optional)
+    8. Footer (logo + nav + unsubscribe)
+
+  HOW TO CUSTOMIZE:
+    - Replace [HEADLINE], [BODY COPY], [CTA TEXT], [CTA URL]
+    - Update HubSpot tokens as needed
+    - Duplicate the "Secondary content block" for multi-section emails
+    - To remove the CTA, delete section 5 + 6
+  =====================================================================
+  -->
+  <style type="text/css">
+    /* Reset — overridden by inline styles, but helps some clients */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+
+    /* Responsive */
+    @media only screen and (max-width: 620px) {
+      .email-wrapper { width: 100% !important; }
+      .email-container { width: 100% !important; }
+      .mobile-padding { padding-left: 24px !important; padding-right: 24px !important; }
+      .mobile-stack { display: block !important; width: 100% !important; }
+      .cta-button { width: 100% !important; text-align: center !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#F0F2F5; font-family:Inter,Arial,Helvetica,sans-serif;">
+
+<!-- =====================================================================
+     SECTION 1: PREHEADER (hidden preview text in inbox)
+     Keep under 90 characters. Change per send.
+     ===================================================================== -->
+<div style="display:none; max-height:0; overflow:hidden; font-size:1px; color:#F0F2F5;">
+  [PREHEADER TEXT — update per send, keep under 90 chars] &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+</div>
+
+<!-- =====================================================================
+     SECTION 2: EMAIL WRAPPER
+     ===================================================================== -->
+<table role="presentation" class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" border="0"
+  style="background-color:#F0F2F5; margin:0; padding:0;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+
+      <!-- ===============================================================
+           EMAIL CONTAINER — 600px max-width
+           =============================================================== -->
+      <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" border="0"
+        style="max-width:600px; width:100%; background-color:#FFFFFF; border-radius:8px; overflow:hidden;
+               box-shadow:0 2px 8px rgba(3,15,31,0.08);">
+
+        <!-- =============================================================
+             SECTION 3: HEADER — brand blue bar + Altis wordmark
+             ============================================================= -->
+        <tr>
+          <td align="center" style="background-color:#015AE9; padding:24px 40px;">
+            <!-- Logo: using text fallback; swap for <img> tag with hosted SVG if available -->
+            <a href="https://altis.co" style="text-decoration:none;">
+              <span style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:22px; font-weight:700;
+                           color:#FFFFFF; letter-spacing:-0.01em;">ALTIS</span>
+            </a>
+          </td>
+        </tr>
+
+        <!-- =============================================================
+             SECTION 4: BODY — greeting, headline, body copy
+             ============================================================= -->
+        <tr>
+          <td class="mobile-padding" style="padding:40px 48px 32px;">
+
+            <!-- Greeting -->
+            <p style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:16px; font-weight:400;
+                      line-height:1.6; color:#030F1F; margin:0 0 24px;">
+              Hi {{ contact.firstname }},
+            </p>
+
+            <!-- Headline -->
+            <h2 style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:24px; font-weight:700;
+                       line-height:1.25; color:#030F1F; margin:0 0 16px; letter-spacing:-0.01em;">
+              [HEADLINE — sentence case, no period]
+            </h2>
+
+            <!-- Body copy — paragraph 1 -->
+            <p style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:16px; font-weight:400;
+                      line-height:1.6; color:#030F1F; margin:0 0 16px;">
+              [BODY COPY — first paragraph. Keep concise. Lead with the most important information.
+              Reference {{ company.name }} where relevant for personalization.]
+            </p>
+
+            <!-- Body copy — paragraph 2 (delete if not needed) -->
+            <p style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:16px; font-weight:400;
+                      line-height:1.6; color:#030F1F; margin:0 0 16px;">
+              [BODY COPY — second paragraph. Optional. If using bullet points, keep them below.]
+            </p>
+
+            <!-- Bullet list (delete if not needed) -->
+            <ul style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:16px; font-weight:400;
+                       line-height:1.6; color:#030F1F; margin:0 0 24px; padding-left:20px;">
+              <li style="margin-bottom:8px;">[Bullet point — no period at the end]</li>
+              <li style="margin-bottom:8px;">[Bullet point — sentence case throughout]</li>
+              <li style="margin-bottom:8px;">[Bullet point — keep to one line if possible]</li>
+            </ul>
+
+          </td>
+        </tr>
+
+        <!-- =============================================================
+             SECTION 5: CTA BUTTON
+             Delete this section if no CTA needed.
+             ============================================================= -->
+        <tr>
+          <td class="mobile-padding" style="padding:0 48px 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="left" style="border-radius:8px; background-color:#015AE9;">
+                  <a href="[CTA URL]" class="cta-button"
+                    style="display:inline-block; font-family:Inter,Arial,Helvetica,sans-serif;
+                           font-size:15px; font-weight:600; color:#FFFFFF; text-decoration:none;
+                           padding:14px 32px; border-radius:8px; background-color:#015AE9;
+                           mso-padding-alt:14px 32px;">
+                    [CTA TEXT] &rarr;
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- =============================================================
+             SECTION 6: DIVIDER
+             ============================================================= -->
+        <tr>
+          <td style="padding:0 48px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="border-top:1px solid #E8ECF2; font-size:0; line-height:0;">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- =============================================================
+             SECTION 7: SECONDARY CONTENT BLOCK
+             Optional — duplicate for additional sections.
+             Delete this entire section if not needed.
+             ============================================================= -->
+        <tr>
+          <td class="mobile-padding" style="padding:32px 48px;">
+
+            <!-- Section label -->
+            <p style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:11px; font-weight:500;
+                      color:#015AE9; text-transform:uppercase; letter-spacing:0.08em; margin:0 0 8px;">
+              [SECTION LABEL]
+            </p>
+
+            <!-- Secondary headline -->
+            <h3 style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:18px; font-weight:600;
+                       line-height:1.3; color:#030F1F; margin:0 0 12px;">
+              [SECONDARY HEADLINE]
+            </h3>
+
+            <!-- Secondary body -->
+            <p style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:15px; font-weight:400;
+                      line-height:1.6; color:#3D4E63; margin:0;">
+              [SECONDARY BODY COPY — use a slightly lighter color (#3D4E63) for visual hierarchy.]
+            </p>
+
+          </td>
+        </tr>
+
+        <!-- =============================================================
+             SECTION 8: FOOTER
+             ============================================================= -->
+        <tr>
+          <td style="background-color:#F5F7FA; border-top:1px solid #E8ECF2;
+                     border-radius:0 0 8px 8px; padding:24px 48px;">
+
+            <!-- Footer logo + nav row -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <!-- Footer logo -->
+                <td align="left" valign="middle" style="width:80px;">
+                  <span style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:13px;
+                               font-weight:700; color:#030F1F; text-decoration:none;">ALTIS</span>
+                </td>
+
+                <!-- Footer nav links -->
+                <td align="right" valign="middle">
+                  <a href="https://altis.co" style="font-family:Inter,Arial,Helvetica,sans-serif;
+                    font-size:12px; font-weight:400; color:#7A8899; text-decoration:none;
+                    margin-left:16px;">altis.co</a>
+                  <a href="https://altis.co/research" style="font-family:Inter,Arial,Helvetica,sans-serif;
+                    font-size:12px; font-weight:400; color:#7A8899; text-decoration:none;
+                    margin-left:16px;">Research</a>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Address + unsubscribe -->
+            <p style="font-family:Inter,Arial,Helvetica,sans-serif; font-size:11px; font-weight:400;
+                      line-height:1.6; color:#7A8899; margin:16px 0 0; text-align:center;">
+              Altis &bull; San Francisco, CA<br>
+              You're receiving this because you opted in at altis.co or connected with the Altis team.<br>
+              <a href="{{ unsubscribe_link }}" style="color:#7A8899; text-decoration:underline;">Unsubscribe</a>
+              &bull;
+              <a href="{{ manage_preferences_link }}" style="color:#7A8899; text-decoration:underline;">Manage preferences</a>
+            </p>
+
+          </td>
+        </tr>
+
+      </table>
+      <!-- END EMAIL CONTAINER -->
+
+    </td>
+  </tr>
+</table>
+<!-- END EMAIL WRAPPER -->
+
+</body>
+</html>
