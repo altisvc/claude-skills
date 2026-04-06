@@ -799,26 +799,6 @@
     "updatedAt": "2026-04-04"
   },
   {
-    "id": "brand-guidelines",
-    "slug": "brand-guidelines",
-    "name": "Altis Brand Guidelines",
-    "type": "utility",
-    "category": "hacks",
-    "summary": "Complete Altis design system \u2014 tokens, typography, colors, icons, logos, patterns, and templates for branded output across web, slides, PDF, and email.",
-    "whenToUse": "Before building any branded output \u2014 websites, decks, reports, emails, or Lovable projects. Includes machine-readable tokens, CSS/SCSS/Tailwind builds, and 32 SVG icons.",
-    "author": "Christopher Freeberg",
-    "installPrompt": "Install the Altis Brand Guidelines from github.com/altisvc/claude-skills. Download the full design-system/ directory to your project root. Then run `npm run build-tokens` to generate CSS, SCSS, and Tailwind outputs. Read design-system/brand-guidelines.md for usage rules and design-system/tokens.json for the machine-readable token spec.",
-    "requires": [],
-    "integrations": [],
-    "calibration": {
-      "level": "none"
-    },
-    "badge": "new",
-    "status": "stable",
-    "version": "1.0.0",
-    "updatedAt": "2026-04-04"
-  },
-  {
     "id": "about-altis",
     "slug": "about-altis",
     "name": "About Altis",
@@ -837,6 +817,26 @@
     "status": "stable",
     "version": "2.0.0",
     "updatedAt": "2026-04-06"
+  },
+  {
+    "id": "brand-guidelines",
+    "slug": "brand-guidelines",
+    "name": "Altis Brand Guidelines",
+    "type": "utility",
+    "category": "hacks",
+    "summary": "Complete Altis design system \u2014 tokens, typography, colors, icons, logos, patterns, and templates for branded output across web, slides, PDF, and email.",
+    "whenToUse": "Before building any branded output \u2014 websites, decks, reports, emails, or Lovable projects. Includes machine-readable tokens, CSS/SCSS/Tailwind builds, and 32 SVG icons.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Altis Brand Guidelines from github.com/altisvc/claude-skills. Download the full design-system/ directory to your project root. Then run `npm run build-tokens` to generate CSS, SCSS, and Tailwind outputs. Read design-system/brand-guidelines.md for usage rules and design-system/tokens.json for the machine-readable token spec.",
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0.0",
+    "updatedAt": "2026-04-04"
   },
   {
     "id": "advisor-harrison-chase",
