@@ -1,0 +1,465 @@
+# Skill: Morning Check-in
+
+> Runs a **silent data sweep**, then surfaces **questions to Christopher first**, then delivers a **tight 1-2 day briefing** after he answers. Stages cannot be skipped or reordered.
+
+---
+
+## Skill Metadata
+
+```yaml
+id: checkin
+trigger: /checkin
+context: orchestrated
+returns: daily_briefing
+required: true
+phases:
+  - silent-sweep (stages 1-4 run without user-facing output)
+  - questions (surface unknowns to Christopher)
+  - briefing (tight 1-2 day view, incorporating Christopher's answers)
+  - completeness-check (final human gate)
+```
+
+---
+
+{{PREAMBLE}}
+
+{{CHECKPOINT}}
+
+{{STAGE_GATE}}
+
+---
+
+## Purpose
+
+This skill exists because of a specific, recurring failure: Claude skips the Slack inbox check "because it felt faster" or gets dates wrong by not verifying. The insights report (Feb 2026) identified these as the top three friction patterns:
+
+1. **Skipped Slack inbox** during morning check-in (multiple sessions)
+2. **Wrong date on board meeting** — said "today" when it already happened yesterday
+3. **Missing tasks from backlog** — omitted items Christopher had to manually point out
+
+**V2 improvement (Feb 12, 2026):** The original format dumped raw checkpoint output for every stage before reaching anything actionable. Christopher's first interaction was reading walls of sweep data, not answering questions. The fix: stages 1-4 run silently as data-gathering. Christopher's first interaction is answering Claudia's questions. The briefing comes after, already incorporating his answers.
+
+---
+
+## Shared State Root
+
+**CRITICAL:** All shared state files (daily logs, task lists, backlogs) MUST be read from the **main repo**, not the current worktree. Worktrees have their own copies of these directories, but only the main repo copy is canonical. `/wrap` writes to the main repo; this skill must read from the same place.
+
+```
+MAIN_REPO=/Users/preparedmindchris/Desktop/altis-brain
+```
+
+All file paths in this skill that reference `06-daily-log/`, `02-projects/operations/`, or `05-archive/` are relative to `MAIN_REPO`. When executing file reads, always prepend this root.
+
+## Invocation
+
+```
+/checkin
+```
+
+No arguments needed.
+
+---
+
+## Overnight Preflight Mode
+
+The overnight automation pipeline runs Phase 1 headlessly at ~5am, staging all gathered data for morning review. When `/checkin` is invoked interactively, check for staged data first.
+
+### Detection
+
+On invocation, check for `02-projects/operations/overnight/checkin-staged.json`. If it exists and the `date` field matches today:
+
+1. **Skip Phase 1 entirely** — Slack (Altis), Gmail, Calendar, Thoughtful, tasks, and daily logs were already swept overnight
+2. **Load staged data** — read the JSON for all pre-gathered context
+3. **Run Primary.vc Slack check only** — this is the one source that couldn't run headlessly. Open Chrome, check Primary.vc workspace (Part B of Stage 2), and merge findings into the staged data
+4. **Check for meeting-sync staged data** — if `meeting-sync-staged.json` exists with today's date, present meeting decisions BEFORE the check-in questions. Meeting approvals come first because they inform the check-in (e.g., a meeting's follow-ups may be relevant context)
+5. **Proceed to Phase 2 (Questions)** — use the staged candidate_questions as the starting set, add any new questions from the Primary.vc check, apply the verification gate to the combined set
+6. After check-in completes, **delete both staged files** to prevent re-processing
+
+### If staged data is stale or missing
+
+Fall back to the standard Phase 1 execution (full silent sweep from all sources).
+
+### Staged file format
+
+```json
+{
+  "staged_at": "<ISO timestamp>",
+  "date": "<Day, Month Date, Year>",
+  "status": "ready_for_review",
+  "sources_completed": ["altis_slack", "gmail", "calendar", "thoughtful", "tasks", "daily_logs"],
+  "sources_pending": ["primary_slack"],
+  "calendar": {"today": [...], "next_day": [...]},
+  "slack_highlights": [...],
+  "gmail_highlights": [...],
+  "thoughtful_active": [...],
+  "tasks": {"urgent": [...], "stale": [...], "slack_commitments": [...]},
+  "daily_log_implications": [...],
+  "candidate_questions": [...]
+}
+```
+
+### Terminal auto-open
+
+The overnight checkin script opens Terminal.app with Claude interactive as its final step. When the session starts, it has a system prompt addition telling it staged data is ready. If Christopher types `/checkin` or just "morning," the skill detects the staged files and skips to decisions.
+
+---
+
+## Phase 1: Silent Sweep (No User-Facing Output)
+
+Stages 1-4 run in sequence. All data is gathered internally. No checkpoint output is shown to Christopher. The anti-skip rules still apply — every stage must execute fully.
+
+### Stage 1: Date Confirmation
+
+1. Determine today's actual date and day of week
+2. Store internally — do NOT output to Christopher yet
+
+**Anti-skip rule:** If you find yourself thinking "I already know the date" — STOP. Confirm it anyway. The board-meeting-date incident happened precisely because of this assumption.
+
+### Stage 2: Slack + Thoughtful Sweep
+
+**Gate:** Cannot proceed without querying ALL sources. Cannot skip any part for ANY reason.
+
+**Part A: Altis Workspace (via MCP Slack tools)**
+
+Read ALL of the following channels using `conversations_history`. Parallelize calls where possible.
+
+| # | Channel | ID | Window | Signal |
+|---|---------|-----|--------|--------|
+| 1 | #altis-brain-inbox | C0A7R69HXM4 | 72h | Forwarded items for processing |
+| 2 | #primary-altis | C0A6MCUSTQS | 72h | Primary VC coordination |
+| 3 | #all-altis | C09LFPBFCQJ | 72h | Company announcements |
+| 4 | #gtm-agents | C0AMD021X37 | 24h | Nightly chain, Penny preps, agent alerts |
+| 5 | #aibuild | C0A79A8UQNA | 72h | Stanley questions, architecture |
+| 6 | #altis-board | C09MA3HJE3S | 72h | Board-level discussions |
+| 7 | #researchteam | C0A8N7LSRKP | 72h | Research coordination |
+| 8 | #researchsignals | C09S9HL7LKV | 72h | Research signals and alerts |
+| 9 | #research-vibe | C0AHJFBLW1M | 72h | Vibe Coding sector |
+| 10 | #research-voice-ai | C0AHTGMTTS7 | 72h | Voice AI sector |
+| 11 | #research-legal | C0AHJF51VKR | 72h | Legal AI sector |
+| 12 | #research-financial-close | C0AJ2N8SB54 | 72h | Financial Close sector |
+| 13 | #research-coverage | C0AJ2BYT5L7 | 72h | Coverage tracking |
+| 14 | #research-coverage-plan | C0AJFA21NHL | 72h | Coverage planning |
+| 15 | #research-enablement | C0AJAUM3CTV | 72h | Research tools and processes |
+| 16 | #research-efficiencies | C0AJF5QEAMU | 72h | Research workflow optimization |
+| 17 | #research-recruiting | C0AJH4M1934 | 72h | Research team recruiting |
+| 18 | #research-expert-sourcing | C0AJN82ENJE | 72h | Expert network sourcing |
+| 19 | #altisxthoughtful | C0AD6U3UUVB | 72h | Thoughtful.app integration |
+| 20 | #aitis | C0A63HUKWKV | 72h | AI tools and experiments |
+
+**Thread reading (MANDATORY — March 24 failure):** After pulling channel history, call `conversations_replies` on every message that has a `ThreadTs` value. `conversations_history` only returns top-level messages — threaded replies contain chain results, confirmations, real conversations, and completion signals. Missing thread content caused 3 false questions on March 24 (nightly chain status, Kyle/Jason intro, MNPI completion). This is non-negotiable.
+
+**Slack Connect DM limitation:** MCP bot cannot access Slack Connect DM channels (e.g., leadership C0A8ML5FTFG). If key conversations are expected there, flag the gap explicitly rather than presenting unverifiable questions.
+
+**Part B: Primary.vc Workspace (via Chrome browser — REQUIRED)**
+
+The native Slack connector only covers the Altis workspace. Primary.vc is a separate workspace with its own DMs and channels that contain action items, confirmations, and context that the Altis tools cannot see. This was identified during the 2026-02-05 check-in when a Zero/Nick Daley delivery confirmation existed only in a Primary DM.
+
+5. Open Primary.vc Slack in Chrome browser: navigate to `https://app.slack.com/client/T03KQRA9L` → if prompted, click "use Slack in your browser"
+6. Check recent DMs — especially threads with Ben, Emily, Tanmaye, Nick, and any active deal-related conversations
+7. Scan key Primary channels: #investmentteam, #altis-primary-gtm, and any channels with unread indicators
+8. Search for Christopher's name or "Altis" in recent messages to catch action items directed at him
+
+**Part C: Thoughtful.app (via API — REQUIRED)**
+
+Christopher uses Thoughtful.app as an AI drafting workspace. Recent threads show active work-in-progress and commitments. Added after the 2026-02-12 check-in revealed a Ghost copy rewrite session was invisible to the sweep.
+
+9. Fetch recent threads via `GET /api/v1/threads` using `THOUGHTFUL_API_KEY` env var (set in `~/.zshrc`)
+   ```bash
+   curl -s -H "Authorization: Bearer $THOUGHTFUL_API_KEY" https://www.thoughtful.app/api/v1/threads | jq '.[] | {title, updated_at}' | head -40
+   ```
+10. Note any active/recent threads from the last 24 hours — these represent work Christopher is doing outside of Slack/vault
+11. Flag any threads that might generate action items or relate to open tasks
+12. **Fallback only:** If API returns an error or auth fails, fall back to Chrome browser (`https://www.thoughtful.app/dashboard`)
+
+**Part D: Gmail (via `gws` CLI — REQUIRED)**
+
+Gmail catches threads invisible to Slack — especially external contacts (lawyers, prospects, vendors) and replies to emails Christopher sent.
+
+13. Run inbox triage for unread/starred messages:
+    ```bash
+    gws gmail +triage
+    ```
+14. Run targeted searches for 3-5 known open threads from recent daily logs:
+    ```bash
+    gws gmail users messages list --params '{"userId":"me","q":"from:specific@email.com newer_than:3d"}'
+    ```
+15. Check for replies to recent outbound (prospects, counsel, expert network contacts)
+16. Gmail is **READ-ONLY** — no sending, modifying, labeling, or deleting. Christopher uses Spark Mail for email actions.
+17. **If `gws` auth expires:** `gws auth login -s calendar,gmail`
+
+For each source, extract:
+- New messages since last check-in
+- Action items directed at Christopher
+- Questions awaiting response
+- FYIs worth surfacing
+- Work-in-progress that should be tracked
+
+**Anti-skip rule:** If you find yourself thinking "Slack is probably quiet" or "Thoughtful is just drafting" or "Gmail is probably empty" — STOP. Check everything. Always.
+
+### Stage 3: Calendar Check
+
+**Gate:** Cannot proceed without checking Google Calendar.
+
+**Primary method: `gws` CLI** — returns structured JSON, faster than Chrome, no visual parsing errors.
+
+1. Fetch today's events:
+   ```bash
+   gws calendar events list --params '{"calendarId":"primary","timeMin":"YYYY-MM-DDT00:00:00-04:00","timeMax":"YYYY-MM-DDT23:59:59-04:00","singleEvents":true,"orderBy":"startTime"}'
+   ```
+2. Fetch next working day's events (if today is Friday, query through Monday):
+   ```bash
+   gws calendar events list --params '{"calendarId":"primary","timeMin":"NEXT_DAY_START","timeMax":"NEXT_DAY_END","singleEvents":true,"orderBy":"startTime"}'
+   ```
+3. For each event, classify:
+
+| Type | What It Is | Action |
+|------|-----------|--------|
+| **Meeting with others** | Has attendees in response | Flag any prep needed |
+| **Solo time block** | No attendees — Christopher blocked time for a task | Cross-reference against task list |
+| **Recurring** | Standup, 1:1, team sync | Note but don't flag unless prep is needed |
+
+4. For meetings with others, assess: prep needed? Prior Slack context? Open action items with this person?
+5. For solo time blocks, note the intended task — these represent commitments Christopher made to himself
+6. **Fallback:** If `gws` auth fails, open Chrome and navigate to `https://calendar.google.com`
+7. **If `gws` auth expires:** `gws auth login -s calendar,gmail`
+
+**Anti-skip rule:** If you find yourself thinking "I already know my schedule" — STOP. The board-meeting-date incident happened because calendar context wasn't checked.
+
+### Stage 4: Task Review + Daily Log Implications
+
+**Gate:** Cannot proceed without reading ALL task sources AND recent daily logs.
+
+1. Read `$MAIN_REPO/02-projects/operations/christopher-tactical-todos.md`
+2. Read `$MAIN_REPO/02-projects/operations/ms-claudia-backlog.md`
+3. Scan Slack messages from Stage 2 for commitments not yet captured (look for: "I'll send," "action item," "let me follow up," "TODO," "need to," assignments to Christopher)
+4. Check Granola recent meetings for action items (use `mcp__granola__find_recent_meetings` — last 3 days)
+5. Cross-reference solo time blocks from Stage 3 against task list — if a block has no corresponding task, flag
+6. Flag any items not updated in 5+ days as STALE
+7. Flag any items due today or overdue as URGENT
+
+**Part B: Daily Log Implications Scan**
+
+8. Read the **last 5 daily logs** from `$MAIN_REPO/06-daily-log/` (by date, most recent first)
+9. For each log, focus on:
+   - **`## Forward Implications`** sections — these explicitly name downstream effects of that day's work
+   - **`**Open threads:**`** items — anything unresolved that may collide with today's calendar or upcoming deliverables
+   - **`**Outcomes:**`** items — recent changes to files, positioning, architecture, or processes that could affect upcoming commitments
+10. **Cross-reference recent changes against upcoming commitments:** For every calendar event, deliverable, or task due in the next 48 hours, ask: *Did anything change in the last 5 days that affects this?* Specifically:
+    - Did a positioning document, voice guide, or strategy doc get updated? → Do outbound materials, decks, or presentations still match?
+    - Did a process or architecture change? → Do upcoming demos, reviews, or handoffs reflect the new state?
+    - Did feedback come in from Ben, Emily, Jason, or a stakeholder? → Has it been incorporated into the relevant deliverable?
+    - Did a dependency get unblocked or blocked? → Does the calendar still make sense?
+11. Surface any collisions or stale assumptions as **questions in Phase 2**, not just FYIs in the briefing.
+
+**Why this matters (Feb 16, 2026):** Ben gave major positioning feedback on Friday (don't lead with Midas, asset class infrastructure framing). The board reviews outbound comms on Tuesday. The check-in read the task list and Slack but never read the daily log that captured the positioning change — so it missed the implication that the outbound templates might need revision. Reading recent logs and cross-referencing against upcoming commitments would have caught this.
+
+**Anti-skip rule:** If you find yourself thinking "the task list is probably the same as yesterday" or "the daily logs are just session history" — STOP. Read the files. The logs contain *what changed and why*, which is exactly what surfaces second-order implications. Every time.
+
+---
+
+## Phase 2: Questions
+
+**Gate:** Cannot present without Stages 1-4 complete.
+
+This is Christopher's **first interaction**. Surface only what Claudia cannot resolve from the data.
+
+**What qualifies as a question:**
+- Unknown context (e.g., "Who is [person] on your calendar at 1:30pm?")
+- Status confirmations Claudia can't verify (e.g., "Did the Melick calculator get prepped yesterday?")
+- Missing context for solo time blocks (e.g., "What is the 'Ghost copy' block for?")
+- Proposed task completions that need confirmation (e.g., "Did you send Alexandra the report?")
+- Decisions only Christopher can make (e.g., "Should I mark [X] as done?")
+- Items found in Slack/Granola/Thoughtful that might already be resolved
+
+**What does NOT qualify:**
+- Information Claudia already has from the sweep
+- FYIs that don't need a response
+- Task status that's clear from the data
+
+**Verification gate (MANDATORY — cannot be skipped):**
+
+Before ANY candidate question is added to the Phase 2 output, write a verification line (internally, not shown to Christopher) proving the question is unresolvable:
+
+```
+CANDIDATE: "Did you respond to Daria's credit card question?"
+CHECK: Primary Slack activity → thread shows reply? DM search → response visible?
+VERDICT: RESOLVED / UNRESOLVED
+```
+
+If the verdict is RESOLVED, the candidate is KILLED — it does not become a question. Only UNRESOLVED candidates survive to Phase 2.
+
+**Why this exists (March 19, 2026):** Three questions were surfaced that had answers in already-collected data: (1) a Slack thread with visible replies, (2) a calendar event + DM conversation confirming the action was handled, (3) a Primary Slack thread that could have been read. The March 8 "per-item verification gate" was too vague — it said "confirm it was checked" but didn't require written proof. This version requires writing the check and verdict for every candidate, which forces actual cross-referencing instead of performative reconciliation.
+
+**Output format:**
+
+```
+Good morning — it's [Day], [Month] [Date], [Year].
+
+I've swept Slack (Altis + Primary.vc), Calendar, Thoughtful, Granola, and your task files. A few things I need from you before I can give you the briefing:
+
+1. [Question]
+2. [Question]
+3. [Question]
+...
+```
+
+Keep questions numbered and concise. Aim for 3-8 questions. If there are zero questions (rare), skip directly to Phase 3.
+
+**Wait for Christopher's response before proceeding.**
+
+---
+
+## Phase 2.5: Trello Sync Gate
+
+Trello sync is enforced by hook — see `.claude/hooks.json` (`trello-sync-gate`). The hook blocks daily log writes (i.e., `/wrap`) unless `trello-sync.sh` has run this session. No manual compliance required; the system will not let you close the session without it.
+
+**Your job:** Build the JSON payload and call `.claude/scripts/trello-sync.sh`. The hook handles enforcement; you handle payload construction.
+
+```bash
+cat > /tmp/trello-sync-payload.json <<'EOF'
+{
+  "creates": [
+    {"name": "Owner: Task description", "list": "review|action|waiting", "desc": "Context", "due": "ISO-date"}
+  ],
+  "completions": [
+    {"keywords": "card name keywords"}
+  ]
+}
+EOF
+
+.claude/scripts/trello-sync.sh /tmp/trello-sync-payload.json
+```
+
+**Creates** = new action items from sweep + Christopher's answers. Owner prefix format. Reference items (tweets, articles) do NOT get cards.
+**Completions** = items Christopher confirmed done, matched by keyword.
+**List mapping:** `"review"` (default/triage), `"action"` (due today/specific deadline), `"waiting"` (blocked on someone else).
+
+---
+
+## Phase 3: Briefing
+
+**Gate:** Cannot present without Christopher's answers from Phase 2 incorporated AND Phase 2.5 Trello sync executed (hook-enforced at `/wrap`).
+
+After Christopher answers the questions, incorporate his responses and present a tight briefing.
+
+**Output format:**
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DAILY BRIEFING — [Day], [Month] [Date], [Year]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## Today
+[Time-ordered view of the day: meetings with prep notes, solo blocks with task context, key deadlines. One line per event. Bold anything that needs prep.]
+
+## Tomorrow Preview
+[Only items that need advance prep or have deadlines. Skip if nothing notable.]
+
+## Slack Highlights
+[2-5 most important things from the sweep, organized by importance not channel. Skip routine/FYI items.]
+
+## Open Loops
+[Active tasks not tied to today's calendar but at risk of going stale. Include proposed additions from sweep.]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Principles:**
+- Tight, not exhaustive. Christopher should be able to scan this in 30 seconds.
+- Today's calendar is time-ordered, not categorized by meeting type.
+- Don't repeat information Christopher just gave you in Phase 2.
+- Bold items that need action before a specific time.
+- Stale items and proposed additions go in "Open Loops" — don't bury them.
+
+**Task file updates:** After presenting the briefing, immediately update `christopher-tactical-todos.md` with any completions, corrections, or additions from Phase 2.
+
+---
+
+## Phase 4: Completeness Check (Human Gate)
+
+**Gate:** Cannot close check-in without explicit confirmation.
+
+```
+Does this look complete, or am I missing anything?
+```
+
+One line. No bullet points of suggestions. If Christopher adds items, update task files immediately before closing.
+
+---
+
+## Forbidden Shortcuts
+
+| Shortcut | Why It's Forbidden | What Happens Instead |
+|----------|-------------------|---------------------|
+| Skipping Slack sweep | "Slack is probably quiet" — you don't know until you check | Read all 20 channels in Part A table |
+| Reading only top-level Slack messages | Threads contain chain results, confirmations, and real conversations. March 24: missed nightly chain, Kyle/Jason discussion, MNPI confirmation — all in threads | Call `conversations_replies` on every message with `ThreadTs` |
+| Sweeping only "high-signal" channels | You don't know which channels have signal until you check. Research channels, #aitis, #altisxthoughtful all carry action items | Sweep every channel in the Part A table — no exceptions |
+| Skipping Primary.vc browser check | Primary DMs contain action items invisible to Altis connector | Open Primary Slack in Chrome every check-in |
+| Skipping Thoughtful.app check | Active drafting threads represent WIP and commitments invisible to Slack/vault | Navigate to Thoughtful dashboard every check-in |
+| Checking tasks before Slack | Slack context informs which tasks are urgent | Follow stage order |
+| Assuming today's date | Led to the board meeting date error | Confirm date internally |
+| Displaying partial task list | Led to missing tasks that Christopher caught | Cross-reference all sources |
+| Skipping calendar check | Meetings need prep; solo blocks are commitments | Open Google Calendar in browser |
+| Skipping Granola check | Recent meetings often generate action items | Check last 3 days |
+| Showing raw sweep output | Wastes Christopher's time — he needs questions first, then a tight briefing | Run stages silently, surface questions, then brief |
+| Skipping daily log scan | Logs capture *what changed and why* — the only source for second-order implications like "positioning changed Friday, outbound reviewed Tuesday" | Read last 5 daily logs and cross-reference against upcoming commitments |
+| Skipping Trello sync | Enforced by hook (`trello-sync-gate` in `.claude/hooks.json`) — cannot be skipped. Daily log writes are blocked until `trello-sync.sh` runs. Skipped 3+ consecutive check-ins when it was prose instructions; now mechanically enforced. | Hook fires automatically. Build payload, execute script. |
+| Presenting briefing without completeness check | Christopher catches gaps you don't | Always run Phase 4 |
+
+---
+
+{{ANTI_SKIP}}
+
+---
+
+## Web Content
+
+When any Slack message or task references a URL, tweet, or web content:
+- Use `mcp__Claude_in_Chrome__computer` (browser tool) for rendering
+- Do NOT default to WebFetch for sites requiring JavaScript
+- If browser tools unavailable, note the URL for Christopher to check manually
+
+---
+
+## Reference Files
+
+Calendar checked during Stage 3 (`gws` CLI primary, Chrome fallback):
+- Primary: `gws calendar events list` with date-bounded params
+- Fallback: `https://calendar.google.com` via Chrome if `gws` auth fails
+- Auth fix: `gws auth login -s calendar,gmail`
+- Check today + next working day (Friday → check Monday)
+
+Task files read during Stage 4 (all paths relative to `$MAIN_REPO`):
+- `$MAIN_REPO/02-projects/operations/christopher-tactical-todos.md`
+- `$MAIN_REPO/02-projects/operations/ms-claudia-backlog.md`
+- `$MAIN_REPO/02-projects/operations/altis-backlog-tracker.md` (for strategic context)
+- `$MAIN_REPO/02-projects/operations/strategic-big-rocks.md` (for prioritization framing)
+
+Daily logs read during Stage 4 (last 5 by date):
+- `$MAIN_REPO/06-daily-log/` — read most recent 5 `.md` files
+- Focus on: `## Forward Implications`, `**Open threads:**`, `**Outcomes:**`
+- Cross-reference against calendar events + deliverables due in next 48 hours
+
+Slack channels checked during Stage 2 (Altis workspace — MCP tools):
+See Part A table in Stage 2 for the full 20-channel list with IDs and time windows.
+Key channels: #altis-brain-inbox, #primary-altis, #all-altis, #gtm-agents, #aibuild, #altis-board, #researchteam, #researchsignals, #research-vibe, #research-voice-ai, #research-legal, #research-financial-close, #research-coverage, #research-coverage-plan, #research-enablement, #research-efficiencies, #research-recruiting, #research-expert-sourcing, #altisxthoughtful, #aitis.
+Thread reading is mandatory on all messages with ThreadTs.
+
+Primary.vc workspace checked during Stage 2 (Chrome browser):
+- URL: `https://app.slack.com/client/T03KQRA9L`
+- Workspace ID: T03KQRA9L
+- Key areas: DMs (Ben, Emily, Tanmaye, Nick, active deal threads), #investmentteam, #altis-primary-gtm
+- If workspace sign-in page appears: click "Open" next to Primary.vc, then "use Slack in your browser"
+
+Thoughtful.app checked during Stage 2 (API primary, Chrome fallback):
+- API: `GET /api/v1/threads` with `THOUGHTFUL_API_KEY` (set in `~/.zshrc`)
+- Note: API returns thread metadata only (no message content) — sufficient for WIP detection
+- Fallback: `https://www.thoughtful.app/dashboard` via Chrome if API auth fails
+- Check: recent threads (last 24 hours) for active drafting, WIP, task-related threads
+
+---
+
+## Learning Capture
+
+**Before completing:** If any new operational insight was discovered during this execution (a pattern that worked, a pitfall encountered, a source that was unreliable), append it to `.claude/learnings/altis-brain.jsonl` as a new JSON line with fields: skill, type, key, insight, confidence, source, ts.

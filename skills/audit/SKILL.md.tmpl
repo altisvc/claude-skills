@@ -1,0 +1,474 @@
+# Skill: Task List Audit (Drift Detection)
+
+> Reconcile Trello board state against Slack commitments, Granola meeting action items, and prior session archives. Surface unlogged tasks, stale items, and duplicates. Weekly integrity check for the whole system.
+
+---
+
+## Skill Metadata
+
+```yaml
+id: audit
+trigger: /audit
+context: orchestrated
+returns: audit_report
+required: false
+stages:
+  - snapshot
+  - commitment-scan
+  - granola-scan
+  - diff
+  - report
+```
+
+---
+
+{{PREAMBLE}}
+
+{{CHECKPOINT}}
+
+{{PARALLEL_LAUNCH}}
+
+{{ANTI_SKIP}}
+
+---
+
+## Purpose
+
+`/checkin` catches what's visible every morning. `/audit` catches what's invisible — commitments Christopher made in Slack that never became Trello cards, action items from meetings that were never logged, cards that have gone stale without anyone noticing.
+
+This skill exists because the insights report (Feb 2026) identified **32 "missing information" friction events** as the single largest friction category. Many of these were tasks that existed in Slack conversations but not in any task system. `/checkin` Stage 4 does a lightweight daily cross-reference; `/audit` does the full 7-day reconciliation.
+
+**Recommended cadence:** Weekly, Monday mornings before the family meal. Can also be run ad-hoc when Christopher feels things are slipping through cracks.
+
+**This is NOT `/checkin`.** `/checkin` is a fast daily briefing (60-90 seconds). `/audit` is a thorough integrity check (3-5 minutes). Don't substitute one for the other.
+
+---
+
+## Invocation
+
+```
+/audit
+```
+
+### Flags (optional)
+
+- `--days=N` -- Lookback window (default: 7 days)
+- `--source=<name>` -- Limit scan to: `slack`, `granola`, `archives` (default: all)
+- `--quick` -- Skip Granola and archives, just do Slack commitment scan + Trello diff
+
+---
+
+## Trello Environment Variables
+
+Required in `~/.zshrc`:
+
+```bash
+export TRELLO_API_KEY="..."
+export TRELLO_TOKEN="..."
+export TRELLO_BOARD_ID="..."
+export TRELLO_LIST_REVIEW="..."    # Inbox — items needing triage
+export TRELLO_LIST_ACTION="..."    # Triaged — committed work
+export TRELLO_LIST_WAITING="..."   # Waiting on others
+export TRELLO_LIST_INTEL="..."     # Strategic intelligence
+export TRELLO_LIST_DONE="..."      # Completed
+```
+
+---
+
+---
+
+## Sources
+
+| # | Source | What It Finds | Method |
+|---|--------|--------------|--------|
+| 1 | Trello board | Current state of all tracked tasks | Trello API: GET cards on Review, Action, Waiting lists |
+| 2 | Slack (Altis) | Commitments in Altis workspace channels | MCP: `slack_search_public` |
+| 3 | Slack (Primary) | Commitments in Primary workspace | Chrome browser search |
+| 4 | Slack Connect DMs | Commitments in direct conversations | MCP: `slack_read_channel` on key DM channels |
+| 5 | Granola meetings | Action items from recent meetings | MCP: `search_meetings` + `get_transcript` |
+| 6 | Session archives | Action items from Claude sessions | Grep: `05-archive/claude/` |
+
+---
+
+## Execution Protocol
+
+### Stage 1: Snapshot Current State (Trello)
+
+**Gate:** Cannot proceed without reading ALL active Trello lists.
+
+**Execution:**
+
+1. Fetch all cards from the three active lists via Trello API:
+
+```bash
+# Review (inbox)
+curl -s "https://api.trello.com/1/lists/${TRELLO_LIST_REVIEW}/cards?key=${TRELLO_API_KEY}&token=${TRELLO_TOKEN}&fields=name,desc,dateLastActivity,labels,due"
+
+# Action (committed work)
+curl -s "https://api.trello.com/1/lists/${TRELLO_LIST_ACTION}/cards?key=${TRELLO_API_KEY}&token=${TRELLO_TOKEN}&fields=name,desc,dateLastActivity,labels,due"
+
+# Waiting (blocked on others)
+curl -s "https://api.trello.com/1/lists/${TRELLO_LIST_WAITING}/cards?key=${TRELLO_API_KEY}&token=${TRELLO_TOKEN}&fields=name,desc,dateLastActivity,labels,due"
+```
+
+2. Build a deduplicated index of every active card:
+
+```yaml
+card_index:
+  - name: "[card title]"
+    id: "[card id]"
+    list: "[Review | Action | Waiting]"
+    owner: "[extracted from name prefix, e.g. 'Christopher']"
+    last_activity: "[ISO date]"
+    days_since_activity: [N]
+    due: "[ISO date or null]"
+    overdue: [true/false]
+    status: "[active | stale | at_risk]"
+```
+
+3. Flag any card not updated in 5+ days as `stale`
+4. Flag any card not updated in 14+ days as `at_risk`
+5. Flag any card with a past due date as `overdue`
+
+**Checkpoint output:**
+```
+AUDIT CHECKPOINT
+━━━━━━━━━━━━━━━━━━━
+Stage: SNAPSHOT
+Status: Complete
+━━━━━━━━━━━━━━━━━━━
+
+Cards indexed: [N]
+  Review: [N] | Action: [N] | Waiting: [N]
+Stale (5+ days): [N] | At Risk (14+ days): [N] | Overdue: [N]
+
+Proceeding to COMMITMENT SCAN...
+```
+
+---
+
+### Stage 2: Commitment Scan (Slack)
+
+**Gate:** Cannot proceed without scanning all Slack sources.
+
+**MANDATORY: Spawn 3 agents in a single message.**
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PARALLEL EXECUTION — Single message, 3 Agent calls          │
+├──────────────────────────────────────────────────────────────┤
+│  Agent 1: slack-altis-scanner    → MCP search Altis workspace│
+│  Agent 2: slack-primary-scanner  → Chrome browser search     │
+│  Agent 3: slack-dm-scanner       → MCP read key DM channels  │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Each scanner searches for commitment language from Christopher:**
+
+Search patterns (look for messages FROM Christopher or directed AT Christopher):
+- "I'll send," "I will," "I'll follow up," "let me"
+- "action item," "TODO," "need to," "should"
+- "I owe," "will do," "got it, I'll"
+- "can you" (directed at Christopher from others)
+- "@Christopher" mentions with request context
+
+**Lookback window:** 7 days (or `--days=N` flag)
+
+**Slack Altis scanner:**
+1. Search `slack_search_public` with commitment phrases in: #altis-brain-inbox, #primary-altis, #all-altis, #altis-board, #aitis, #researchteam
+2. Also search `from:<@U09L9CPFXGT>` (Christopher's user ID) for outbound commitments
+
+**Slack Primary scanner (Chrome):**
+1. Navigate to Primary Slack workspace
+2. Search for commitment phrases from/to Christopher
+3. Extract: channel, author, date, commitment text
+
+**Slack DM scanner:**
+1. Read recent messages from key Slack Connect DMs (last 7 days):
+   - Tanmaye (D09MT8Q06N6)
+   - Emily (D09PT5SRJD8)
+   - Joe (D0A1TGQCT2T)
+   - Mehdi (D0A84QHT3L6)
+   - Stanley+Jason leadership (C0A8ML5FTFG)
+   - Ben+Gelman (C0ALGAG395G)
+2. Scan for commitment language in both directions
+
+**Each scanner returns:**
+```
+## [Source] Commitments Found
+
+### Commitment 1
+- **Channel:** [channel name]
+- **From:** [who made the commitment]
+- **To:** [who it's directed at]
+- **Date:** [when]
+- **Text:** [exact commitment language, 100-200 chars]
+- **Message link:** [permalink if available]
+
+TOTAL: [N] commitments found
+```
+
+**Checkpoint output:**
+```
+AUDIT CHECKPOINT
+━━━━━━━━━━━━━━━━━━━
+Stage: COMMITMENT SCAN
+Status: Complete
+Slack sources scanned: [N]/3
+━━━━━━━━━━━━━━━━━━━
+
+Commitments found: [N] total
+- Altis workspace: [N]
+- Primary workspace: [N]
+- DMs: [N]
+
+Proceeding to GRANOLA SCAN...
+```
+
+---
+
+### Stage 3: Granola + Archive Scan
+
+**Gate:** Cannot skip unless `--quick` flag or `--source=slack`.
+
+**Execution:**
+1. Use `mcp__granola__find_recent_meetings` — last 7 days (or `--days=N`)
+2. For each meeting with a transcript, use `mcp__granola__get_transcript`
+3. Scan transcripts for action items:
+   - Explicit: "action item," "TODO," "follow up," "next step"
+   - Implicit: "I'll," "we should," "let's," "need to"
+   - Assigned: "[Name] will," "[Name] to"
+4. Grep `05-archive/claude/` for session files from last 7 days
+5. Extract any `## Action Items` sections from those files
+
+**Output:**
+```
+## Meeting/Session Action Items
+
+### [Meeting title] — [Date]
+- **Action:** [item]
+- **Assigned to:** [person]
+- **Source:** Granola / Claude archive
+
+TOTAL: [N] action items found
+```
+
+**Checkpoint output:**
+```
+AUDIT CHECKPOINT
+━━━━━━━━━━━━━━━━━━━
+Stage: GRANOLA + ARCHIVE SCAN
+Status: Complete
+Meetings scanned: [N]
+Session archives scanned: [N]
+━━━━━━━━━━━━━━━━━━━
+
+Action items found: [N] total
+- From meetings: [N]
+- From session archives: [N]
+
+Proceeding to DIFF...
+```
+
+---
+
+### Stage 4: Diff
+
+**Gate:** Cannot proceed without Stages 1-3 complete.
+
+**This is the critical step.** Cross-reference every commitment and action item from Stages 2-3 against the Trello card index from Stage 1.
+
+For each commitment/action item, classify:
+
+| Classification | Meaning | Action |
+|---------------|---------|--------|
+| **TRACKED** | Already exists as a Trello card | No action needed |
+| **UNLOGGED** | Commitment exists in Slack/Granola but NOT on Trello board | Propose new card |
+| **COMPLETED** | Card exists but work is done (evidence in Slack/Granola) | Propose move to Done |
+| **STALE** | Card on board but no activity in 5+ days | Flag for review |
+| **AT_RISK** | Card on board but no activity in 14+ days | Flag urgently |
+| **OVERDUE** | Card has a past due date | Flag urgently |
+| **DUPLICATE** | Same task appears as multiple cards | Propose merge |
+
+**Matching rules:**
+- Fuzzy match: "send Joe the list" matches a card titled "Christopher: Send Joe the list building exercise"
+- Person match: same person + same topic = likely same card
+- Don't over-match: "follow up with Jason" on hiring is different from "follow up with Jason" on GTM
+- Owner prefix: when matching, strip the owner prefix (e.g., "Christopher: ") before comparing
+
+**Output:**
+```yaml
+diff_results:
+  tracked: [N]
+  unlogged: [N]
+  completed_not_moved: [N]
+  stale: [N]
+  at_risk: [N]
+  overdue: [N]
+  duplicate: [N]
+```
+
+---
+
+### Stage 5: Report
+
+**Gate:** Cannot present without Stage 4 complete.
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TASK AUDIT — [Date] (last [N] days)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## Integrity Score
+
+[N] cards tracked | [N] commitments scanned | [N] gaps found
+
+## UNLOGGED — Commitments Not on Trello
+
+These commitments were found in Slack/Granola but have no corresponding Trello card:
+
+| # | Commitment | Source | Date | Proposed Card |
+|---|-----------|--------|------|---------------|
+| 1 | [commitment text] | [Slack channel / meeting] | [date] | [Owner: card title] |
+| 2 | ... | ... | ... | ... |
+
+## STALE — No Activity in 5+ Days
+
+| # | Card | List | Last Activity | Days Stale |
+|---|------|------|--------------|------------|
+| 1 | [card title] | [Review/Action/Waiting] | [date] | [N] |
+
+## AT RISK — No Activity in 14+ Days
+
+| # | Card | List | Last Activity | Days Stale | Recommendation |
+|---|------|------|--------------|------------|----------------|
+| 1 | [card title] | [list] | [date] | [N] | [Archive / Escalate / Reassign] |
+
+## OVERDUE
+
+| # | Card | List | Due Date | Days Overdue |
+|---|------|------|----------|-------------|
+| 1 | [card title] | [list] | [date] | [N] |
+
+## DUPLICATES
+
+| # | Card A | Card B | Lists | Recommendation |
+|---|--------|--------|-------|----------------|
+| 1 | [title] | [title] | [lists] | [Merge / Keep both] |
+
+## COMPLETED BUT NOT MOVED
+
+| # | Card | Evidence | Current List |
+|---|------|----------|-------------|
+| 1 | [card title] | [Slack msg / meeting showing completion] | [list] |
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## Proposed Updates
+
+Ready to apply? Reply "yes" to update Trello, or cherry-pick by number.
+
+### New Cards (from UNLOGGED)
+[Numbered list — each with proposed title (Owner: prefix), target list (Review), and 1-2 line description]
+
+### Move to Done (from COMPLETED BUT NOT MOVED)
+[Numbered list of cards to move]
+
+### Archive (from AT RISK — recommended drops)
+[Numbered list, if any]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**CRITICAL:** Do NOT auto-apply changes. Present the report and wait for Christopher to approve, cherry-pick, or reject.
+
+**Applying approved changes:**
+
+For new cards:
+```bash
+curl -s -X POST "https://api.trello.com/1/cards" \
+  -d "key=${TRELLO_API_KEY}" \
+  -d "token=${TRELLO_TOKEN}" \
+  -d "idList=${TRELLO_LIST_REVIEW}" \
+  -d "name=Owner: Card title" \
+  -d "desc=Source: /audit — [date]
+Context: [commitment text and source]"
+```
+
+For moving to Done:
+```bash
+curl -s -X PUT "https://api.trello.com/1/cards/[CARD_ID]" \
+  -d "key=${TRELLO_API_KEY}" \
+  -d "token=${TRELLO_TOKEN}" \
+  -d "idList=${TRELLO_LIST_DONE}"
+```
+
+For archiving:
+```bash
+curl -s -X PUT "https://api.trello.com/1/cards/[CARD_ID]" \
+  -d "key=${TRELLO_API_KEY}" \
+  -d "token=${TRELLO_TOKEN}" \
+  -d "closed=true"
+```
+
+**Card naming conventions:**
+- Lead with owner prefix: `Christopher:`, `Jason:`, `Stanley:`, `Ben:`, etc.
+- One action = one card. Sub-steps go in the card description, not as separate cards.
+- Title should be specific enough to act on without opening the card.
+
+---
+
+## Forbidden Shortcuts
+
+| Shortcut | Why It's Forbidden |
+|----------|-------------------|
+| Skipping Primary Slack scan | Institutional commitments live there |
+| Skipping Granola | Meeting action items are the most commonly dropped |
+| Skipping DM scan | 1:1 commitments are high-accountability |
+| Auto-applying changes without approval | Christopher decides what's real |
+| Only scanning outbound commitments | Inbound requests ("can you...") matter too |
+| Fuzzy matching without showing evidence | Christopher needs to see the source to judge |
+| Running in place of `/checkin` | Different tool, different purpose, different cadence |
+| Creating multiple cards for one action | One action = one card (sub-steps in description) |
+
+---
+
+{{ANTI_SKIP}}
+
+---
+
+## Reference
+
+**Trello lists:**
+- Review (inbox): `${TRELLO_LIST_REVIEW}`
+- Action (committed): `${TRELLO_LIST_ACTION}`
+- Waiting (blocked): `${TRELLO_LIST_WAITING}`
+- Intel (knowledge): `${TRELLO_LIST_INTEL}`
+- Done: `${TRELLO_LIST_DONE}`
+
+**Slack channels to scan:**
+- #altis-brain-inbox — C0A7R69HXM4
+- #primary-altis — C0A6MCUSTQS
+- #all-altis — C09LFPBFCQJ
+- #altis-board — C09MA3HJE3S
+- #aitis — C0A63HUKWKV
+- #researchteam — C0A8N7LSRKP
+
+**Key DM channels:**
+- Tanmaye — D09MT8Q06N6
+- Emily — D09PT5SRJD8
+- Joe — D0A1TGQCT2T
+- Mehdi — D0A84QHT3L6
+- Stanley+Jason leadership — C0A8ML5FTFG
+- Ben+Gelman — C0ALGAG395G
+
+**Archive paths:**
+- `05-archive/claude/` (session summaries with action items)
+
+**Christopher's Slack user ID:** U09L9CPFXGT
+
+---
+
+## Learning Capture
+
+**Before completing:** If any new operational insight was discovered during this execution (a pattern that worked, a pitfall encountered, a source that was unreliable), append it to `.claude/learnings/altis-brain.jsonl` as a new JSON line with fields: skill, type, key, insight, confidence, source, ts.
