@@ -186,7 +186,8 @@
       "level": "light",
       "items": [
         { "key": "company_context", "label": "Company context", "description": "Replace the Altis team bios, company stage, and positioning with your own. This is what the advisor uses to give contextual coaching.", "required": true },
-        { "key": "leadership_dynamics", "label": "Leadership dynamics", "description": "Replace team communication preferences and working styles so the advisor understands your team's dynamics", "required": false }
+        { "key": "leadership_dynamics", "label": "Leadership dynamics", "description": "Replace team communication preferences and working styles so the advisor understands your team's dynamics", "required": false },
+        { "key": "user_manuals", "label": "User manuals / interpersonal details", "description": "Add 'user manuals' for your key people — how they prefer to communicate, what drives them nuts, how to convince them, what earns trust. The richer these are, the more the advisor can coach on navigating specific relationships.", "required": false }
       ]
     },
     "persona": {
