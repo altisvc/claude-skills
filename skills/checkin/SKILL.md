@@ -306,6 +306,36 @@ For each source, extract:
 
 **Anti-skip rule:** If you find yourself thinking "the task list is probably the same as yesterday" or "the daily logs are just session history" — STOP. Read the files. The logs contain *what changed and why*, which is exactly what surfaces second-order implications. Every time.
 
+**Part C: Wiki Context Load**
+
+The wiki (`$MAIN_REPO/03-research/wiki/`) is the canonical knowledge layer. Loading relevant articles at check-in prevents stale framing, wrong tool routing, and missed context that would otherwise surface as errors mid-session.
+
+**Tier 1 — Always load (every check-in):**
+
+12. Read `$MAIN_REPO/03-research/wiki/about-altis.md` — canonical company context (team, traction, positioning). Prevents stale framing in all downstream outputs.
+13. Read `$MAIN_REPO/03-research/wiki/claude-code-system.md` — tool routing table. Prevents wrong-MCP-call errors.
+14. Read `$MAIN_REPO/03-research/wiki/index.md` — one-line summaries of all 30 articles. Used for Tier 2 selection.
+
+**Tier 2 — Calendar-driven (select 2-3 based on Stage 3 results):**
+
+15. For each meeting or solo block on today's calendar, match against wiki index entries:
+    - Prospect/investor call → `beta-partnerships.md`, `key-prospects.md`, `pricing-strategy.md`
+    - Board meeting or Ben touchpoint → `fundraise-narrative.md`, `primary-relationship.md`
+    - Stanley 1:1 or engineering topic → `researchos.md`, `gtmos.md`
+    - Research team meeting → `research-methodology.md`, `research-team.md`, `expert-sourcing.md`
+    - GTM/outbound work block → `outbound-campaigns.md`, `inbound-engagement.md`, `campaign-infrastructure.md`
+    - Recruiting → `research-team.md` (comp bands, EVP)
+    - Deck review → `deck-review-system.md`, `voice-altis.md`
+16. Read the 2-3 most relevant articles. Do NOT read more than 3 Tier 2 articles — context budget matters.
+
+**Tier 3 — Drift flag:**
+
+17. Scan `$MAIN_REPO/03-research/wiki/` for the 3 most stale articles (oldest `Last updated:` date or file modification time). If any are >14 days stale, add to Phase 2 candidate questions:
+    - "Wiki article [name] hasn't been updated in [N] days — should I refresh it after the check-in?"
+18. If `about-altis.md` specifically is >7 days stale, flag as URGENT — company context drift compounds into every session.
+
+**Why this matters (April 6, 2026):** The wiki was built to solve routing errors and stale information, but was only wired as a write target at `/wrap`. The read side was missing. On April 6, `about-altis.md` required a substantial manual update because no session was loading it — staleness went undetected until Christopher caught it. Loading Tier 1 articles every check-in turns the wiki from documentation into a living context layer.
+
 ---
 
 ## Phase 2: Questions
@@ -454,6 +484,7 @@ One line. No bullet points of suggestions. If Christopher adds items, update tas
 | Skipping Granola check | Recent meetings often generate action items | Check last 3 days |
 | Showing raw sweep output | Wastes Christopher's time — he needs questions first, then a tight briefing | Run stages silently, surface questions, then brief |
 | Skipping daily log scan | Logs capture *what changed and why* — the only source for second-order implications like "positioning changed Friday, outbound reviewed Tuesday" | Read last 5 daily logs and cross-reference against upcoming commitments |
+| Skipping wiki context load | Company context drifts silently — about-altis went stale for days before Christopher caught it manually (April 6). Tool routing errors recur without claude-code-system.md loaded. | Read Tier 1 articles every check-in, Tier 2 based on calendar |
 | Skipping Trello sync | Enforced by hook (`trello-sync-gate` in `.claude/hooks.json`) — cannot be skipped. Daily log writes are blocked until `trello-sync.sh` runs. Skipped 3+ consecutive check-ins when it was prose instructions; now mechanically enforced. | Hook fires automatically. Build payload, execute script. |
 | Presenting briefing without completeness check | Christopher catches gaps you don't | Always run Phase 4 |
 
@@ -496,6 +527,11 @@ Daily logs read during Stage 4 (last 5 by date):
 - `$MAIN_REPO/06-daily-log/` — read most recent 5 `.md` files
 - Focus on: `## Forward Implications`, `**Open threads:**`, `**Outcomes:**`
 - Cross-reference against calendar events + deliverables due in next 48 hours
+
+Wiki articles read during Stage 4 Part C:
+- **Tier 1 (always):** `$MAIN_REPO/03-research/wiki/about-altis.md`, `claude-code-system.md`, `index.md`
+- **Tier 2 (calendar-driven):** 2-3 articles selected from index.md based on today's meetings
+- **Tier 3 (drift):** Scan modification dates, flag articles >14 days stale, about-altis >7 days = URGENT
 
 Slack channels checked during Stage 2 (Altis workspace — MCP tools):
 See Part A table in Stage 2 for the full 20-channel list with IDs and time windows.

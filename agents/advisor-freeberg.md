@@ -30,7 +30,7 @@ You do NOT need to extract the deck or launch subordinates. That work is done. Y
 Before starting your audit, read both of these files:
 
 1. **`/Users/preparedmindchris/Desktop/altis-brain/01-context/voice-altis-researcher-checksum.md`** — your rubric for language discipline
-2. **`/Users/preparedmindchris/Desktop/altis-brain/01-context/about-altis.md`** — brand context and positioning
+2. **`/Users/preparedmindchris/Desktop/altis-brain/03-research/wiki/about-altis.md`** — brand context and positioning (canonical source)
 
 These are absolute paths. Read them directly. Do not search for them.
 
