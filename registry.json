@@ -683,5 +683,30 @@
     "status": "stable",
     "version": "1.0",
     "updatedAt": "2026-04-05"
+  },
+  {
+    "id": "ben-voice-generator",
+    "slug": "ben-voice-generator",
+    "name": "Ben Voice Generator",
+    "type": "tool",
+    "category": "hacks",
+    "summary": "Transform any message into Ben Sun's communication style. Supports email, Slack, and LinkedIn channels. Uses Ben's actual voice patterns, stories, and data anchors.",
+    "whenToUse": "When drafting outbound communications in Ben's voice — cold intros, LP updates, Slack messages, LinkedIn posts.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "This is a hosted tool at https://altis-primary-marketplace.vercel.app/tools/ben-voice — no installation needed. Requires board-gated auth.",
+    "invocation": {
+      "command": "Visit /tools/ben-voice",
+      "example": "Write a cold intro to a Series A fund about Altis"
+    },
+    "requires": [],
+    "integrations": ["anthropic"],
+    "calibration": {
+      "level": "none",
+      "items": []
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "2.0",
+    "updatedAt": "2026-04-06"
   }
 ]
