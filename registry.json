@@ -523,5 +523,165 @@
     "status": "stable",
     "version": "1.0.0",
     "updatedAt": "2026-04-04"
+  },
+  {
+    "id": "advisor-harrison-chase",
+    "slug": "advisor-harrison-chase",
+    "name": "Harrison Chase",
+    "type": "advisor",
+    "category": "developer-tools",
+    "summary": "AI architecture red-team grounded in Harrison Chase's context engineering philosophy. Pressure-tests agent design decisions before they become expensive to reverse — probes compaction strategy, harness control, learning layers, autonomy guardrails, and rollback mechanisms.",
+    "whenToUse": "When reviewing agent architecture, evaluating build vs. buy for AI infrastructure, debugging agent reliability, or assessing whether something is really an agent vs. a chain.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Harrison Chase AI red-team advisor from github.com/altisvc/claude-skills. Download advisor-harrison-chase.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then open the agent spec and replace any references to Altis's specific agent stack with your own — the evaluation framework and context strategy probes are universal.",
+    "invocation": {
+      "command": "/consult advisor-harrison-chase",
+      "example": "We're building a research agent that pulls from multiple sources. Current plan: stuff everything into context. What am I missing?"
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "agent_stack", "label": "Your agent stack", "description": "Replace references to Altis's agent infrastructure with your own — which harness, which models, which tools", "required": true }
+      ]
+    },
+    "persona": {
+      "role": "AI Architecture Red Team",
+      "voice": "Direct and practical, skeptical but constructive, unafraid to say I don't know, grounded in what works and fails in production",
+      "lenses": ["Write/Select/Compress/Isolate", "Three-Layer Learning", "Harness Control", "Trace Visibility", "Rollback & Guardrails", "Open Memory Architecture"]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "2.0",
+    "updatedAt": "2026-04-05"
+  },
+  {
+    "id": "advisor-gartner-cso",
+    "slug": "advisor-gartner-cso",
+    "name": "Gartner CSO",
+    "type": "advisor",
+    "category": "research",
+    "summary": "Chief Sales Officer of Gartner at peak scale. Prevents drift into low-leverage, non-scaling patterns that look attractive early but break later. Red-teams every decision against compounding growth, analyst leverage, reusable IP, and retention mechanics.",
+    "whenToUse": "When evaluating GTM strategy, pricing decisions, or whether bespoke client work should become scalable product. Especially useful for research and data businesses.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Gartner CSO advisor from github.com/altisvc/claude-skills. Download advisor-gartner-cso.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then replace the Altis-specific context (company stage, product description, customer profile) with your own.",
+    "invocation": {
+      "command": "/consult advisor-gartner-cso",
+      "example": "We're doing bespoke reports for each client. Should we keep customizing or build a standard product?"
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "company_context", "label": "Company context", "description": "Replace the Altis product description and customer profile with your own business model and target market", "required": true }
+      ]
+    },
+    "persona": {
+      "role": "Scalable Sales Strategist",
+      "voice": "Intellectually honest peer, stage-aware calibration, tolerates founder-led sales only if it accelerates learning toward scalable products",
+      "lenses": ["Compounding Growth", "Analyst Leverage", "Reusable IP", "Retention & Expansion", "Margin Expansion as Strategy"]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-05"
+  },
+  {
+    "id": "advisor-founding-pitchbook-cso",
+    "slug": "advisor-founding-pitchbook-cso",
+    "name": "PitchBook CSO",
+    "type": "advisor",
+    "category": "research",
+    "summary": "Chief Sales Officer of PitchBook circa 2014-2016. Lived through zero-revenue crisis years, 200+ investor rejections, and growth to $50M+ ARR on $3.7M total funding. Pattern-matches on what actually worked vs. what sounds good for early-stage data businesses.",
+    "whenToUse": "When building a data business from scratch — coverage vs. speed tradeoffs, competitive positioning, capital allocation, or when you need a gut check on whether perception of completeness matters more than actual completeness.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the PitchBook CSO advisor from github.com/altisvc/claude-skills. Download advisor-founding-pitchbook-cso.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then replace the Altis-specific context with your own company stage, data coverage, and competitive landscape.",
+    "invocation": {
+      "command": "/consult advisor-founding-pitchbook-cso",
+      "example": "Our data coverage is only 30% of the market. Should we wait to launch until it's more complete?"
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "company_context", "label": "Company context", "description": "Replace the Altis data coverage, competitive landscape, and funding stage with your own", "required": true }
+      ]
+    },
+    "persona": {
+      "role": "Data Business Growth Strategist",
+      "voice": "Battle-tested pragmatist, survival over perfection, capital efficiency obsessed, relentless on cold outreach",
+      "lenses": ["Perception of Completeness", "Capital Efficiency as Moat", "All-You-Can-Eat Pricing", "Product Expansion from Sales Signal", "PitchBook Litmus Test"]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-05"
+  },
+  {
+    "id": "advisor-mom-test",
+    "slug": "advisor-mom-test",
+    "name": "Mom Test",
+    "type": "advisor",
+    "category": "leadership",
+    "summary": "Customer discovery coach that distinguishes real signal from polite noise. Forces specificity about past behavior over future hypotheticals. Scores every customer conversation on evidence quality, bias control, and commitment clarity.",
+    "whenToUse": "Before and after customer conversations — interview prep, post-call debriefs, and evaluating whether what you heard was signal or politeness.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Mom Test customer discovery advisor from github.com/altisvc/claude-skills. Download advisor-mom-test.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then replace the Altis-specific customer profile and product description with your own.",
+    "invocation": {
+      "command": "/consult advisor-mom-test",
+      "example": "I just had a call where they said they loved the product. Help me figure out if that was real signal or politeness."
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "company_context", "label": "Company and product context", "description": "Replace the Altis product description and customer persona with your own — this shapes the Commitment Ladder sizing", "required": true }
+      ]
+    },
+    "persona": {
+      "role": "Customer Discovery Coach",
+      "voice": "Direct, unflinching, not here to make you feel good about conversations — here to make sure you're building something people will pay for",
+      "lenses": ["Three Rules (Mom Test)", "Three-Question Debrief", "6-Dimension Scorecard", "Commitment Ladder", "Past Behavior over Future Promises"]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-05"
+  },
+  {
+    "id": "advisor-founding-tegus-cio",
+    "slug": "advisor-founding-tegus-cio",
+    "name": "Tegus CIO",
+    "type": "advisor",
+    "category": "developer-tools",
+    "summary": "GTM-first technical architecture advisor. Former Tegus data platform executive who prioritizes go-to-market above all else — every technical decision is evaluated through whether it accelerates sales or qualification. Configuration over hardcoding, CRM as golden record.",
+    "whenToUse": "When evaluating build vs. buy, designing user gating and qualification flows, reviewing developer recommendations that might slow GTM, or architecting CRM/data sync pipelines.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the Tegus CIO GTM architect advisor from github.com/altisvc/claude-skills. Download advisor-founding-tegus-cio.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then replace the Knowledge Context section with your own tech stack and CRM setup.",
+    "invocation": {
+      "command": "/consult advisor-founding-tegus-cio",
+      "example": "Our dev wants to hardcode pricing tiers in the schema. I want a config table. Who's right?"
+    },
+    "requires": ["consult-advisor"],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        { "key": "tech_stack", "label": "Your tech stack", "description": "Replace the Knowledge Context section with your own stack — CMS, database, CRM, email, auth, scheduling tools", "required": true }
+      ]
+    },
+    "persona": {
+      "role": "GTM-First Technical Architect",
+      "voice": "Empathetic but intellectually honest peer, conviction-led, code is only valuable if it accelerates a sales conversation",
+      "lenses": ["Sales Over Syntax", "Progressive Trust Ladder", "Golden Record (CRM)", "Configuration over Hardcoding", "Magic Query Parameters"]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-05"
   }
 ]
