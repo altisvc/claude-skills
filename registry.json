@@ -13,15 +13,54 @@
       "command": "/meeting-sync",
       "example": "/meeting-sync"
     },
-    "requires": ["setup"],
-    "integrations": [{"name": "granola", "required": true}, {"name": "trello", "required": false}, {"name": "hubspot", "required": false}, {"name": "github", "required": false}],
+    "requires": [
+      "setup"
+    ],
+    "integrations": [
+      {
+        "name": "granola",
+        "required": true
+      },
+      {
+        "name": "trello",
+        "required": false
+      },
+      {
+        "name": "hubspot",
+        "required": false
+      },
+      {
+        "name": "github",
+        "required": false
+      }
+    ],
     "calibration": {
       "level": "full",
       "items": [
-        { "key": "granola_access", "label": "Granola API access", "description": "Connect your Granola account so the skill can pull meeting transcripts", "required": true },
-        { "key": "trello_boards", "label": "Trello board IDs", "description": "The board and list IDs where follow-ups get staged and promoted", "required": true },
-        { "key": "slack_channels", "label": "Slack channels", "description": "Channel IDs for posting sync summaries and flagging items", "required": false },
-        { "key": "vault_paths", "label": "Vault directory structure", "description": "Where meetings, daily logs, and wiki articles live in your repo", "required": true }
+        {
+          "key": "granola_access",
+          "label": "Granola API access",
+          "description": "Connect your Granola account so the skill can pull meeting transcripts",
+          "required": true
+        },
+        {
+          "key": "trello_boards",
+          "label": "Trello board IDs",
+          "description": "The board and list IDs where follow-ups get staged and promoted",
+          "required": true
+        },
+        {
+          "key": "slack_channels",
+          "label": "Slack channels",
+          "description": "Channel IDs for posting sync summaries and flagging items",
+          "required": false
+        },
+        {
+          "key": "vault_paths",
+          "label": "Vault directory structure",
+          "description": "Where meetings, daily logs, and wiki articles live in your repo",
+          "required": true
+        }
       ]
     },
     "badge": "core",
@@ -43,15 +82,54 @@
       "command": "/checkin",
       "example": "/checkin"
     },
-    "requires": ["setup"],
-    "integrations": [{"name": "slack", "required": true}, {"name": "google-calendar", "required": true}, {"name": "gmail", "required": false}, {"name": "trello", "required": false}],
+    "requires": [
+      "setup"
+    ],
+    "integrations": [
+      {
+        "name": "slack",
+        "required": true
+      },
+      {
+        "name": "google-calendar",
+        "required": true
+      },
+      {
+        "name": "gmail",
+        "required": false
+      },
+      {
+        "name": "trello",
+        "required": false
+      }
+    ],
     "calibration": {
       "level": "full",
       "items": [
-        { "key": "slack_channels", "label": "Slack channels", "description": "Map your workspace channels — which ones to sweep, which to skip", "required": true },
-        { "key": "calendar_access", "label": "Google Calendar", "description": "Calendar ID and auth for reading your agenda", "required": true },
-        { "key": "gmail_access", "label": "Gmail read access", "description": "Read-only Gmail triage via gws CLI or equivalent", "required": false },
-        { "key": "trello_boards", "label": "Trello board IDs", "description": "Board and list IDs for task review stage", "required": false }
+        {
+          "key": "slack_channels",
+          "label": "Slack channels",
+          "description": "Map your workspace channels \u2014 which ones to sweep, which to skip",
+          "required": true
+        },
+        {
+          "key": "calendar_access",
+          "label": "Google Calendar",
+          "description": "Calendar ID and auth for reading your agenda",
+          "required": true
+        },
+        {
+          "key": "gmail_access",
+          "label": "Gmail read access",
+          "description": "Read-only Gmail triage via gws CLI or equivalent",
+          "required": false
+        },
+        {
+          "key": "trello_boards",
+          "label": "Trello board IDs",
+          "description": "Board and list IDs for task review stage",
+          "required": false
+        }
       ]
     },
     "badge": "core",
@@ -74,12 +152,27 @@
       "example": "/wrap strategy brainstorm"
     },
     "requires": [],
-    "integrations": [{"name": "trello", "required": false}],
+    "integrations": [
+      {
+        "name": "trello",
+        "required": false
+      }
+    ],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "vault_paths", "label": "Vault directory structure", "description": "Where daily logs, archives, and wiki articles live", "required": true },
-        { "key": "trello_boards", "label": "Trello board IDs", "description": "Optional — for pushing open items to your task tracker", "required": false }
+        {
+          "key": "vault_paths",
+          "label": "Vault directory structure",
+          "description": "Where daily logs, archives, and wiki articles live",
+          "required": true
+        },
+        {
+          "key": "trello_boards",
+          "label": "Trello board IDs",
+          "description": "Optional \u2014 for pushing open items to your task tracker",
+          "required": false
+        }
       ]
     },
     "badge": "core",
@@ -101,13 +194,30 @@
       "command": ".claude/scripts/trello-sync.sh",
       "example": ".claude/scripts/trello-sync.sh '{\"creates\": [{\"name\": \"Jason: Review deck\", \"list\": \"review\"}]}'"
     },
-    "requires": ["setup"],
-    "integrations": [{"name": "trello", "required": true}],
+    "requires": [
+      "setup"
+    ],
+    "integrations": [
+      {
+        "name": "trello",
+        "required": true
+      }
+    ],
     "calibration": {
       "level": "full",
       "items": [
-        { "key": "trello_api_key", "label": "Trello API credentials", "description": "API key and token from trello.com/power-ups/admin", "required": true },
-        { "key": "trello_boards", "label": "Board and list IDs", "description": "Your Trello board ID and the list IDs for each stage (review, action, waiting, done)", "required": true }
+        {
+          "key": "trello_api_key",
+          "label": "Trello API credentials",
+          "description": "API key and token from trello.com/power-ups/admin",
+          "required": true
+        },
+        {
+          "key": "trello_boards",
+          "label": "Board and list IDs",
+          "description": "Your Trello board ID and the list IDs for each stage (review, action, waiting, done)",
+          "required": true
+        }
       ]
     },
     "status": "stable",
@@ -144,7 +254,7 @@
     "name": "Knowledge Wiki",
     "type": "skill",
     "category": "productivity",
-    "summary": "Builds a structured, searchable knowledge wiki from your vault. Backfills from existing notes, then compounds automatically — every /wrap session updates wiki articles with new evidence. Turns scattered meeting notes and daily logs into durable institutional knowledge.",
+    "summary": "Builds a structured, searchable knowledge wiki from your vault. Backfills from existing notes, then compounds automatically \u2014 every /wrap session updates wiki articles with new evidence. Turns scattered meeting notes and daily logs into durable institutional knowledge.",
     "whenToUse": "When you want to turn months of accumulated notes into organized, queryable knowledge. Run once to backfill, then it compounds automatically via /wrap.",
     "author": "Christopher Freeberg",
     "installPrompt": "Help me set up a knowledge wiki in my vault. Create a wiki/ directory, scan my existing notes and meeting logs for recurring topics, and generate structured articles for each topic with sections for current position, key inputs, and open questions. Then add a compile step to my /wrap command so future sessions automatically update the wiki.",
@@ -152,13 +262,25 @@
       "command": "/wrap",
       "example": "The wiki compiles automatically as Step 6 of /wrap"
     },
-    "requires": ["wrap"],
+    "requires": [
+      "wrap"
+    ],
     "integrations": [],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "vault_paths", "label": "Vault directory structure", "description": "Where your notes, meeting logs, and daily logs live — the wiki scans these for knowledge", "required": true },
-        { "key": "topic_clusters", "label": "Topic clusters", "description": "Define the knowledge domains that matter to your work (e.g., Strategy, Sales, Product, People)", "required": true }
+        {
+          "key": "vault_paths",
+          "label": "Vault directory structure",
+          "description": "Where your notes, meeting logs, and daily logs live \u2014 the wiki scans these for knowledge",
+          "required": true
+        },
+        {
+          "key": "topic_clusters",
+          "label": "Topic clusters",
+          "description": "Define the knowledge domains that matter to your work (e.g., Strategy, Sales, Product, People)",
+          "required": true
+        }
       ]
     },
     "badge": "new",
@@ -172,28 +294,52 @@
     "name": "Patrick Collison",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Leadership coaching as Patrick Collison. Draws from a decade+ leading Stripe to $159B — thinks in decades, obsesses over craft, and challenges you on hiring, culture, and decision-making. Grounded in actual words, applied to your specific situation.",
-    "whenToUse": "When pressure-testing leadership decisions — hiring calls, culture questions, strategic prioritization, or when you need a reframing question that shifts how you see a problem.",
+    "summary": "Leadership coaching as Patrick Collison. Draws from a decade+ leading Stripe to $159B \u2014 thinks in decades, obsesses over craft, and challenges you on hiring, culture, and decision-making. Grounded in actual words, applied to your specific situation.",
+    "whenToUse": "When pressure-testing leadership decisions \u2014 hiring calls, culture questions, strategic prioritization, or when you need a reframing question that shifts how you see a problem.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the Patrick Collison leadership advisor from github.com/altisvc/claude-skills. Download advisor-collison.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then open the agent spec, find the '## Altis Context' section, and help me replace the team bios, company description, and current phase with my own company's context.",
     "invocation": {
       "command": "/consult advisor-collison",
       "example": "What should I prioritize in my first 90 days as a founding engineer?"
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "company_context", "label": "Company context", "description": "Replace the Altis team bios, company stage, and positioning with your own. This is what the advisor uses to give contextual coaching.", "required": true },
-        { "key": "leadership_dynamics", "label": "Leadership dynamics", "description": "Replace team communication preferences and working styles so the advisor understands your team's dynamics", "required": false },
-        { "key": "user_manuals", "label": "User manuals / interpersonal details", "description": "Add 'user manuals' for your key people — how they prefer to communicate, what drives them nuts, how to convince them, what earns trust. The richer these are, the more the advisor can coach on navigating specific relationships.", "required": false }
+        {
+          "key": "company_context",
+          "label": "Company context",
+          "description": "Replace the Altis team bios, company stage, and positioning with your own. This is what the advisor uses to give contextual coaching.",
+          "required": true
+        },
+        {
+          "key": "leadership_dynamics",
+          "label": "Leadership dynamics",
+          "description": "Replace team communication preferences and working styles so the advisor understands your team's dynamics",
+          "required": false
+        },
+        {
+          "key": "user_manuals",
+          "label": "User manuals / interpersonal details",
+          "description": "Add 'user manuals' for your key people \u2014 how they prefer to communicate, what drives them nuts, how to convince them, what earns trust. The richer these are, the more the advisor can coach on navigating specific relationships.",
+          "required": false
+        }
       ]
     },
     "persona": {
       "role": "Leadership Coach",
       "voice": "Thoughtful and candid, uses concrete examples over abstract principles, thinks in contrasts and inversions, asks reframing questions",
-      "lenses": ["Craft & Beauty", "Founder Humility", "Hiring as Value Investing", "Culture as Dynamic", "Decisions at 2x Speed 0.5x Precision", "Long-Term Thinking"]
+      "lenses": [
+        "Craft & Beauty",
+        "Founder Humility",
+        "Hiring as Value Investing",
+        "Culture as Dynamic",
+        "Decisions at 2x Speed 0.5x Precision",
+        "Long-Term Thinking"
+      ]
     },
     "badge": "new",
     "status": "stable",
@@ -206,15 +352,17 @@
     "name": "Ben Sun",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Argumentative coherence reviewer. Reads your deck the way a time-pressed GP reads it — checks whether key points actually jump off the page and whether anything in the deck creates dissonance that muddles the message. In standalone mode, a thinking partner who challenges framing and pushes on distribution.",
+    "summary": "Argumentative coherence reviewer. Reads your deck the way a time-pressed GP reads it \u2014 checks whether key points actually jump off the page and whether anything in the deck creates dissonance that muddles the message. In standalone mode, a thinking partner who challenges framing and pushes on distribution.",
     "whenToUse": "Before shipping a research deck or investment memo. Also useful as a standalone advisor for GTM strategy, distribution thinking, and founder-level prioritization.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the Ben Sun advisor from github.com/altisvc/claude-skills. Download advisor-ben-sun.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/.",
     "invocation": {
       "command": "/consult advisor-ben-sun",
-      "example": "Review this deck for argumentative coherence — do the key points land?"
+      "example": "Review this deck for argumentative coherence \u2014 do the key points land?"
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "none"
@@ -222,7 +370,12 @@
     "persona": {
       "role": "Deck Reviewer & Distribution Strategist",
       "voice": "Direct and energetic, no hedging, vivid metaphors, quantifies claims, willing to say hard truths",
-      "lenses": ["Water Cooler Prominence", "Dissonance Detection", "Distribution vs Product", "Skim-ability for Time-Pressed VCs"]
+      "lenses": [
+        "Water Cooler Prominence",
+        "Dissonance Detection",
+        "Distribution vs Product",
+        "Skim-ability for Time-Pressed VCs"
+      ]
     },
     "status": "stable",
     "version": "1.0",
@@ -234,15 +387,17 @@
     "name": "Emily Man",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Investment rigor voice. Pressure-tests whether evidence actually supports the positions taken — challenges claims that rest on thin sourcing and asks whether market assumptions hold under Series A+ investor scrutiny.",
+    "summary": "Investment rigor voice. Pressure-tests whether evidence actually supports the positions taken \u2014 challenges claims that rest on thin sourcing and asks whether market assumptions hold under Series A+ investor scrutiny.",
     "whenToUse": "When evaluating research quality, reviewing investment memos, or stress-testing a company's market positioning and business model assumptions.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the Emily Man investment rigor advisor from github.com/altisvc/claude-skills. Download advisor-emily.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/.",
     "invocation": {
       "command": "/consult advisor-emily",
-      "example": "Evaluate the evidence quality in this report — where are we overreaching?"
+      "example": "Evaluate the evidence quality in this report \u2014 where are we overreaching?"
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "none"
@@ -250,7 +405,14 @@
     "persona": {
       "role": "Investment Rigor",
       "voice": "Evidence-first, specific and actionable, honest about uncertainty, avoids labels without substance",
-      "lenses": ["Market Structure Assessment", "TAM Methodology", "Evidence Quality Rating", "Business Model & Unit Economics", "Expansion Path Credibility", "Got to Believe"]
+      "lenses": [
+        "Market Structure Assessment",
+        "TAM Methodology",
+        "Evidence Quality Rating",
+        "Business Model & Unit Economics",
+        "Expansion Path Credibility",
+        "Got to Believe"
+      ]
     },
     "status": "stable",
     "version": "1.0",
@@ -262,15 +424,17 @@
     "name": "Jason Shuman",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Conviction architecture voice. Evaluates whether structural conditions exist for a venture-scale outcome — founder quality, defensibility via 7 Powers, critical assumptions, and whether conviction is building or eroding.",
+    "summary": "Conviction architecture voice. Evaluates whether structural conditions exist for a venture-scale outcome \u2014 founder quality, defensibility via 7 Powers, critical assumptions, and whether conviction is building or eroding.",
     "whenToUse": "When assessing a company's venture-scale potential, evaluating founder quality, mapping defensibility, or building a Got to Believe framework for an investment decision.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the Jason Shuman conviction advisor from github.com/altisvc/claude-skills. Download advisor-shuman.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/.",
     "invocation": {
       "command": "/consult advisor-shuman",
-      "example": "Build a Got to Believe framework for this company — what must be true for a venture-scale outcome?"
+      "example": "Build a Got to Believe framework for this company \u2014 what must be true for a venture-scale outcome?"
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "none"
@@ -278,7 +442,14 @@
     "persona": {
       "role": "Conviction Architecture",
       "voice": "Conviction-driven, takes positions and explains what would change his mind, structurally-minded, direct about uncertainty",
-      "lenses": ["Vision Assessment", "Got to Believe", "Founder/Team Assessment", "7 Powers (Hamilton Helmer)", "Operator Lens", "Key Question Framing"]
+      "lenses": [
+        "Vision Assessment",
+        "Got to Believe",
+        "Founder/Team Assessment",
+        "7 Powers (Hamilton Helmer)",
+        "Operator Lens",
+        "Key Question Framing"
+      ]
     },
     "status": "stable",
     "version": "1.0",
@@ -290,27 +461,46 @@
     "name": "Freeberg",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Quality standard and language audit voice. Runs the 9-dimension researcher checksum on investment research — catches AI-sounding prose, hedge words, topic-label headlines, and evidence gaps. Ensures every sentence passes the 'would a VC analyst write this?' test.",
-    "whenToUse": "Before publishing any investment research. Catches the patterns that make AI-assisted writing obvious — staccato sentences, colon-fragment assertions, consultant gloss, and claims without sourcing.",
+    "summary": "Quality standard and language audit voice. Runs the 9-dimension researcher checksum on investment research \u2014 catches AI-sounding prose, hedge words, topic-label headlines, and evidence gaps. Ensures every sentence passes the 'would a VC analyst write this?' test.",
+    "whenToUse": "Before publishing any investment research. Catches the patterns that make AI-assisted writing obvious \u2014 staccato sentences, colon-fragment assertions, consultant gloss, and claims without sourcing.",
     "author": "Christopher Freeberg",
-    "installPrompt": "Install the Freeberg quality advisor from github.com/altisvc/claude-skills. Download commander.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then customize the voice checksum file to match your firm's writing standards — replace references to the Altis researcher voice with your own quality bar.",
+    "installPrompt": "Install the Freeberg quality advisor from github.com/altisvc/claude-skills. Download commander.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then customize the voice checksum file to match your firm's writing standards \u2014 replace references to the Altis researcher voice with your own quality bar.",
     "invocation": {
       "command": "/consult advisor-freeberg",
       "example": "Run the quality checksum on this research report"
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "voice_standard", "label": "Writing quality standard", "description": "Replace the Altis researcher voice checksum with your firm's writing standards and quality bar", "required": true },
-        { "key": "company_positioning", "label": "Company positioning", "description": "Replace references to 'Altis does not render verdicts' with your firm's editorial stance", "required": true }
+        {
+          "key": "voice_standard",
+          "label": "Writing quality standard",
+          "description": "Replace the Altis researcher voice checksum with your firm's writing standards and quality bar",
+          "required": true
+        },
+        {
+          "key": "company_positioning",
+          "label": "Company positioning",
+          "description": "Replace references to 'Altis does not render verdicts' with your firm's editorial stance",
+          "required": true
+        }
       ]
     },
     "persona": {
       "role": "Quality Standard",
       "voice": "Professional analyst-level prose, catches AI patterns, demands compound sentences over staccato fragments, evidence over assertion",
-      "lenses": ["9-Dimension Checksum", "AI Pattern Detection", "Evidence Grounding", "Investor Frame", "Intellectual Honesty", "Decision Usefulness"]
+      "lenses": [
+        "9-Dimension Checksum",
+        "AI Pattern Detection",
+        "Evidence Grounding",
+        "Investor Frame",
+        "Intellectual Honesty",
+        "Decision Usefulness"
+      ]
     },
     "status": "stable",
     "version": "1.0",
@@ -322,10 +512,10 @@
     "name": "Consult (Advisor Framework)",
     "type": "skill",
     "category": "advisors",
-    "summary": "The invocation framework that powers all advisor personas. Runs advisors in full context isolation — the advisor sees only its spec and your question, never your main conversation. Prevents persona bleed across sessions.",
-    "whenToUse": "Installed automatically when you install any advisor. You don't invoke this directly — use /consult <advisor-name> instead.",
+    "summary": "The invocation framework that powers all advisor personas. Runs advisors in full context isolation \u2014 the advisor sees only its spec and your question, never your main conversation. Prevents persona bleed across sessions.",
+    "whenToUse": "Installed automatically when you install any advisor. You don't invoke this directly \u2014 use /consult <advisor-name> instead.",
     "author": "Christopher Freeberg",
-    "installPrompt": "Install the /consult advisor framework from github.com/altisvc/claude-skills. Place consult.md in .claude/commands/ and SKILL.md in .claude/skills/consult-advisor/. This is the shared infrastructure that all advisors use — install it once, then add as many advisor specs as you want to .claude/agents/.",
+    "installPrompt": "Install the /consult advisor framework from github.com/altisvc/claude-skills. Place consult.md in .claude/commands/ and SKILL.md in .claude/skills/consult-advisor/. This is the shared infrastructure that all advisors use \u2014 install it once, then add as many advisor specs as you want to .claude/agents/.",
     "invocation": {
       "command": "/consult <advisor-name>",
       "example": "/consult advisor-collison What should I prioritize this quarter?"
@@ -347,22 +537,53 @@
     "type": "skill",
     "category": "productivity",
     "summary": "Automated weekly company summary. Sweeps Slack for CEO-level activity, pulls GitHub commit history, and produces a narrative digest posted to Slack plus a detailed markdown archive. Runs on a Friday 2am cron so it's waiting when you wake up.",
-    "whenToUse": "End of each week. Gives leadership a single-page view of what happened across the company — no manual assembly required.",
+    "whenToUse": "End of each week. Gives leadership a single-page view of what happened across the company \u2014 no manual assembly required.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the Week in Review skill from github.com/altisvc/claude-skills. Place SKILL.md in .claude/skills/week-in-review/ and the command in .claude/commands/. Then configure your Slack channels (which ones to sweep, where to post the digest), GitHub repos to track, and the overnight cron schedule. Walk me through the Slack bot token setup if I don't have one.",
     "invocation": {
       "command": "/week-in-review",
       "example": "/week-in-review"
     },
-    "requires": ["wrap"],
-    "integrations": [{"name": "slack", "required": true}, {"name": "github", "required": false}],
+    "requires": [
+      "wrap"
+    ],
+    "integrations": [
+      {
+        "name": "slack",
+        "required": true
+      },
+      {
+        "name": "github",
+        "required": false
+      }
+    ],
     "calibration": {
       "level": "full",
       "items": [
-        { "key": "slack_channels", "label": "Slack channels to sweep", "description": "Which channels contain meaningful company activity — skip social/random", "required": true },
-        { "key": "slack_post_channel", "label": "Digest destination", "description": "Where to post the weekly summary (e.g., #leadership, #general)", "required": true },
-        { "key": "github_repos", "label": "GitHub repos to track", "description": "Which repos to pull commit history from for the technical summary", "required": false },
-        { "key": "cron_schedule", "label": "Cron schedule", "description": "When to run automatically — default is Friday 2am", "required": false }
+        {
+          "key": "slack_channels",
+          "label": "Slack channels to sweep",
+          "description": "Which channels contain meaningful company activity \u2014 skip social/random",
+          "required": true
+        },
+        {
+          "key": "slack_post_channel",
+          "label": "Digest destination",
+          "description": "Where to post the weekly summary (e.g., #leadership, #general)",
+          "required": true
+        },
+        {
+          "key": "github_repos",
+          "label": "GitHub repos to track",
+          "description": "Which repos to pull commit history from for the technical summary",
+          "required": false
+        },
+        {
+          "key": "cron_schedule",
+          "label": "Cron schedule",
+          "description": "When to run automatically \u2014 default is Friday 2am",
+          "required": false
+        }
       ]
     },
     "badge": "new",
@@ -384,14 +605,40 @@
       "command": "/audit",
       "example": "/audit"
     },
-    "requires": ["setup"],
-    "integrations": [{"name": "trello", "required": true}, {"name": "slack", "required": true}],
+    "requires": [
+      "setup"
+    ],
+    "integrations": [
+      {
+        "name": "trello",
+        "required": true
+      },
+      {
+        "name": "slack",
+        "required": true
+      }
+    ],
     "calibration": {
       "level": "full",
       "items": [
-        { "key": "trello_boards", "label": "Trello board IDs", "description": "The boards to audit for stale, duplicate, and untracked cards", "required": true },
-        { "key": "slack_channels", "label": "Slack channels to scan", "description": "Channels where commitments are made — audit checks for 'I'll send', 'action item', etc.", "required": true },
-        { "key": "stale_threshold", "label": "Stale card threshold", "description": "Days without activity before a card is flagged — default is 5", "required": false }
+        {
+          "key": "trello_boards",
+          "label": "Trello board IDs",
+          "description": "The boards to audit for stale, duplicate, and untracked cards",
+          "required": true
+        },
+        {
+          "key": "slack_channels",
+          "label": "Slack channels to scan",
+          "description": "Channels where commitments are made \u2014 audit checks for 'I'll send', 'action item', etc.",
+          "required": true
+        },
+        {
+          "key": "stale_threshold",
+          "label": "Stale card threshold",
+          "description": "Days without activity before a card is flagged \u2014 default is 5",
+          "required": false
+        }
       ]
     },
     "badge": "new",
@@ -414,13 +661,33 @@
       "example": "Runs automatically on 15-minute cron. Manual run: python3 auto_booker.py"
     },
     "requires": [],
-    "integrations": [{"name": "google-calendar", "required": true}],
+    "integrations": [
+      {
+        "name": "google-calendar",
+        "required": true
+      }
+    ],
     "calibration": {
       "level": "full",
       "items": [
-        { "key": "google_oauth", "label": "Google Calendar OAuth", "description": "Set up OAuth credentials with Calendar API access for your Google Workspace domain", "required": true },
-        { "key": "room_resources", "label": "Room resource calendars", "description": "Configure the list of meeting room resource calendar IDs and their priority order", "required": true },
-        { "key": "domain_filter", "label": "Office domain filter", "description": "Set which email domains count as 'in-office' guests (e.g., @yourcompany.com)", "required": true }
+        {
+          "key": "google_oauth",
+          "label": "Google Calendar OAuth",
+          "description": "Set up OAuth credentials with Calendar API access for your Google Workspace domain",
+          "required": true
+        },
+        {
+          "key": "room_resources",
+          "label": "Room resource calendars",
+          "description": "Configure the list of meeting room resource calendar IDs and their priority order",
+          "required": true
+        },
+        {
+          "key": "domain_filter",
+          "label": "Office domain filter",
+          "description": "Set which email domains count as 'in-office' guests (e.g., @yourcompany.com)",
+          "required": true
+        }
       ]
     },
     "badge": "new",
@@ -434,7 +701,7 @@
     "name": "Terminal Color Cycling + Auto-Launch",
     "type": "utility",
     "category": "hacks",
-    "summary": "Every new Terminal.app window auto-launches Claude Code in your project directory and gets a unique background color from a 10-color rotation — alternating dark and light so adjacent windows are always visually distinct.",
+    "summary": "Every new Terminal.app window auto-launches Claude Code in your project directory and gets a unique background color from a 10-color rotation \u2014 alternating dark and light so adjacent windows are always visually distinct.",
     "whenToUse": "When you work with multiple terminal windows and want instant visual differentiation plus Claude Code as your default shell experience.",
     "author": "Christopher Freeberg",
     "installPrompt": "Add a block to my .zshrc that (1) auto-launches claude in my project directory on every new interactive Terminal.app window, and (2) cycles the background color through 10 alternating dark/light colors using AppleScript with TTY matching so each window targets itself. Use a persistent index file at ~/.terminal_bg_index.",
@@ -443,11 +710,25 @@
       "example": "Opens automatically with every new Terminal.app window"
     },
     "requires": [],
-    "integrations": [{"name": "macOS", "required": true}, {"name": "Terminal.app", "required": true}],
+    "integrations": [
+      {
+        "name": "macOS",
+        "required": true
+      },
+      {
+        "name": "Terminal.app",
+        "required": true
+      }
+    ],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "project_directory", "label": "Default project directory", "description": "The directory Claude Code should open in by default", "required": true }
+        {
+          "key": "project_directory",
+          "label": "Default project directory",
+          "description": "The directory Claude Code should open in by default",
+          "required": true
+        }
       ]
     },
     "badge": "new",
@@ -461,7 +742,7 @@
     "name": "Clipboard Cleaner",
     "type": "utility",
     "category": "hacks",
-    "summary": "Fix broken formatting when copying from Terminal or Claude Code. One command — 'c' — strips invisible control characters, ANSI escape codes, and prompt artifacts from your clipboard so pasted text is clean.",
+    "summary": "Fix broken formatting when copying from Terminal or Claude Code. One command \u2014 'c' \u2014 strips invisible control characters, ANSI escape codes, and prompt artifacts from your clipboard so pasted text is clean.",
     "whenToUse": "When you copy output from Terminal or Claude Code and paste it somewhere (Slack, docs, email) and it comes out with weird formatting, invisible characters, or garbled text.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the clipboard cleaner from github.com/altisvc/clean-terminal-paste. Clone the repo, run the install script, and add the 'c' alias to my shell profile. Test it by copying some terminal output and running 'c' to clean the clipboard.",
@@ -470,7 +751,12 @@
       "example": "Copy text from terminal, then run: c"
     },
     "requires": [],
-    "integrations": [{"name": "macOS", "required": true}],
+    "integrations": [
+      {
+        "name": "macOS",
+        "required": true
+      }
+    ],
     "calibration": {
       "level": "none"
     },
@@ -485,19 +771,26 @@
     "type": "skill",
     "category": "productivity",
     "summary": "Periodic health check for your knowledge wiki. Identifies stale articles, internal contradictions, thin sections, orphan pages, and missing cross-references. Produces a prioritized health report.",
-    "whenToUse": "Weekly or after a burst of wiki updates. Catches decay before it compounds — stale articles that contradict recent decisions, thin sections that need evidence, orphan pages no one links to.",
+    "whenToUse": "Weekly or after a burst of wiki updates. Catches decay before it compounds \u2014 stale articles that contradict recent decisions, thin sections that need evidence, orphan pages no one links to.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the Wiki Lint skill from github.com/altisvc/claude-skills. Place SKILL.md in .claude/skills/wiki-lint/ and the command in .claude/commands/. Requires an existing knowledge wiki directory with markdown articles. Run /wiki-lint to generate your first health report.",
     "invocation": {
       "command": "/wiki-lint",
       "example": "/wiki-lint"
     },
-    "requires": ["wiki-compiler"],
+    "requires": [
+      "wiki-compiler"
+    ],
     "integrations": [],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "wiki_path", "label": "Wiki directory", "description": "Path to your knowledge wiki articles", "required": true }
+        {
+          "key": "wiki_path",
+          "label": "Wiki directory",
+          "description": "Path to your knowledge wiki articles",
+          "required": true
+        }
       ]
     },
     "badge": "new",
@@ -511,8 +804,8 @@
     "name": "Altis Brand Guidelines",
     "type": "utility",
     "category": "hacks",
-    "summary": "Complete Altis design system — tokens, typography, colors, icons, logos, patterns, and templates for branded output across web, slides, PDF, and email.",
-    "whenToUse": "Before building any branded output — websites, decks, reports, emails, or Lovable projects. Includes machine-readable tokens, CSS/SCSS/Tailwind builds, and 32 SVG icons.",
+    "summary": "Complete Altis design system \u2014 tokens, typography, colors, icons, logos, patterns, and templates for branded output across web, slides, PDF, and email.",
+    "whenToUse": "Before building any branded output \u2014 websites, decks, reports, emails, or Lovable projects. Includes machine-readable tokens, CSS/SCSS/Tailwind builds, and 32 SVG icons.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the Altis Brand Guidelines from github.com/altisvc/claude-skills. Download the full design-system/ directory to your project root. Then run `npm run build-tokens` to generate CSS, SCSS, and Tailwind outputs. Read design-system/brand-guidelines.md for usage rules and design-system/tokens.json for the machine-readable token spec.",
     "requires": [],
@@ -526,31 +819,65 @@
     "updatedAt": "2026-04-04"
   },
   {
+    "id": "about-altis",
+    "slug": "about-altis",
+    "name": "About Altis",
+    "type": "utility",
+    "category": "hacks",
+    "summary": "Foundational company context \u2014 positioning, team, methodology, traction, metrics, and brand personality. The single source of truth for what Altis is, how it works, and where it stands.",
+    "whenToUse": "Before any work that requires company context \u2014 outbound content, advisor consultations, pitch materials, onboarding new team members, or configuring skills that reference Altis positioning.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "Install the About Altis context file from github.com/altisvc/claude-skills. Download about-altis.md to 01-context/ (or your project's context directory). This is a reference document \u2014 read it at the start of sessions where company positioning, team, methodology, or traction context matters.",
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "2.0.0",
+    "updatedAt": "2026-04-06"
+  },
+  {
     "id": "advisor-harrison-chase",
     "slug": "advisor-harrison-chase",
     "name": "Harrison Chase",
     "type": "advisor",
     "category": "advisors",
-    "summary": "AI architecture red-team grounded in Harrison Chase's context engineering philosophy. Pressure-tests agent design decisions before they become expensive to reverse — probes compaction strategy, harness control, learning layers, autonomy guardrails, and rollback mechanisms.",
+    "summary": "AI architecture red-team grounded in Harrison Chase's context engineering philosophy. Pressure-tests agent design decisions before they become expensive to reverse \u2014 probes compaction strategy, harness control, learning layers, autonomy guardrails, and rollback mechanisms.",
     "whenToUse": "When reviewing agent architecture, evaluating build vs. buy for AI infrastructure, debugging agent reliability, or assessing whether something is really an agent vs. a chain.",
     "author": "Christopher Freeberg",
-    "installPrompt": "Install the Harrison Chase AI red-team advisor from github.com/altisvc/claude-skills. Download advisor-harrison-chase.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then open the agent spec and replace any references to Altis's specific agent stack with your own — the evaluation framework and context strategy probes are universal.",
+    "installPrompt": "Install the Harrison Chase AI red-team advisor from github.com/altisvc/claude-skills. Download advisor-harrison-chase.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then open the agent spec and replace any references to Altis's specific agent stack with your own \u2014 the evaluation framework and context strategy probes are universal.",
     "invocation": {
       "command": "/consult advisor-harrison-chase",
       "example": "We're building a research agent that pulls from multiple sources. Current plan: stuff everything into context. What am I missing?"
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "agent_stack", "label": "Your agent stack", "description": "Replace references to Altis's agent infrastructure with your own — which harness, which models, which tools", "required": true }
+        {
+          "key": "agent_stack",
+          "label": "Your agent stack",
+          "description": "Replace references to Altis's agent infrastructure with your own \u2014 which harness, which models, which tools",
+          "required": true
+        }
       ]
     },
     "persona": {
       "role": "AI Architecture Red Team",
       "voice": "Direct and practical, skeptical but constructive, unafraid to say I don't know, grounded in what works and fails in production",
-      "lenses": ["Write/Select/Compress/Isolate", "Three-Layer Learning", "Harness Control", "Trace Visibility", "Rollback & Guardrails", "Open Memory Architecture"]
+      "lenses": [
+        "Write/Select/Compress/Isolate",
+        "Three-Layer Learning",
+        "Harness Control",
+        "Trace Visibility",
+        "Rollback & Guardrails",
+        "Open Memory Architecture"
+      ]
     },
     "badge": "new",
     "status": "stable",
@@ -571,18 +898,31 @@
       "command": "/consult advisor-gartner-cso",
       "example": "We're doing bespoke reports for each client. Should we keep customizing or build a standard product?"
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "company_context", "label": "Company context", "description": "Replace the Altis product description and customer profile with your own business model and target market", "required": true }
+        {
+          "key": "company_context",
+          "label": "Company context",
+          "description": "Replace the Altis product description and customer profile with your own business model and target market",
+          "required": true
+        }
       ]
     },
     "persona": {
       "role": "Scalable Sales Strategist",
       "voice": "Intellectually honest peer, stage-aware calibration, tolerates founder-led sales only if it accelerates learning toward scalable products",
-      "lenses": ["Compounding Growth", "Analyst Leverage", "Reusable IP", "Retention & Expansion", "Margin Expansion as Strategy"]
+      "lenses": [
+        "Compounding Growth",
+        "Analyst Leverage",
+        "Reusable IP",
+        "Retention & Expansion",
+        "Margin Expansion as Strategy"
+      ]
     },
     "badge": "new",
     "status": "stable",
@@ -596,25 +936,38 @@
     "type": "advisor",
     "category": "research",
     "summary": "Chief Sales Officer of PitchBook circa 2014-2016. Lived through zero-revenue crisis years, 200+ investor rejections, and growth to $50M+ ARR on $3.7M total funding. Pattern-matches on what actually worked vs. what sounds good for early-stage data businesses.",
-    "whenToUse": "When building a data business from scratch — coverage vs. speed tradeoffs, competitive positioning, capital allocation, or when you need a gut check on whether perception of completeness matters more than actual completeness.",
+    "whenToUse": "When building a data business from scratch \u2014 coverage vs. speed tradeoffs, competitive positioning, capital allocation, or when you need a gut check on whether perception of completeness matters more than actual completeness.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the PitchBook CSO advisor from github.com/altisvc/claude-skills. Download advisor-founding-pitchbook-cso.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then replace the Altis-specific context with your own company stage, data coverage, and competitive landscape.",
     "invocation": {
       "command": "/consult advisor-founding-pitchbook-cso",
       "example": "Our data coverage is only 30% of the market. Should we wait to launch until it's more complete?"
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "company_context", "label": "Company context", "description": "Replace the Altis data coverage, competitive landscape, and funding stage with your own", "required": true }
+        {
+          "key": "company_context",
+          "label": "Company context",
+          "description": "Replace the Altis data coverage, competitive landscape, and funding stage with your own",
+          "required": true
+        }
       ]
     },
     "persona": {
       "role": "Data Business Growth Strategist",
       "voice": "Battle-tested pragmatist, survival over perfection, capital efficiency obsessed, relentless on cold outreach",
-      "lenses": ["Perception of Completeness", "Capital Efficiency as Moat", "All-You-Can-Eat Pricing", "Product Expansion from Sales Signal", "PitchBook Litmus Test"]
+      "lenses": [
+        "Perception of Completeness",
+        "Capital Efficiency as Moat",
+        "All-You-Can-Eat Pricing",
+        "Product Expansion from Sales Signal",
+        "PitchBook Litmus Test"
+      ]
     },
     "badge": "new",
     "status": "stable",
@@ -628,25 +981,38 @@
     "type": "advisor",
     "category": "leadership",
     "summary": "Customer discovery coach that distinguishes real signal from polite noise. Forces specificity about past behavior over future hypotheticals. Scores every customer conversation on evidence quality, bias control, and commitment clarity.",
-    "whenToUse": "Before and after customer conversations — interview prep, post-call debriefs, and evaluating whether what you heard was signal or politeness.",
+    "whenToUse": "Before and after customer conversations \u2014 interview prep, post-call debriefs, and evaluating whether what you heard was signal or politeness.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the Mom Test customer discovery advisor from github.com/altisvc/claude-skills. Download advisor-mom-test.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then replace the Altis-specific customer profile and product description with your own.",
     "invocation": {
       "command": "/consult advisor-mom-test",
       "example": "I just had a call where they said they loved the product. Help me figure out if that was real signal or politeness."
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "company_context", "label": "Company and product context", "description": "Replace the Altis product description and customer persona with your own — this shapes the Commitment Ladder sizing", "required": true }
+        {
+          "key": "company_context",
+          "label": "Company and product context",
+          "description": "Replace the Altis product description and customer persona with your own \u2014 this shapes the Commitment Ladder sizing",
+          "required": true
+        }
       ]
     },
     "persona": {
       "role": "Customer Discovery Coach",
-      "voice": "Direct, unflinching, not here to make you feel good about conversations — here to make sure you're building something people will pay for",
-      "lenses": ["Three Rules (Mom Test)", "Three-Question Debrief", "6-Dimension Scorecard", "Commitment Ladder", "Past Behavior over Future Promises"]
+      "voice": "Direct, unflinching, not here to make you feel good about conversations \u2014 here to make sure you're building something people will pay for",
+      "lenses": [
+        "Three Rules (Mom Test)",
+        "Three-Question Debrief",
+        "6-Dimension Scorecard",
+        "Commitment Ladder",
+        "Past Behavior over Future Promises"
+      ]
     },
     "badge": "new",
     "status": "stable",
@@ -659,7 +1025,7 @@
     "name": "Tegus CIO",
     "type": "advisor",
     "category": "advisors",
-    "summary": "GTM-first technical architecture advisor. Former Tegus data platform executive who prioritizes go-to-market above all else — every technical decision is evaluated through whether it accelerates sales or qualification. Configuration over hardcoding, CRM as golden record.",
+    "summary": "GTM-first technical architecture advisor. Former Tegus data platform executive who prioritizes go-to-market above all else \u2014 every technical decision is evaluated through whether it accelerates sales or qualification. Configuration over hardcoding, CRM as golden record.",
     "whenToUse": "When evaluating build vs. buy, designing user gating and qualification flows, reviewing developer recommendations that might slow GTM, or architecting CRM/data sync pipelines.",
     "author": "Christopher Freeberg",
     "installPrompt": "Install the Tegus CIO GTM architect advisor from github.com/altisvc/claude-skills. Download advisor-founding-tegus-cio.md to .claude/agents/ and the /consult command + skill to .claude/commands/ and .claude/skills/consult-advisor/. Then replace the Knowledge Context section with your own tech stack and CRM setup.",
@@ -667,18 +1033,31 @@
       "command": "/consult advisor-founding-tegus-cio",
       "example": "Our dev wants to hardcode pricing tiers in the schema. I want a config table. Who's right?"
     },
-    "requires": ["consult-advisor"],
+    "requires": [
+      "consult-advisor"
+    ],
     "integrations": [],
     "calibration": {
       "level": "light",
       "items": [
-        { "key": "tech_stack", "label": "Your tech stack", "description": "Replace the Knowledge Context section with your own stack — CMS, database, CRM, email, auth, scheduling tools", "required": true }
+        {
+          "key": "tech_stack",
+          "label": "Your tech stack",
+          "description": "Replace the Knowledge Context section with your own stack \u2014 CMS, database, CRM, email, auth, scheduling tools",
+          "required": true
+        }
       ]
     },
     "persona": {
       "role": "GTM-First Technical Architect",
       "voice": "Empathetic but intellectually honest peer, conviction-led, code is only valuable if it accelerates a sales conversation",
-      "lenses": ["Sales Over Syntax", "Progressive Trust Ladder", "Golden Record (CRM)", "Configuration over Hardcoding", "Magic Query Parameters"]
+      "lenses": [
+        "Sales Over Syntax",
+        "Progressive Trust Ladder",
+        "Golden Record (CRM)",
+        "Configuration over Hardcoding",
+        "Magic Query Parameters"
+      ]
     },
     "badge": "new",
     "status": "stable",
@@ -692,15 +1071,17 @@
     "type": "tool",
     "category": "hacks",
     "summary": "Transform any message into Ben Sun's communication style. Supports email, Slack, and LinkedIn channels. Uses Ben's actual voice patterns, stories, and data anchors.",
-    "whenToUse": "When drafting outbound communications in Ben's voice — cold intros, LP updates, Slack messages, LinkedIn posts.",
+    "whenToUse": "When drafting outbound communications in Ben's voice \u2014 cold intros, LP updates, Slack messages, LinkedIn posts.",
     "author": "Christopher Freeberg",
-    "installPrompt": "This is a hosted tool at https://altis-primary-marketplace.vercel.app/tools/ben-voice — no installation needed. Requires board-gated auth.",
+    "installPrompt": "This is a hosted tool at https://altis-primary-marketplace.vercel.app/tools/ben-voice \u2014 no installation needed. Requires board-gated auth.",
     "invocation": {
       "command": "Visit /tools/ben-voice",
       "example": "Write a cold intro to a Series A fund about Altis"
     },
     "requires": [],
-    "integrations": ["anthropic"],
+    "integrations": [
+      "anthropic"
+    ],
     "calibration": {
       "level": "none",
       "items": []
