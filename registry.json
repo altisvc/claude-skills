@@ -819,6 +819,34 @@
     "updatedAt": "2026-04-06"
   },
   {
+    "id": "user-manuals",
+    "slug": "user-manuals",
+    "name": "Altis Team User Manuals",
+    "type": "utility",
+    "category": "hacks",
+    "summary": "Self-authored working styles for every Altis team member — communication preferences, pet peeves, feedback style, quirks, and leadership dynamics. Used by advisor agents for coaching context.",
+    "whenToUse": "Before any advisor consultation involving team dynamics, or when onboarding and needing to understand how each person works. Automatically injected by the consult-advisor skill at invocation time.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "I'd like to add the Altis team user manuals. The file is in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. This has been vetted and shared for use across our organization. Clone it and copy user-manuals.md to 03-research/wiki/ (or your project's context directory). This reference file is auto-injected by the consult-advisor skill — no manual loading needed.",
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "moderate",
+      "items": [
+        {
+          "key": "team_manuals",
+          "label": "Replace with your team",
+          "description": "Replace the Altis team entries with your own team's self-authored user manuals. Each entry should cover: honest self-assessment, pet peeves, communication preferences, feedback style, and what earns trust.",
+          "required": true
+        }
+      ]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-08"
+  },
+  {
     "id": "brand-guidelines",
     "slug": "brand-guidelines",
     "name": "Altis Brand Guidelines",
