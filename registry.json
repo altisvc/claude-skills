@@ -343,8 +343,8 @@
     },
     "badge": "new",
     "status": "stable",
-    "version": "1.0",
-    "updatedAt": "2026-04-04"
+    "version": "2.0",
+    "updatedAt": "2026-04-08"
   },
   {
     "id": "advisor-ben-sun",
@@ -527,8 +527,8 @@
     },
     "badge": "core",
     "status": "stable",
-    "version": "1.0",
-    "updatedAt": "2026-03-15"
+    "version": "2.0",
+    "updatedAt": "2026-04-08"
   },
   {
     "id": "week-in-review",
