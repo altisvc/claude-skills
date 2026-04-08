@@ -81,6 +81,28 @@ Read ONLY the advisor's agent spec from `.claude/agents/<advisor-id>.md`. Do NOT
 - Previous advisor consultations
 - Project-specific knowledge outside the question
 
+### Step 2.5: Inject live Altis context from wiki
+
+Read wiki articles and append their content to the advisor prompt as a `## Current Altis State (live context)` section. This replaces hardcoded company state that drifts.
+
+**Tier 1 — always inject (4 articles):**
+- `03-research/wiki/about-altis.md` — company overview, problem, solution, traction
+- `03-research/wiki/research-team.md` — current team roster, compensation, unit economics
+- `03-research/wiki/fundraise-narrative.md` — fundraise status, valuation, timeline
+- `03-research/wiki/user-manuals.md` — how each team member works, communicates, gives/receives feedback
+
+**Tier 2 — inject when relevant to the question topic:**
+- `03-research/wiki/beta-partnerships.md` — if question involves sales, traction, clients
+- `03-research/wiki/competitive-landscape.md` — if question involves positioning, competitors
+- `03-research/wiki/positioning-evolution.md` — if question involves messaging, ICP, GTM
+- `03-research/wiki/pricing-strategy.md` — if question involves pricing, packaging
+- `03-research/wiki/researchos.md` — if question involves product, engineering, Stanley
+- `03-research/wiki/gtmos.md` — if question involves GTM automation, agents
+
+**Format:** Extract only the `## Current position` and `## Key inputs` sections from each article. Omit `## Open questions`, `## Sources`, and `## Related articles` to save tokens.
+
+**Token budget:** Keep total injected wiki context under 3,000 tokens. If Tier 1 + Tier 2 exceeds this, summarize Tier 2 articles to key facts only.
+
 ### Step 3: Format the question
 
 Present the question to the advisor exactly as provided. Do not summarize or pre-interpret.
