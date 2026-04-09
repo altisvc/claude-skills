@@ -254,10 +254,10 @@
     "name": "Knowledge Wiki",
     "type": "skill",
     "category": "productivity",
-    "summary": "Builds a structured, searchable knowledge wiki from your vault. Backfills from existing notes, then compounds automatically — every /wrap session updates wiki articles with new evidence. Turns scattered meeting notes and daily logs into durable institutional knowledge.",
-    "whenToUse": "When you want to turn months of accumulated notes into organized, queryable knowledge. Run once to backfill, then it compounds automatically via /wrap.",
+    "summary": "Builds a structured, searchable knowledge wiki from your vault. Backfills from existing notes, then compounds automatically via /wrap. Includes a SessionStart hook that auto-loads the wiki index, key reference tables, and tool routing into every session — so Claude starts knowing your systems, agents, and routing rules without being told.",
+    "whenToUse": "When you want to turn months of accumulated notes into organized, queryable knowledge. Run once to backfill, then it compounds automatically via /wrap. The session context hook means you never have to re-explain your systems to Claude at the start of a conversation.",
     "author": "Christopher Freeberg",
-    "installPrompt": "Help me set up a knowledge wiki in my vault. Create a wiki/ directory, scan my existing notes and meeting logs for recurring topics, and generate structured articles for each topic with sections for current position, key inputs, and open questions. Then add a compile step to my /wrap command so future sessions automatically update the wiki.",
+    "installPrompt": "Help me set up a knowledge wiki in my vault. Create a wiki/ directory, scan my existing notes and meeting logs for recurring topics, and generate structured articles for each topic with sections for current position, key inputs, and open questions. Then add a compile step to my /wrap command so future sessions automatically update the wiki. Finally, install the SessionStart hook from hooks/session-wiki-context.sh into .claude/hooks/ and add a SessionStart entry to .claude/hooks.json — this auto-loads the wiki index and tool routing into every new session.",
     "invocation": {
       "command": "/wrap",
       "example": "The wiki compiles automatically as Step 6 of /wrap"
