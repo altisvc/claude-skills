@@ -1118,5 +1118,25 @@
     "status": "stable",
     "version": "2.0",
     "updatedAt": "2026-04-06"
+  },
+  {
+    "id": "hrskill",
+    "slug": "hrskill",
+    "name": "HRskill",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "The skill takes a LinkedIn download and categorizes company employees into 4 groups: Builders, GTM, Product and Ops, and support roles. \nIt asks if it should look out for a specific category for instance in legaltech look for lawyers, in healthtech look for doctors/nurses, etc\nFor gray areas it requires human revision",
+    "whenToUse": "to analyze company profile, is it more of a sales organization? is it a mature company with support functions s/a HR or legal, or does it look more early stage?",
+    "author": "olivia@altis.vc",
+    "installPrompt": "",
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-04-11"
   }
 ]
