@@ -134,8 +134,8 @@
     },
     "badge": "core",
     "status": "stable",
-    "version": "6.9",
-    "updatedAt": "2026-04-11"
+    "version": "6.10",
+    "updatedAt": "2026-04-12"
   },
   {
     "id": "wrap",
@@ -343,8 +343,8 @@
     },
     "badge": "new",
     "status": "stable",
-    "version": "2.21",
-    "updatedAt": "2026-04-11"
+    "version": "2.22",
+    "updatedAt": "2026-04-12"
   },
   {
     "id": "advisor-ben-sun",
@@ -527,8 +527,8 @@
     },
     "badge": "core",
     "status": "stable",
-    "version": "2.21",
-    "updatedAt": "2026-04-11"
+    "version": "2.22",
+    "updatedAt": "2026-04-12"
   },
   {
     "id": "week-in-review",
