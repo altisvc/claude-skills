@@ -1128,7 +1128,7 @@
     "summary": "The skill takes a LinkedIn download and categorizes company employees into 4 groups: Builders, GTM, Product and Ops, and support roles. \nIt asks if it should look out for a specific category for instance in legaltech look for lawyers, in healthtech look for doctors/nurses, etc\nFor gray areas it requires human revision",
     "whenToUse": "to analyze company profile, is it more of a sales organization? is it a mature company with support functions s/a HR or legal, or does it look more early stage?",
     "author": "olivia@altis.vc",
-    "installPrompt": "",
+    "installPrompt": "I'd like to install the HRskill skill from the Altis skills registry at https://github.com/altisvc/claude-skills. Download the skill file from hrskill/SKILL.md in that repo and set it up in my .claude/ directory following the instructions in the file.",
     "requires": [],
     "integrations": [],
     "calibration": {
@@ -1136,7 +1136,7 @@
     },
     "badge": "new",
     "status": "beta",
-    "version": "1.0.0",
-    "updatedAt": "2026-04-11"
+    "version": "1.0.1",
+    "updatedAt": "2026-04-15"
   }
 ]
