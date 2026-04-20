@@ -1138,5 +1138,25 @@
     "status": "beta",
     "version": "1.0.1",
     "updatedAt": "2026-04-15"
+  },
+  {
+    "id": "newsletter-daily-digest",
+    "slug": "newsletter-daily-digest",
+    "name": "Newsletter daily digest",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "  Deploys a Google Apps Script that reads your Gmail newsletters each weekday    morning and sends you one consolidated, deduplicated digest email summarized   by Claude.",
+    "whenToUse": "Reach for this when you subscribe to multiple newsletters and want them      automatically summarized into a single scannable email each morning instead of reading each one individually",
+    "author": "maxine@altis.vc",
+    "installPrompt": "Set up the newsletter-digest Google Apps Script from                         \n  https://github.com/maxine-altis/newsletter-digest for my Gmail account. Walk \n  me through each step:\n                                                                               \n  1. Confirm I have an Anthropic API key (or help me get one at                \n  console.anthropic.com)\n  2. Help me create a \"Newsletters\" Gmail label and a filter that auto-applies \n  it to my newsletter subscriptions                                            \n  3. Guide me through creating a new Apps Script project at script.google.com,\n  pasting in Code.gs and appsscript.json from the repo                         \n  4. Set up the ANTHROPIC_API_KEY script property (and optionally\n  RECIPIENT_EMAIL as a fallback)                                               \n  5. Enable the Google Apps Script API at script.google.com/home/usersettings\n  6. Walk me through the first manual run of main() and the authorization flow \n  7. Run setupTrigger() to schedule the daily 7 AM digest                      \n  8. Optionally set up clasp for local editing and future iteration            \n                                                                               \n  Pause after each step to confirm before moving on. If I want to customize the\n   trigger time, timezone, model, or Gmail label name, help me edit the CONFIG \n  block.                                                                       \n                                                  ",
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-04-20"
   }
 ]
