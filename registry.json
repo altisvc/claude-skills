@@ -1158,5 +1158,25 @@
     "status": "beta",
     "version": "1.0.0",
     "updatedAt": "2026-04-20"
+  },
+  {
+    "id": "deck-outline-builder",
+    "slug": "deck-outline-builder",
+    "name": "Deck Outline Builder",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "",
+    "whenToUse": "",
+    "author": "mehdi@altis.vc",
+    "installPrompt": "I'd like to install the Deck Outline Builder skill from the Altis skills registry at https://github.com/altisvc/claude-skills. Download the skill file from deck-outline-builder/SKILL.md in that repo and set it up in my .claude/ directory following the instructions in the file.",
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-04-20"
   }
 ]
