@@ -804,8 +804,8 @@
     "name": "About Altis",
     "type": "utility",
     "category": "hacks",
-    "summary": "Foundational company context — positioning, team, methodology, traction, metrics, and brand personality. The single source of truth for what Altis is, how it works, and where it stands.",
-    "whenToUse": "Before any work that requires company context — outbound content, advisor consultations, pitch materials, onboarding new team members, or configuring skills that reference Altis positioning.",
+    "summary": "Foundational company context — positioning, methodology, team, and brand voice. Load into Claude sessions or use to generate company descriptions.",
+    "whenToUse": "Before any work that requires Altis positioning or voice — outbound content, advisor consultations, pitch materials, onboarding new team members.",
     "author": "Christopher Freeberg",
     "installPrompt": "I'd like to add the About Altis context file to my project. The file is in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. This has been vetted and shared for use across our organization. Clone it and copy about-altis.md to 01-context/ (or your project's context directory). This is a reference document — read it at the start of sessions where company positioning, team, methodology, or traction context matters.",
     "requires": [],
@@ -815,8 +815,8 @@
     },
     "badge": "new",
     "status": "stable",
-    "version": "2.0.0",
-    "updatedAt": "2026-04-06"
+    "version": "3.0.0",
+    "updatedAt": "2026-04-22"
   },
   {
     "id": "user-manuals",
