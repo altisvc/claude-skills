@@ -8,7 +8,7 @@
     "summary": "Sync meetings from Granola or Otter to your local vault. Classifies by type (investor, prospect, recruiting, team, board, partner, discovery), extracts follow-ups with owner tags, and flags meetings for GitHub knowledge sharing.",
     "whenToUse": "After meetings to capture notes, action items, and intelligence. Run daily or use overnight automation.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Meeting Sync skill. The source files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md plus meeting type templates to .claude/skills/meeting-sync/, and the supporting agents to .claude/agents/. Then walk me through configuring my Granola API access, Trello board IDs, and Slack channels in .claude/user.yaml. Test the connection to each service before finishing.",
+    "installPrompt": "I'd like to set up the Meeting Sync skill. The source files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md plus meeting type templates to .claude/skills/meeting-sync/, and the supporting agents to .claude/agents/. Then walk me through configuring my Granola API access, Trello board IDs, and Slack channels in .claude/user.yaml. Test the connection to each service before finishing.",
     "invocation": {
       "command": "/meeting-sync",
       "example": "/meeting-sync"
@@ -77,7 +77,7 @@
     "summary": "Structured morning briefing that sweeps Slack, Gmail, calendar, and task lists. Runs a silent data gather, cross-references all sources, surfaces questions you need to answer, then delivers a tight 1-2 day briefing.",
     "whenToUse": "Start of day. Replaces manual tab-switching across Slack, email, calendar, and task tools.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Morning Check-in skill. The source files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/checkin/ and the command to .claude/commands/. Then walk me through configuring my Slack workspace channels, Google Calendar access, Gmail triage, and Trello board in .claude/user.yaml. Test each integration before finishing.",
+    "installPrompt": "I'd like to set up the Morning Check-in skill. The source files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/checkin/ and the command to .claude/commands/. Then walk me through configuring my Slack workspace channels, Google Calendar access, Gmail triage, and Trello board in .claude/user.yaml. Test each integration before finishing.",
     "invocation": {
       "command": "/checkin",
       "example": "/checkin"
@@ -109,7 +109,7 @@
         {
           "key": "slack_channels",
           "label": "Slack channels",
-          "description": "Map your workspace channels — which ones to sweep, which to skip",
+          "description": "Map your workspace channels \u2014 which ones to sweep, which to skip",
           "required": true
         },
         {
@@ -146,7 +146,7 @@
     "summary": "End-of-session command that archives your work, updates your daily log with forward implications, compiles new knowledge into wiki articles, and pushes open items to your task tracker.",
     "whenToUse": "End of any working session. Captures decisions, action items, and what downstream work is affected. Prevents context loss between sessions.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Session Wrap skill. The source files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the command to .claude/commands/wrap.md. If I use Trello for task tracking, help me configure board IDs in .claude/user.yaml too. If I want wiki compilation, create a wiki directory in my vault.",
+    "installPrompt": "I'd like to set up the Session Wrap skill. The source files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the command to .claude/commands/wrap.md. If I use Trello for task tracking, help me configure board IDs in .claude/user.yaml too. If I want wiki compilation, create a wiki directory in my vault.",
     "invocation": {
       "command": "/wrap",
       "example": "/wrap strategy brainstorm"
@@ -170,7 +170,7 @@
         {
           "key": "trello_boards",
           "label": "Trello board IDs",
-          "description": "Optional — for pushing open items to your task tracker",
+          "description": "Optional \u2014 for pushing open items to your task tracker",
           "required": false
         }
       ]
@@ -189,7 +189,7 @@
     "summary": "Deterministic Trello card creation and completion from JSON payloads. Creates cards with owner prefixes, deduplicates against existing cards, and supports cross-board promotion. Used by check-in and wrap under the hood.",
     "whenToUse": "When skills or automations need to create or complete Trello cards programmatically.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Trello Sync utility. The scripts are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy trello-sync.sh and trello-promote.sh to .claude/scripts/. Then help me configure my Trello API key, token, board ID, and list IDs in .claude/user.yaml.",
+    "installPrompt": "I'd like to set up the Trello Sync utility. The scripts are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy trello-sync.sh and trello-promote.sh to .claude/scripts/. Then help me configure my Trello API key, token, board ID, and list IDs in .claude/user.yaml.",
     "invocation": {
       "command": ".claude/scripts/trello-sync.sh",
       "example": ".claude/scripts/trello-sync.sh '{\"creates\": [{\"name\": \"Jason: Review deck\", \"list\": \"review\"}]}'"
@@ -233,7 +233,7 @@
     "summary": "Interactive onboarding skill that configures your Claude Code environment. Walks you through connecting your integrations and writes a user.yaml config file that all other skills read from.",
     "whenToUse": "First time setting up Claude Code skills, or when adding a new integration. Required before installing meeting-sync, checkin, or any skill that connects to external services.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the interactive Setup wizard. The source files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/setup/ and the command to .claude/commands/setup.md. Then run /setup to start configuration.",
+    "installPrompt": "I'd like to set up the interactive Setup wizard. The source files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/setup/ and the command to .claude/commands/setup.md. Then run /setup to start configuration.",
     "invocation": {
       "command": "/setup",
       "example": "/setup"
@@ -254,10 +254,10 @@
     "name": "Knowledge Wiki",
     "type": "skill",
     "category": "productivity",
-    "summary": "Builds a structured, searchable knowledge wiki from your vault. Backfills from existing notes, then compounds automatically via /wrap. Includes a SessionStart hook that auto-loads the wiki index, key reference tables, and tool routing into every session — so Claude starts knowing your systems, agents, and routing rules without being told.",
+    "summary": "Builds a structured, searchable knowledge wiki from your vault. Backfills from existing notes, then compounds automatically via /wrap. Includes a SessionStart hook that auto-loads the wiki index, key reference tables, and tool routing into every session \u2014 so Claude starts knowing your systems, agents, and routing rules without being told.",
     "whenToUse": "When you want to turn months of accumulated notes into organized, queryable knowledge. Run once to backfill, then it compounds automatically via /wrap. The session context hook means you never have to re-explain your systems to Claude at the start of a conversation.",
     "author": "Christopher Freeberg",
-    "installPrompt": "Help me set up a knowledge wiki in my vault. Create a wiki/ directory, scan my existing notes and meeting logs for recurring topics, and generate structured articles for each topic with sections for current position, key inputs, and open questions. Then add a compile step to my /wrap command so future sessions automatically update the wiki. Finally, install the SessionStart hook from hooks/session-wiki-context.sh into .claude/hooks/ and add a SessionStart entry to .claude/hooks.json — this auto-loads the wiki index and tool routing into every new session.",
+    "installPrompt": "Help me set up a knowledge wiki in my vault. Create a wiki/ directory, scan my existing notes and meeting logs for recurring topics, and generate structured articles for each topic with sections for current position, key inputs, and open questions. Then add a compile step to my /wrap command so future sessions automatically update the wiki. Finally, install the SessionStart hook from hooks/session-wiki-context.sh into .claude/hooks/ and add a SessionStart entry to .claude/hooks.json \u2014 this auto-loads the wiki index and tool routing into every new session.",
     "invocation": {
       "command": "/wrap",
       "example": "The wiki compiles automatically as Step 6 of /wrap"
@@ -272,7 +272,7 @@
         {
           "key": "vault_paths",
           "label": "Vault directory structure",
-          "description": "Where your notes, meeting logs, and daily logs live — the wiki scans these for knowledge",
+          "description": "Where your notes, meeting logs, and daily logs live \u2014 the wiki scans these for knowledge",
           "required": true
         },
         {
@@ -294,10 +294,10 @@
     "name": "Patrick Collison",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Leadership coaching as Patrick Collison. Draws from a decade+ leading Stripe to $159B — thinks in decades, obsesses over craft, and challenges you on hiring, culture, and decision-making. Grounded in actual words, applied to your specific situation.",
-    "whenToUse": "When pressure-testing leadership decisions — hiring calls, culture questions, strategic prioritization, or when you need a reframing question that shifts how you see a problem.",
+    "summary": "Leadership coaching as Patrick Collison. Draws from a decade+ leading Stripe to $159B \u2014 thinks in decades, obsesses over craft, and challenges you on hiring, culture, and decision-making. Grounded in actual words, applied to your specific situation.",
+    "whenToUse": "When pressure-testing leadership decisions \u2014 hiring calls, culture questions, strategic prioritization, or when you need a reframing question that shifts how you see a problem.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Patrick Collison leadership advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-collison.md → .claude/agents/advisor-collison.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nThen open the agent spec, find the Company Context section, and help me replace the Altis-specific content with my own company's context. Try it with: /consult advisor-collison",
+    "installPrompt": "I'd like to add the Patrick Collison leadership advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-collison.md \u2192 .claude/agents/advisor-collison.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nThen open the agent spec, find the Company Context section, and help me replace the Altis-specific content with my own company's context. Try it with: /consult advisor-collison",
     "invocation": {
       "command": "/consult advisor-collison",
       "example": "What should I prioritize in my first 90 days as a founding engineer?"
@@ -324,7 +324,7 @@
         {
           "key": "user_manuals",
           "label": "User manuals / interpersonal details",
-          "description": "Add 'user manuals' for your key people — how they prefer to communicate, what drives them nuts, how to convince them, what earns trust. The richer these are, the more the advisor can coach on navigating specific relationships.",
+          "description": "Add 'user manuals' for your key people \u2014 how they prefer to communicate, what drives them nuts, how to convince them, what earns trust. The richer these are, the more the advisor can coach on navigating specific relationships.",
           "required": false
         }
       ]
@@ -352,13 +352,13 @@
     "name": "Ben Sun",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Argumentative coherence reviewer. Reads your deck the way a time-pressed GP reads it — checks whether key points actually jump off the page and whether anything in the deck creates dissonance that muddles the message. In standalone mode, a thinking partner who challenges framing and pushes on distribution.",
+    "summary": "Argumentative coherence reviewer. Reads your deck the way a time-pressed GP reads it \u2014 checks whether key points actually jump off the page and whether anything in the deck creates dissonance that muddles the message. In standalone mode, a thinking partner who challenges framing and pushes on distribution.",
     "whenToUse": "Before shipping a research deck or investment memo. Also useful as a standalone advisor for GTM strategy, distribution thinking, and founder-level prioritization.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Ben Sun advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-ben-sun.md → .claude/agents/advisor-ben-sun.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-ben-sun",
+    "installPrompt": "I'd like to add the Ben Sun advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-ben-sun.md \u2192 .claude/agents/advisor-ben-sun.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-ben-sun",
     "invocation": {
       "command": "/consult advisor-ben-sun",
-      "example": "Review this deck for argumentative coherence — do the key points land?"
+      "example": "Review this deck for argumentative coherence \u2014 do the key points land?"
     },
     "requires": [
       "consult-advisor"
@@ -387,13 +387,13 @@
     "name": "Emily Man",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Investment rigor voice. Pressure-tests whether evidence actually supports the positions taken — challenges claims that rest on thin sourcing and asks whether market assumptions hold under Series A+ investor scrutiny.",
+    "summary": "Investment rigor voice. Pressure-tests whether evidence actually supports the positions taken \u2014 challenges claims that rest on thin sourcing and asks whether market assumptions hold under Series A+ investor scrutiny.",
     "whenToUse": "When evaluating research quality, reviewing investment memos, or stress-testing a company's market positioning and business model assumptions.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Emily Man advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-emily.md → .claude/agents/advisor-emily.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-emily",
+    "installPrompt": "I'd like to add the Emily Man advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-emily.md \u2192 .claude/agents/advisor-emily.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-emily",
     "invocation": {
       "command": "/consult advisor-emily",
-      "example": "Evaluate the evidence quality in this report — where are we overreaching?"
+      "example": "Evaluate the evidence quality in this report \u2014 where are we overreaching?"
     },
     "requires": [
       "consult-advisor"
@@ -424,13 +424,13 @@
     "name": "Jason Shuman",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Conviction architecture voice. Evaluates whether structural conditions exist for a venture-scale outcome — founder quality, defensibility via 7 Powers, critical assumptions, and whether conviction is building or eroding.",
+    "summary": "Conviction architecture voice. Evaluates whether structural conditions exist for a venture-scale outcome \u2014 founder quality, defensibility via 7 Powers, critical assumptions, and whether conviction is building or eroding.",
     "whenToUse": "When assessing a company's venture-scale potential, evaluating founder quality, mapping defensibility, or building a Got to Believe framework for an investment decision.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Jason Shuman advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-shuman.md → .claude/agents/advisor-shuman.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-shuman",
+    "installPrompt": "I'd like to add the Jason Shuman advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-shuman.md \u2192 .claude/agents/advisor-shuman.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-shuman",
     "invocation": {
       "command": "/consult advisor-shuman",
-      "example": "Build a Got to Believe framework for this company — what must be true for a venture-scale outcome?"
+      "example": "Build a Got to Believe framework for this company \u2014 what must be true for a venture-scale outcome?"
     },
     "requires": [
       "consult-advisor"
@@ -461,10 +461,10 @@
     "name": "Freeberg",
     "type": "advisor",
     "category": "advisors",
-    "summary": "Quality standard and language audit voice. Runs the 9-dimension researcher checksum on investment research — catches AI-sounding prose, hedge words, topic-label headlines, and evidence gaps. Ensures every sentence passes the 'would a VC analyst write this?' test.",
-    "whenToUse": "Before publishing any investment research. Catches the patterns that make AI-assisted writing obvious — staccato sentences, colon-fragment assertions, consultant gloss, and claims without sourcing.",
+    "summary": "Quality standard and language audit voice. Runs the 9-dimension researcher checksum on investment research \u2014 catches AI-sounding prose, hedge words, topic-label headlines, and evidence gaps. Ensures every sentence passes the 'would a VC analyst write this?' test.",
+    "whenToUse": "Before publishing any investment research. Catches the patterns that make AI-assisted writing obvious \u2014 staccato sentences, colon-fragment assertions, consultant gloss, and claims without sourcing.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Freeberg quality advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-freeberg.md → .claude/agents/advisor-freeberg.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-freeberg",
+    "installPrompt": "I'd like to add the Freeberg quality advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-freeberg.md \u2192 .claude/agents/advisor-freeberg.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-freeberg",
     "invocation": {
       "command": "/consult advisor-freeberg",
       "example": "Run the quality checksum on this research report"
@@ -512,10 +512,10 @@
     "name": "Consult (Advisor Framework)",
     "type": "skill",
     "category": "advisors",
-    "summary": "The invocation framework that powers all advisor personas. Runs advisors in full context isolation — the advisor sees only its spec and your question, never your main conversation. Prevents persona bleed across sessions.",
-    "whenToUse": "Installed automatically when you install any advisor. You don't invoke this directly — use /consult <advisor-name> instead.",
+    "summary": "The invocation framework that powers all advisor personas. Runs advisors in full context isolation \u2014 the advisor sees only its spec and your question, never your main conversation. Prevents persona bleed across sessions.",
+    "whenToUse": "Installed automatically when you install any advisor. You don't invoke this directly \u2014 use /consult <advisor-name> instead.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Consult framework that powers all advisor consultations. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. commands/consult.md → .claude/commands/consult.md\n2. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nIndividual advisors are added separately.",
+    "installPrompt": "I'd like to set up the Consult framework that powers all advisor consultations. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. commands/consult.md \u2192 .claude/commands/consult.md\n2. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nIndividual advisors are added separately.",
     "invocation": {
       "command": "/consult <advisor-name>",
       "example": "/consult advisor-collison What should I prioritize this quarter?"
@@ -537,9 +537,9 @@
     "type": "skill",
     "category": "productivity",
     "summary": "Automated weekly company summary. Sweeps Slack for CEO-level activity, pulls GitHub commit history, and produces a narrative digest posted to Slack plus a detailed markdown archive. Runs on a Friday 2am cron so it's waiting when you wake up.",
-    "whenToUse": "End of each week. Gives leadership a single-page view of what happened across the company — no manual assembly required.",
+    "whenToUse": "End of each week. Gives leadership a single-page view of what happened across the company \u2014 no manual assembly required.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Week in Review skill. The source files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/week-in-review/ and the command to .claude/commands/. Then help me configure which Slack channels to sweep, where to post the digest, which GitHub repos to track, and the overnight cron schedule. Walk me through Slack bot token setup if I don't have one.",
+    "installPrompt": "I'd like to set up the Week in Review skill. The source files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/week-in-review/ and the command to .claude/commands/. Then help me configure which Slack channels to sweep, where to post the digest, which GitHub repos to track, and the overnight cron schedule. Walk me through Slack bot token setup if I don't have one.",
     "invocation": {
       "command": "/week-in-review",
       "example": "/week-in-review"
@@ -563,7 +563,7 @@
         {
           "key": "slack_channels",
           "label": "Slack channels to sweep",
-          "description": "Which channels contain meaningful company activity — skip social/random",
+          "description": "Which channels contain meaningful company activity \u2014 skip social/random",
           "required": true
         },
         {
@@ -581,7 +581,7 @@
         {
           "key": "cron_schedule",
           "label": "Cron schedule",
-          "description": "When to run automatically — default is Friday 2am",
+          "description": "When to run automatically \u2014 default is Friday 2am",
           "required": false
         }
       ]
@@ -600,7 +600,7 @@
     "summary": "Weekly task list integrity check. Scans Trello, Slack commitments, and daily logs to find unlogged action items, stale cards that haven't moved in 5+ days, duplicate entries, and drift between what was promised and what's tracked.",
     "whenToUse": "Weekly on Monday, or whenever you suspect your task list has drifted from reality. Catches the commitments that slip through the cracks.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Task Audit skill. The source files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/audit/ and the command to .claude/commands/. Then help me configure my Trello board IDs and Slack channels to scan.",
+    "installPrompt": "I'd like to set up the Task Audit skill. The source files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/audit/ and the command to .claude/commands/. Then help me configure my Trello board IDs and Slack channels to scan.",
     "invocation": {
       "command": "/audit",
       "example": "/audit"
@@ -630,13 +630,13 @@
         {
           "key": "slack_channels",
           "label": "Slack channels to scan",
-          "description": "Channels where commitments are made — audit checks for 'I'll send', 'action item', etc.",
+          "description": "Channels where commitments are made \u2014 audit checks for 'I'll send', 'action item', etc.",
           "required": true
         },
         {
           "key": "stale_threshold",
           "label": "Stale card threshold",
-          "description": "Days without activity before a card is flagged — default is 5",
+          "description": "Days without activity before a card is flagged \u2014 default is 5",
           "required": false
         }
       ]
@@ -701,7 +701,7 @@
     "name": "Terminal Color Cycling + Auto-Launch",
     "type": "utility",
     "category": "hacks",
-    "summary": "Every new Terminal.app window auto-launches Claude Code in your project directory and gets a unique background color from a 10-color rotation — alternating dark and light so adjacent windows are always visually distinct.",
+    "summary": "Every new Terminal.app window auto-launches Claude Code in your project directory and gets a unique background color from a 10-color rotation \u2014 alternating dark and light so adjacent windows are always visually distinct.",
     "whenToUse": "When you work with multiple terminal windows and want instant visual differentiation plus Claude Code as your default shell experience.",
     "author": "Christopher Freeberg",
     "installPrompt": "Add a block to my .zshrc that (1) auto-launches claude in my project directory on every new interactive Terminal.app window, and (2) cycles the background color through 10 alternating dark/light colors using AppleScript with TTY matching so each window targets itself. Use a persistent index file at ~/.terminal_bg_index.",
@@ -742,10 +742,10 @@
     "name": "Clipboard Cleaner",
     "type": "utility",
     "category": "hacks",
-    "summary": "Fix broken formatting when copying from Terminal or Claude Code. One command — 'c' — strips invisible control characters, ANSI escape codes, and prompt artifacts from your clipboard so pasted text is clean.",
+    "summary": "Fix broken formatting when copying from Terminal or Claude Code. One command \u2014 'c' \u2014 strips invisible control characters, ANSI escape codes, and prompt artifacts from your clipboard so pasted text is clean.",
     "whenToUse": "When you copy output from Terminal or Claude Code and paste it somewhere (Slack, docs, email) and it comes out with weird formatting, invisible characters, or garbled text.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the clipboard cleaner. The source is at https://github.com/altisvc/clean-terminal-paste — a public repo maintained by the Altis team. Clone it, run the install script, and add the 'c' alias to my shell profile. Test it by copying some terminal output and running 'c' to verify it cleans the clipboard.",
+    "installPrompt": "I'd like to set up the clipboard cleaner. The source is at https://github.com/altisvc/clean-terminal-paste \u2014 a public repo maintained by the Altis team. Clone it, run the install script, and add the 'c' alias to my shell profile. Test it by copying some terminal output and running 'c' to verify it cleans the clipboard.",
     "invocation": {
       "command": "c",
       "example": "Copy text from terminal, then run: c"
@@ -771,9 +771,9 @@
     "type": "skill",
     "category": "productivity",
     "summary": "Periodic health check for your knowledge wiki. Identifies stale articles, internal contradictions, thin sections, orphan pages, and missing cross-references. Produces a prioritized health report.",
-    "whenToUse": "Weekly or after a burst of wiki updates. Catches decay before it compounds — stale articles that contradict recent decisions, thin sections that need evidence, orphan pages no one links to.",
+    "whenToUse": "Weekly or after a burst of wiki updates. Catches decay before it compounds \u2014 stale articles that contradict recent decisions, thin sections that need evidence, orphan pages no one links to.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Wiki Lint skill. The source files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/wiki-lint/ and the command to .claude/commands/. This requires an existing knowledge wiki directory with markdown articles. Run /wiki-lint to generate the first health report.",
+    "installPrompt": "I'd like to set up the Wiki Lint skill. The source files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These skills have been vetted and shared for use across our organization. Clone it and copy the SKILL.md to .claude/skills/wiki-lint/ and the command to .claude/commands/. This requires an existing knowledge wiki directory with markdown articles. Run /wiki-lint to generate the first health report.",
     "invocation": {
       "command": "/wiki-lint",
       "example": "/wiki-lint"
@@ -804,10 +804,10 @@
     "name": "About Altis",
     "type": "utility",
     "category": "hacks",
-    "summary": "Foundational company context — positioning, methodology, team, and brand voice. Load into Claude sessions or use to generate company descriptions.",
-    "whenToUse": "Before any work that requires Altis positioning or voice — outbound content, advisor consultations, pitch materials, onboarding new team members.",
+    "summary": "Foundational company context \u2014 positioning, methodology, team, and brand voice. Load into Claude sessions or use to generate company descriptions.",
+    "whenToUse": "Before any work that requires Altis positioning or voice \u2014 outbound content, advisor consultations, pitch materials, onboarding new team members.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the About Altis context file to my project. The file is in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. This has been vetted and shared for use across our organization. Clone it and copy about-altis.md to 01-context/ (or your project's context directory). This is a reference document — read it at the start of sessions where company positioning, team, methodology, or traction context matters.",
+    "installPrompt": "I'd like to add the About Altis context file to my project. The file is in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. This has been vetted and shared for use across our organization. Clone it and copy about-altis.md to 01-context/ (or your project's context directory). This is a reference document \u2014 read it at the start of sessions where company positioning, team, methodology, or traction context matters.",
     "requires": [],
     "integrations": [],
     "calibration": {
@@ -824,10 +824,10 @@
     "name": "Altis Team User Manuals",
     "type": "utility",
     "category": "hacks",
-    "summary": "Self-authored working styles for every Altis team member — communication preferences, pet peeves, feedback style, quirks, and leadership dynamics. Used by advisor agents for coaching context.",
+    "summary": "Self-authored working styles for every Altis team member \u2014 communication preferences, pet peeves, feedback style, quirks, and leadership dynamics. Used by advisor agents for coaching context.",
     "whenToUse": "Before any advisor consultation involving team dynamics, or when onboarding and needing to understand how each person works. Automatically injected by the consult-advisor skill at invocation time.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Altis team user manuals. The file is in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. This has been vetted and shared for use across our organization. Clone it and copy user-manuals.md to 03-research/wiki/ (or your project's context directory). This reference file is auto-injected by the consult-advisor skill — no manual loading needed.",
+    "installPrompt": "I'd like to add the Altis team user manuals. The file is in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. This has been vetted and shared for use across our organization. Clone it and copy user-manuals.md to 03-research/wiki/ (or your project's context directory). This reference file is auto-injected by the consult-advisor skill \u2014 no manual loading needed.",
     "requires": [],
     "integrations": [],
     "calibration": {
@@ -852,10 +852,10 @@
     "name": "Altis Brand Guidelines",
     "type": "utility",
     "category": "hacks",
-    "summary": "Complete Altis design system — tokens, typography, colors, icons, logos, patterns, and templates for branded output across web, slides, PDF, and email.",
-    "whenToUse": "Before building any branded output — websites, decks, reports, emails, or Lovable projects. Includes machine-readable tokens, CSS/SCSS/Tailwind builds, and 32 SVG icons.",
+    "summary": "Complete Altis design system \u2014 tokens, typography, colors, icons, logos, patterns, and templates for branded output across web, slides, PDF, and email.",
+    "whenToUse": "Before building any branded output \u2014 websites, decks, reports, emails, or Lovable projects. Includes machine-readable tokens, CSS/SCSS/Tailwind builds, and 32 SVG icons.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Altis brand guidelines and design system. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy the entire design-system/ directory to my project root. It includes tokens.json, brand-guidelines.md, SVG assets, CSS/SCSS builds, and slide/PDF templates. Read brand-guidelines.md for usage rules and tokens.json for the machine-readable token spec.",
+    "installPrompt": "I'd like to set up the Altis brand guidelines and design system. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy the entire design-system/ directory to my project root. It includes tokens.json, brand-guidelines.md, SVG assets, CSS/SCSS builds, and slide/PDF templates. Read brand-guidelines.md for usage rules and tokens.json for the machine-readable token spec.",
     "requires": [],
     "integrations": [],
     "calibration": {
@@ -872,10 +872,10 @@
     "name": "Harrison Chase",
     "type": "advisor",
     "category": "advisors",
-    "summary": "AI architecture red-team grounded in Harrison Chase's context engineering philosophy. Pressure-tests agent design decisions before they become expensive to reverse — probes compaction strategy, harness control, learning layers, autonomy guardrails, and rollback mechanisms.",
+    "summary": "AI architecture red-team grounded in Harrison Chase's context engineering philosophy. Pressure-tests agent design decisions before they become expensive to reverse \u2014 probes compaction strategy, harness control, learning layers, autonomy guardrails, and rollback mechanisms.",
     "whenToUse": "When reviewing agent architecture, evaluating build vs. buy for AI infrastructure, debugging agent reliability, or assessing whether something is really an agent vs. a chain.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Harrison Chase AI advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-harrison-chase.md → .claude/agents/advisor-harrison-chase.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-harrison-chase",
+    "installPrompt": "I'd like to add the Harrison Chase AI advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-harrison-chase.md \u2192 .claude/agents/advisor-harrison-chase.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-harrison-chase",
     "invocation": {
       "command": "/consult advisor-harrison-chase",
       "example": "We're building a research agent that pulls from multiple sources. Current plan: stuff everything into context. What am I missing?"
@@ -890,7 +890,7 @@
         {
           "key": "agent_stack",
           "label": "Your agent stack",
-          "description": "Replace references to Altis's agent infrastructure with your own — which harness, which models, which tools",
+          "description": "Replace references to Altis's agent infrastructure with your own \u2014 which harness, which models, which tools",
           "required": true
         }
       ]
@@ -921,7 +921,7 @@
     "summary": "Chief Sales Officer of Gartner at peak scale. Prevents drift into low-leverage, non-scaling patterns that look attractive early but break later. Red-teams every decision against compounding growth, analyst leverage, reusable IP, and retention mechanics.",
     "whenToUse": "When evaluating GTM strategy, pricing decisions, or whether bespoke client work should become scalable product. Especially useful for research and data businesses.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Gartner CSO advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-gartner-cso.md → .claude/agents/advisor-gartner-cso.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-gartner-cso",
+    "installPrompt": "I'd like to add the Gartner CSO advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-gartner-cso.md \u2192 .claude/agents/advisor-gartner-cso.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-gartner-cso",
     "invocation": {
       "command": "/consult advisor-gartner-cso",
       "example": "We're doing bespoke reports for each client. Should we keep customizing or build a standard product?"
@@ -964,9 +964,9 @@
     "type": "advisor",
     "category": "research",
     "summary": "Chief Sales Officer of PitchBook circa 2014-2016. Lived through zero-revenue crisis years, 200+ investor rejections, and growth to $50M+ ARR on $3.7M total funding. Pattern-matches on what actually worked vs. what sounds good for early-stage data businesses.",
-    "whenToUse": "When building a data business from scratch — coverage vs. speed tradeoffs, competitive positioning, capital allocation, or when you need a gut check on whether perception of completeness matters more than actual completeness.",
+    "whenToUse": "When building a data business from scratch \u2014 coverage vs. speed tradeoffs, competitive positioning, capital allocation, or when you need a gut check on whether perception of completeness matters more than actual completeness.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the PitchBook CSO advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-founding-pitchbook-cso.md → .claude/agents/advisor-founding-pitchbook-cso.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-founding-pitchbook-cso",
+    "installPrompt": "I'd like to add the PitchBook CSO advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-founding-pitchbook-cso.md \u2192 .claude/agents/advisor-founding-pitchbook-cso.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-founding-pitchbook-cso",
     "invocation": {
       "command": "/consult advisor-founding-pitchbook-cso",
       "example": "Our data coverage is only 30% of the market. Should we wait to launch until it's more complete?"
@@ -1009,9 +1009,9 @@
     "type": "advisor",
     "category": "leadership",
     "summary": "Customer discovery coach that distinguishes real signal from polite noise. Forces specificity about past behavior over future hypotheticals. Scores every customer conversation on evidence quality, bias control, and commitment clarity.",
-    "whenToUse": "Before and after customer conversations — interview prep, post-call debriefs, and evaluating whether what you heard was signal or politeness.",
+    "whenToUse": "Before and after customer conversations \u2014 interview prep, post-call debriefs, and evaluating whether what you heard was signal or politeness.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Mom Test customer discovery advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-mom-test.md → .claude/agents/advisor-mom-test.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-mom-test",
+    "installPrompt": "I'd like to add the Mom Test customer discovery advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-mom-test.md \u2192 .claude/agents/advisor-mom-test.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-mom-test",
     "invocation": {
       "command": "/consult advisor-mom-test",
       "example": "I just had a call where they said they loved the product. Help me figure out if that was real signal or politeness."
@@ -1026,14 +1026,14 @@
         {
           "key": "company_context",
           "label": "Company and product context",
-          "description": "Replace the Altis product description and customer persona with your own — this shapes the Commitment Ladder sizing",
+          "description": "Replace the Altis product description and customer persona with your own \u2014 this shapes the Commitment Ladder sizing",
           "required": true
         }
       ]
     },
     "persona": {
       "role": "Customer Discovery Coach",
-      "voice": "Direct, unflinching, not here to make you feel good about conversations — here to make sure you're building something people will pay for",
+      "voice": "Direct, unflinching, not here to make you feel good about conversations \u2014 here to make sure you're building something people will pay for",
       "lenses": [
         "Three Rules (Mom Test)",
         "Three-Question Debrief",
@@ -1053,10 +1053,10 @@
     "name": "Tegus CIO",
     "type": "advisor",
     "category": "advisors",
-    "summary": "GTM-first technical architecture advisor. Former Tegus data platform executive who prioritizes go-to-market above all else — every technical decision is evaluated through whether it accelerates sales or qualification. Configuration over hardcoding, CRM as golden record.",
+    "summary": "GTM-first technical architecture advisor. Former Tegus data platform executive who prioritizes go-to-market above all else \u2014 every technical decision is evaluated through whether it accelerates sales or qualification. Configuration over hardcoding, CRM as golden record.",
     "whenToUse": "When evaluating build vs. buy, designing user gating and qualification flows, reviewing developer recommendations that might slow GTM, or architecting CRM/data sync pipelines.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Tegus CIO advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-founding-tegus-cio.md → .claude/agents/advisor-founding-tegus-cio.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-founding-tegus-cio",
+    "installPrompt": "I'd like to add the Tegus CIO advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-founding-tegus-cio.md \u2192 .claude/agents/advisor-founding-tegus-cio.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nTry it with: /consult advisor-founding-tegus-cio",
     "invocation": {
       "command": "/consult advisor-founding-tegus-cio",
       "example": "Our dev wants to hardcode pricing tiers in the schema. I want a config table. Who's right?"
@@ -1071,7 +1071,7 @@
         {
           "key": "tech_stack",
           "label": "Your tech stack",
-          "description": "Replace the Knowledge Context section with your own stack — CMS, database, CRM, email, auth, scheduling tools",
+          "description": "Replace the Knowledge Context section with your own stack \u2014 CMS, database, CRM, email, auth, scheduling tools",
           "required": true
         }
       ]
@@ -1099,9 +1099,9 @@
     "type": "tool",
     "category": "hacks",
     "summary": "Transform any message into Ben Sun's communication style. Supports email, Slack, and LinkedIn channels. Uses Ben's actual voice patterns, stories, and data anchors.",
-    "whenToUse": "When drafting outbound communications in Ben's voice — cold intros, LP updates, Slack messages, LinkedIn posts.",
+    "whenToUse": "When drafting outbound communications in Ben's voice \u2014 cold intros, LP updates, Slack messages, LinkedIn posts.",
     "author": "Christopher Freeberg",
-    "installPrompt": "This is a hosted tool at https://altis-primary-marketplace.vercel.app/tools/ben-voice — no installation needed. Requires board-gated auth.",
+    "installPrompt": "This is a hosted tool at https://altis-primary-marketplace.vercel.app/tools/ben-voice \u2014 no installation needed. Requires board-gated auth.",
     "invocation": {
       "command": "Visit /tools/ben-voice",
       "example": "Write a cold intro to a Series A fund about Altis"
@@ -1178,5 +1178,40 @@
     "status": "beta",
     "version": "1.0.0",
     "updatedAt": "2026-04-20"
+  },
+  {
+    "id": "advisor-design-review",
+    "slug": "advisor-design-review",
+    "name": "Design Review",
+    "type": "advisor",
+    "category": "advisors",
+    "summary": "Senior product designer reviewing your output against the Altis design system. Audits live URLs, screenshots, or component code for hierarchy, spacing, typography, color, and AI-slop patterns. Every finding maps back to a specific token in tokens.json or rule in brand-guidelines.md \u2014 not generic best practices.",
+    "whenToUse": "Before declaring a UI done. Catches off-brand colors, wrong typography, AI design slop (icon-in-circles, decorative blobs, uniform large radius, generic hero copy), and the patterns engineers stop seeing after iteration. Adapted from gstack's design-review v2.0 with the harness stripped and the checklist grounded in Altis tokens.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "I'd like to add the Design Review advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-design-review.md \u2192 .claude/agents/advisor-design-review.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nThe advisor reads design-system files at runtime. Default paths point to the Altis vault (~/Desktop/altis-brain/design-system/tokens.json and brand-guidelines.md) \u2014 if you're using it in another project, edit the 'Always read first' section of agents/advisor-design-review.md to point at your own design tokens.\n\nTry it with: /consult advisor-design-review",
+    "invocation": {
+      "command": "/consult advisor-design-review",
+      "example": "Review https://my-app.vercel.app/dashboard \u2014 focus on the hero and the data table."
+    },
+    "requires": [
+      "consult-advisor"
+    ],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "persona": {
+      "role": "Senior Product Designer",
+      "voice": "Opinionated, designer's eye, reacts before justifying, ties findings to tokens not generic best practices",
+      "lenses": [
+        "Design System Compliance",
+        "First-Impression Critique",
+        "AI-Slop Detection",
+        "Altis-Native Editorial Heuristics"
+      ]
+    },
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-04-29"
   }
 ]
