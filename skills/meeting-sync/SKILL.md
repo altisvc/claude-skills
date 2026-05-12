@@ -23,9 +23,27 @@ stages:
 
 ## Purpose
 
-Replace the Granola -> Zapier -> Slack pipeline with a direct Granola MCP integration. Every meeting gets synced, classified, and mined for follow-ups. User decision points are downstream — which follow-ups to act on, who owns them, whether to share as a team knowledge asset.
+Replace the Granola -> Zapier -> Slack pipeline with a direct Granola public API integration. Every meeting gets synced, classified, and mined for follow-ups. User decision points are downstream — which follow-ups to act on, who owns them, whether to share as a team knowledge asset.
 
 **This is NOT a selection flow.** All unsynced meetings get pulled automatically. The user's attention goes where it matters: confirming follow-ups and tagging for GitHub.
+
+---
+
+## Prerequisites
+
+**Granola personal API key** at `~/.granola/api-key` (mode 600, `grn_*` token).
+
+Generate one in the Granola desktop app: Settings → API (or Developer / Integrations). Save it to disk:
+
+```bash
+mkdir -p ~/.granola && chmod 700 ~/.granola
+echo "grn_..." > ~/.granola/api-key
+chmod 600 ~/.granola/api-key
+```
+
+Both the interactive `/meeting-sync` and the overnight cron read from this file. There is no fallback — if the file is missing, both fail with a clear error pointing here.
+
+**Historical note (May 7 2026):** Granola desktop v7.162.6 migrated tokens into encrypted storage and stopped writing the cleartext `supabase.json`. All third-party Granola tools that depended on the cleartext token (the legacy `granola-cli`, the community `granola-mcp` MCP server, our own previous direct-curl shortcut) broke simultaneously. The public API + personal token is the supported path going forward and is immune to that class of break.
 
 ---
 
@@ -63,7 +81,7 @@ On invocation, check for `02-projects/operations/overnight/meeting-sync-staged.j
 
 ### If staged data is stale or missing
 
-Fall back to the standard Stages 1-3 execution (full sync from Granola MCP).
+Fall back to the standard Stages 1-3 execution (full sync from the Granola public API).
 
 ### Staged file format
 
@@ -74,6 +92,7 @@ Fall back to the standard Stages 1-3 execution (full sync from Granola MCP).
   "meetings": [
     {
       "granola_id": "<uuid>",
+      "granola_public_id": "<not_*>",
       "title": "<title>",
       "date": "<YYYY-MM-DD>",
       "classification": "<type>",
@@ -87,6 +106,8 @@ Fall back to the standard Stages 1-3 execution (full sync from Granola MCP).
   ]
 }
 ```
+
+**`granola_id` vs `granola_public_id`:** `granola_id` is the legacy UUID (e.g. `8e84bfa4-01be-4c54-a278-fdaba12e900d`) extracted from each note's `web_url`; it remains the primary key in `granola-sync.json` for backward compatibility with the 230+ pre-existing entries. `granola_public_id` is the new public API ID (e.g. `not_LlKlrWWreCxKEv`) carried as a field on each entry — useful for re-fetching from the public API.
 
 ---
 
@@ -108,7 +129,9 @@ Structure:
       "meeting_type": "investor",
       "filepath": "04-meetings/2026-02-27 Meeting Title.md",
       "attendee_emails": ["person@fund.com"],
-      "github_flagged": false
+      "github_flagged": false,
+      "granola_public_id": "not_LlKlrWWreCxKEv",
+      "sync_source": "public-api.granola.ai/v1/notes"
     }
   },
   "ignored_meetings": {
@@ -124,7 +147,7 @@ Structure:
 
 ## Meeting Types
 
-Classification uses LLM inference from title + participants + transcript content. No Granola templates required.
+Classification uses LLM inference from title + participants + Granola's `summary_markdown` (the public API does not expose raw transcripts — see Stage 2 for context). No Granola templates required.
 
 | Type | Detection Signals | Template |
 |------|------------------|----------|
@@ -151,10 +174,11 @@ Classification uses LLM inference from title + participants + transcript content
 **Execution:**
 
 1. Read `02-projects/operations/granola-sync.json` (create empty state if file doesn't exist)
-2. Call `mcp__granola__find_recent_meetings` with limit=50
-3. Filter to last 14 days (or `--days=N`)
-4. Diff against synced_meetings to find unsynced meetings
-5. If zero new meetings: report "No new meetings since last sync on [date]" and exit
+2. Read the API key from `~/.granola/api-key` — hard-fail with a setup pointer if missing.
+3. `GET https://public-api.granola.ai/v1/notes?limit=100&created_after=<since-iso>` with `Authorization: Bearer <key>`. Paginate via `hasMore`+`cursor` until exhausted. (Lookback default 14 days; override via `--days=N`.)
+4. For each note returned by the list endpoint, fetch `GET https://public-api.granola.ai/v1/notes/{id}` to get `web_url`. Extract the legacy UUID with the regex `/d/([a-f0-9-]{36})` against `web_url`.
+5. Diff each extracted UUID against `synced_meetings` AND `ignored_meetings` keys. Drop matches. The remainder is the unsynced set.
+6. If zero new meetings: report "No new meetings since last sync on [date]" and exit.
 
 **Checkpoint output:**
 ```
@@ -180,13 +204,13 @@ Syncing all [N] meetings...
 
 For each unsynced meeting:
 
-1. Call `mcp__granola__get_transcript` with the meeting ID
-2. Classify meeting type using title + participants + transcript content (see Meeting Types table)
+1. The per-note details (calendar_event, attendees, summary_markdown, web_url) were already fetched in Stage 1 step 4 via `GET https://public-api.granola.ai/v1/notes/{id}`. Re-use that response — don't refetch.
+2. Classify meeting type using title + participants + `summary_markdown` content (see Meeting Types table). **The public API does not return raw transcripts** (`transcript: None` always); `summary_markdown` is Granola's pre-structured AI summary and is the input downstream agents read.
 3. **Extract attendee emails** for the `attendee_emails` frontmatter field:
-   - **Primary source:** Granola's `attendees` array from `find_recent_meetings` — filter for valid email addresses, exclude internal domains (`@altis.vc`, `@primary.vc`, `@deck.support`)
+   - **Primary source:** the `attendees` array from `GET /v1/notes/{id}` — filter for valid email addresses, exclude internal domains (`@altis.vc`, `@primary.vc`, `@deck.support`). Also pull from `calendar_event.invitees[].email` and `calendar_event.organiser`.
    - **Fallback (Calendly meetings):** If Granola has no external emails, run the Calendly lookup script:
      ```bash
-     cd /Users/preparedmindchris/GTM_Agents && node scripts/calendly-email-lookup.js --date YYYY-MM-DD --title "meeting title substring"
+     cd "${GTM_AGENTS_DIR:-$HOME/GTM_Agents}" && node scripts/calendly-email-lookup.js --date YYYY-MM-DD --title "meeting title substring"
      ```
      The script returns JSON with `{ event, start, invitees: [{ email, name }] }`. Match events to meetings by start time (±1 hour). Use the `email` values for `attendee_emails`.
    - **If neither source has emails:** Leave `attendee_emails` blank. Do NOT guess emails from names. Agent 5 will prompt Christopher to add them manually.
@@ -201,12 +225,13 @@ type: [meeting_type]
 participants: [comma-separated names with affiliations]
 attendee_emails: [comma-separated external emails from step 3, or blank if none found]
 github: pending
-granola_id: [UUID]
+granola_id: [legacy UUID extracted from web_url]
+granola_public_id: [not_* ID from public API]
 ---
 
 ## Summary
 
-[LLM-generated 3-5 sentence summary from transcript]
+[LLM-generated 3-5 sentence summary derived from Granola's summary_markdown]
 
 ## Key Intelligence
 
@@ -218,18 +243,24 @@ intelligence; team standups may have none. Discovery meetings are intelligence-h
 
 [Confirmed follow-ups after user review — or "None" with brief explanation]
 
+## Granola Source Summary
+
+[Verbatim `summary_markdown` from the public API — preserved for downstream re-extraction
+and for users who want to see Granola's structured digest without re-fetching.]
+
 ## Transcript
 
-Available via Granola MCP: meeting ID `[UUID]`
+Available via Granola web UI: `[web_url]`
+Public API ID: `[not_*]` (granola_id: `[UUID]`)
 ```
 
-**Note on transcripts:** Do NOT embed full transcripts in the meeting file. Store the Granola meeting ID and reference via MCP. This keeps files small and avoids duplication. The transcript is always available on-demand.
+**Note on transcripts:** The Granola public API does NOT expose raw transcripts (`transcript: None` always). Use `summary_markdown` as the input to extraction agents and as the persisted content in the meeting file's "Granola Source Summary" section. If a raw transcript is genuinely needed for downstream work, the Granola web UI link in the file is the escape hatch.
 
 4. File naming: `04-meetings/YYYY-MM-DD [Title].md`
    - Sanitize title: remove special characters, truncate to 60 chars
    - If duplicate filename, append ` (2)`, ` (3)`, etc.
 
-**Performance note:** If syncing 5+ meetings, process sequentially. The MCP transcript fetch is the bottleneck. If this becomes too slow (>5 min for typical sync), we'll add a Python script layer. For now, MCP is sufficient.
+**Performance note:** The public API list endpoint is one call regardless of meeting count; per-note GETs can be fired in parallel (10+ concurrent is fine). The overnight cron and interactive flow should both parallelize the per-note fetches rather than serialize them.
 
 **After ALL meetings are synced:**
 
@@ -245,7 +276,7 @@ Prospect meetings with attendee emails ready for HubSpot sync:
 Run Agent 5 --sync for these? (This logs meeting notes to HubSpot contacts and enables decay tracking.)
 ```
 
-If Christopher confirms, run: `cd /tmp/GTM_Agents && node agent-5-post-meeting.js --sync "<filepath>"` for each meeting. If the repo isn't cloned, clone it first: `git clone git@github.com:altisvc/GTM_Agents.git /tmp/GTM_Agents && cp ~/Desktop/altis-brain/.env.gtm-agents /tmp/GTM_Agents/.env && cd /tmp/GTM_Agents && npm install`
+If Christopher confirms, run: `cd /tmp/GTM_Agents && node agent-5-post-meeting.js --sync "<filepath>"` for each meeting. If the repo isn't cloned, clone it first: `git clone git@github.com:altisvc/GTM_Agents.git /tmp/GTM_Agents && cp ~/altis-brain/.env.gtm-agents /tmp/GTM_Agents/.env && cd /tmp/GTM_Agents && npm install`
 
 **Checkpoint output:**
 ```
@@ -352,7 +383,7 @@ For each extracted follow-up, create a Trello card:
 - **API:** Direct Trello REST API (not the GTM_Agents lib, which is hardcoded to a different board)
 
 ```bash
-cd /Users/preparedmindchris/GTM_Agents && node -e "
+cd "${GTM_AGENTS_DIR:-$HOME/GTM_Agents}" && node -e "
 require('dotenv').config();
 const KEY = process.env.TRELLO_API_KEY;
 const TOKEN = process.env.TRELLO_TOKEN;
@@ -440,7 +471,7 @@ For each prospect meeting assessed as **Deprioritize** or **Pass** (from the ass
 1. Find the matching card on the Pipeline board (`69c93a4cec8a0921d74a693d`) by firm name or email tag
 2. Move it to the corresponding list (Deprioritize or Pass) and clear the due date:
    ```bash
-   cd /Users/preparedmindchris/GTM_Agents && node -e "
+   cd "${GTM_AGENTS_DIR:-$HOME/GTM_Agents}" && node -e "
    require('dotenv').config();
    const trello = require('./lib/trello');
    (async () => {
@@ -474,7 +505,7 @@ For each prospect meeting assessed as **Pursue** with follow-up data (contact_em
 **HubSpot write method:** Use the same `hubspot.batchUpdate()` from the GTM_Agents lib, or direct API call:
 
 ```bash
-cd /Users/preparedmindchris/GTM_Agents && node -e "
+cd "${GTM_AGENTS_DIR:-$HOME/GTM_Agents}" && node -e "
   require('dotenv').config();
   const hubspot = require('./lib/hubspot');
   (async () => {
@@ -500,7 +531,7 @@ cd /Users/preparedmindchris/GTM_Agents && node -e "
 **Chain to Luigi:** After all HubSpot writebacks complete, run Luigi's scan so the fresh follow-up data flows through to Pipeline board cards immediately — don't wait for the nightly cron.
 
 ```bash
-cd /Users/preparedmindchris/GTM_Agents && node agent-luigi-pipeline.js --scan
+cd "${GTM_AGENTS_DIR:-$HOME/GTM_Agents}" && node agent-luigi-pipeline.js --scan
 ```
 
 Report Luigi's output inline (discoveries, overdue alerts, chase updates) so Christopher sees the full pipeline state before ending the sync.
@@ -631,10 +662,21 @@ These were identified during the first production run and are now encoded in the
 
 ## Reference
 
-**Granola MCP tools:**
-- `mcp__granola__find_recent_meetings` — list recent meetings
-- `mcp__granola__search_meetings` — search by title/attendee/content
-- `mcp__granola__get_transcript` — full transcript by meeting ID
+**Granola public API (`https://public-api.granola.ai`):**
+- `GET /v1/notes?limit=N&created_after=<iso>` — list notes; paginate via `hasMore`+`cursor`
+- `GET /v1/notes/{id}` — full note: `id, title, web_url, owner, created_at, updated_at, calendar_event, attendees, folder_membership, summary_text, summary_markdown` (note: `transcript` field is always `None`)
+- Auth header: `Authorization: Bearer <key from ~/.granola/api-key>`
+- Docs: https://docs.granola.ai
+
+**ID bridge between legacy and public API:**
+- Legacy UUID format (e.g. `8e84bfa4-01be-4c54-a278-fdaba12e900d`) — used as primary key in `granola-sync.json`
+- Public API ID format (e.g. `not_LlKlrWWreCxKEv`) — returned by the public API
+- Bridge: regex `/d/([a-f0-9-]{36})` against `web_url` extracts the legacy UUID from any public API response
+
+**Deprecated (do not use):**
+- `mcp__granola__*` — third-party MCP server; auth-dead since May 7 2026
+- `granola` (homebrew `granola-cli` v0.2.0) — same auth-dead issue
+- Reading `~/Library/Application Support/Granola/supabase.json` directly — frozen since May 7 2026 when Granola moved tokens to encrypted storage
 
 **Extraction agents (Stage 3):**
 - `.claude/agents/meeting-sync-task-extractor.md` — "Who committed to what?"
