@@ -1225,5 +1225,25 @@
     "status": "beta",
     "version": "1.0.0",
     "updatedAt": "2026-05-12"
+  },
+  {
+    "id": "memo-writer-single-company",
+    "slug": "memo-writer-single-company",
+    "name": "Memo Writer (Single Company)",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "What This Does\nProse-driven investment memo in 11 sections: Executive Summary, Key Debates, Altis View (What Makes/Breaks the Deal), Market Overview, TAM/SAM, Company Overview, Product & GTM, Competitive Dynamics, Customer Signals, Team & Culture, Legal Notices. Calibrated on GC AI, Sandstone, and DeepJudge memos (March–April 2026).",
+    "whenToUse": "What It Produces\n~10-page prose memo with bolded Key Debate questions, italicized block quotes, WMOBTD bullets, and standard legal boilerplate. Bull/bear threaded through debates, Altis view as clear judgment.",
+    "author": "jason@altis.vc",
+    "installPrompt": "Claude Code\nRun /memo-writer in Claude Code with the PDF path. The skill will iteratively build all 11 sections with Altis voice and quote attribution conventions.",
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-05-12"
   }
 ]
