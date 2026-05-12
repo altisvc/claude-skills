@@ -65,8 +65,8 @@
     },
     "badge": "core",
     "status": "stable",
-    "version": "6.4",
-    "updatedAt": "2026-05-11"
+    "version": "6.5",
+    "updatedAt": "2026-05-12"
   },
   {
     "id": "checkin",
@@ -343,8 +343,8 @@
     },
     "badge": "new",
     "status": "stable",
-    "version": "2.105",
-    "updatedAt": "2026-05-11"
+    "version": "2.106",
+    "updatedAt": "2026-05-12"
   },
   {
     "id": "advisor-ben-sun",
