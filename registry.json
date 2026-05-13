@@ -1205,5 +1205,30 @@
     "status": "stable",
     "version": "1.0",
     "updatedAt": "2026-04-29"
+  },
+  {
+    "id": "story-writer-single-company",
+    "slug": "story-writer-single-company",
+    "name": "story-writer-single-company",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "Reads a single-company Altis diligence deck and produces a ≤6 paragraph narrative summary — Altis voice, data-grounded, opinionated.",
+    "whenToUse": "The output distills the entire report into ≤6 paragraphs a VC partner can read in 2 minutes and walk away with a clear view of the opportunity, product thesis, growth dynamics, risks, team, and core investment question.",
+    "author": "jason@altis.vc",
+    "installPrompt": "I would like to install the story-writer-single-company skill from the Altis skills marketplace.\nSource URL: https://github.com/altisvc/claude-skills/tree/main/skills/story-writer-single-company\n\nPrerequisites:\n- No prerequisites declared.\n\nInstallation steps:\n1. Clone or pull https://github.com/altisvc/claude-skills.\n2. Copy `skills/story-writer-single-company/SKILL.md` → `.claude/skills/story-writer-single-company/SKILL.md` in my project.\n3. Copy `skills/story-writer-single-company/command.md` → `.claude/commands/story-writer-single-company.md` so Claude Code can resolve `/story-writer-single-company`.\n\nCalibration:\n- No calibration declared.\n\nTest:\n- Confirm the slash command `/story-writer-single-company` resolves (restart the Claude Code session if needed).\n- Run example invocation: `/story-writer-single-company`.",
+    "invocation": {
+      "command": "/story-writer-single-company",
+      "example": "/story-writer-single-company"
+    },
+    "requires": [],
+    "integrations": [],
+    "prerequisites": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-05-13"
   }
 ]
