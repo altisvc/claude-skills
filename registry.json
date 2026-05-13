@@ -1205,45 +1205,5 @@
     "status": "stable",
     "version": "1.0",
     "updatedAt": "2026-04-29"
-  },
-  {
-    "id": "story-writer-single-company",
-    "slug": "story-writer-single-company",
-    "name": "Story Writer (Single Company)",
-    "type": "skill",
-    "category": "productivity",
-    "summary": "What This Does\nReads a single-company Altis diligence deck (PDF or workspace page) and produces a concise narrative summary. The output distills the entire report into ≤6 paragraphs a VC partner can read in 2 minutes and walk away with a clear view of the opportunity, product thesis, growth dynamics, risks, team, and core investment question.",
-    "whenToUse": "What It Produces\n≤6-paragraph narrative in Altis voice. Structure: (1) Market + company position, (2) Product architecture + defensibility, (3) Growth dynamics + headwinds, (4) Valuation + expansion paths, (5) Team + culture, (6) Investment question. Target length ~3,500–4,000 chars.",
-    "author": "jason@altis.vc",
-    "installPrompt": "Claude Code\nRun /story-writer in Claude Code with the PDF path. Iteratively edit with the AI — you drive substance, it handles structure and fact-checking.",
-    "requires": [],
-    "integrations": [],
-    "calibration": {
-      "level": "none"
-    },
-    "badge": "new",
-    "status": "beta",
-    "version": "1.0.0",
-    "updatedAt": "2026-05-12"
-  },
-  {
-    "id": "memo-writer-single-company",
-    "slug": "memo-writer-single-company",
-    "name": "Memo Writer (Single Company)",
-    "type": "skill",
-    "category": "productivity",
-    "summary": "What This Does\nProse-driven investment memo in 11 sections: Executive Summary, Key Debates, Altis View (What Makes/Breaks the Deal), Market Overview, TAM/SAM, Company Overview, Product & GTM, Competitive Dynamics, Customer Signals, Team & Culture, Legal Notices. Calibrated on GC AI, Sandstone, and DeepJudge memos (March–April 2026).",
-    "whenToUse": "What It Produces\n~10-page prose memo with bolded Key Debate questions, italicized block quotes, WMOBTD bullets, and standard legal boilerplate. Bull/bear threaded through debates, Altis view as clear judgment.",
-    "author": "jason@altis.vc",
-    "installPrompt": "Claude Code\nRun /memo-writer in Claude Code with the PDF path. The skill will iteratively build all 11 sections with Altis voice and quote attribution conventions.",
-    "requires": [],
-    "integrations": [],
-    "calibration": {
-      "level": "none"
-    },
-    "badge": "new",
-    "status": "beta",
-    "version": "1.0.0",
-    "updatedAt": "2026-05-12"
   }
 ]
