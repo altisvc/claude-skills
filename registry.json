@@ -1230,5 +1230,30 @@
     "status": "beta",
     "version": "1.0.0",
     "updatedAt": "2026-05-13"
+  },
+  {
+    "id": "memo-writer-single-company",
+    "slug": "memo-writer-single-company",
+    "name": "memo-writer-single-company",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "Investment memo skill calibrated on Altis published research. Prose-driven, ~10 pages, Key Debates without Bull/Bear labels, bold inline sub-headers, one quote per debate.",
+    "whenToUse": "~10-page prose memo with bolded Key Debate questions, italicized block quotes, WMOBTD bullets, and standard legal boilerplate. Bull/bear threaded through debates, Altis view as clear judgment.",
+    "author": "jason@altis.vc",
+    "installPrompt": "I would like to install the memo-writer-single-company skill from the Altis skills marketplace.\nSource URL: https://github.com/altisvc/claude-skills/tree/main/skills/memo-writer-single-company\n\nPrerequisites:\n- No prerequisites declared.\n\nInstallation steps:\n1. Clone or pull https://github.com/altisvc/claude-skills.\n2. Copy `skills/memo-writer-single-company/SKILL.md` → `.claude/skills/memo-writer-single-company/SKILL.md` in my project.\n3. Copy `skills/memo-writer-single-company/command.md` → `.claude/commands/memo-writer-single-company.md` so Claude Code can resolve `/memo-writer-single-company`.\n\nCalibration:\n- No calibration declared.\n\nTest:\n- Confirm the slash command `/memo-writer-single-company` resolves (restart the Claude Code session if needed).\n- Run example invocation: `/memo-writer-single-company`.",
+    "invocation": {
+      "command": "/memo-writer-single-company",
+      "example": "/memo-writer-single-company"
+    },
+    "requires": [],
+    "integrations": [],
+    "prerequisites": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-05-13"
   }
 ]
