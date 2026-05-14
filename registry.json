@@ -65,8 +65,8 @@
     },
     "badge": "core",
     "status": "stable",
-    "version": "6.9",
-    "updatedAt": "2026-05-13"
+    "version": "6.10",
+    "updatedAt": "2026-05-14"
   },
   {
     "id": "checkin",
@@ -177,8 +177,8 @@
     },
     "badge": "core",
     "status": "stable",
-    "version": "2.2",
-    "updatedAt": "2026-05-13"
+    "version": "2.3",
+    "updatedAt": "2026-05-14"
   },
   {
     "id": "trello-sync",
