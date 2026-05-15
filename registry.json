@@ -701,10 +701,10 @@
     "name": "Terminal Color Cycler",
     "type": "utility",
     "category": "hacks",
-    "summary": "Every new Terminal.app tab gets a distinct pastel background. Queries open tabs first and skips colors already in use — so you'll never end up with two Navy windows again. 20-color palette (16 pastels, 4 darks as fallback). Pure shell, no dependencies beyond zsh + Terminal.app.",
+    "summary": "Every new Terminal.app tab gets a distinct background. Queries open tabs first and skips colors already in use — so you'll never end up with two Navy windows again. 18-color palette interleaved 2:1 pastel:dark with hue-stepped entries (no near-duplicate cousins). Pure shell, no dependencies beyond zsh + Terminal.app.",
     "whenToUse": "When you keep losing track of which Terminal window is which because they all blend together. Especially useful for people running multiple Claude Code sessions in parallel.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to set up the Terminal Color Cycler. The script is in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it, copy scripts/terminal-color-cycler.sh to ~/.claude/scripts/terminal-color-cycler.sh, then add this line to my ~/.zshrc:\n\n[ -f ~/.claude/scripts/terminal-color-cycler.sh ] && source ~/.claude/scripts/terminal-color-cycler.sh\n\nThe script gates itself to interactive zsh shells running in Apple Terminal on macOS — safe to source from any .zshrc. Open a new Terminal tab to verify it picks a fresh pastel.",
+    "installPrompt": "I'd like to set up the Terminal Color Cycler. The script is in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it, copy scripts/terminal-color-cycler.sh to ~/.claude/scripts/terminal-color-cycler.sh, then add this line to my ~/.zshrc:\n\n[ -f ~/.claude/scripts/terminal-color-cycler.sh ] && source ~/.claude/scripts/terminal-color-cycler.sh\n\nThe script gates itself to interactive zsh shells running in Apple Terminal on macOS — safe to source from any .zshrc. Open a new Terminal tab to verify it picks a fresh color.",
     "invocation": {
       "command": "Automatic",
       "example": "Open a new Terminal tab — it gets a distinct pastel background"
@@ -725,8 +725,8 @@
     },
     "badge": "new",
     "status": "stable",
-    "version": "2.0",
-    "updatedAt": "2026-05-11"
+    "version": "2.1",
+    "updatedAt": "2026-05-15"
   },
   {
     "id": "clipboard-cleaner",

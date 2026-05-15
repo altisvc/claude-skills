@@ -1,10 +1,11 @@
 #!/usr/bin/env zsh
 # Terminal Color Cycler — gives every new Terminal.app tab a distinct background
 #
-# Picks a pastel that no other open Terminal tab is currently using, so each
-# window is visually distinct at a glance. Pastels listed first → preferred;
-# darks are reserved as fallback when every pastel is taken. Round-robin kicks
-# in only if every palette color is in use.
+# Picks a color that no other open Terminal tab is currently using, so each
+# window is visually distinct at a glance. Palette is interleaved 2:1
+# pastel:dark with hue-spaced entries — adjacent slots are always in
+# different hue families. Round-robin kicks in only if every palette color is
+# in use.
 #
 # Install: copy this file to ~/.claude/scripts/terminal-color-cycler.sh and add
 # this line to ~/.zshrc:
@@ -29,28 +30,27 @@ __terminal_color_cycle() {
   # BG components are 0-255 (multiplied by 257 for 16-bit AppleScript later)
   # FG components are already 16-bit (3276 = light text, 62965 = dark text)
   local BG_COLORS=(
-    # Pastels (preferred)
-    "200 215 235   3276 3276 3276"      # Sky blue
-    "235 215 195   3276 3276 3276"      # Peach
-    "210 200 230   3276 3276 3276"      # Lilac
-    "195 230 210   3276 3276 3276"      # Seafoam
-    "240 225 195   3276 3276 3276"      # Buttercream
-    "225 200 215   3276 3276 3276"      # Rose
-    "215 230 200   3276 3276 3276"      # Mint
-    "230 210 235   3276 3276 3276"      # Lavender
-    "245 220 210   3276 3276 3276"      # Apricot
-    "200 225 230   3276 3276 3276"      # Powder blue
-    "225 215 195   3276 3276 3276"      # Sand
-    "215 225 240   3276 3276 3276"      # Periwinkle
-    "230 235 200   3276 3276 3276"      # Honeydew
-    "240 215 220   3276 3276 3276"      # Blush
-    "210 235 225   3276 3276 3276"      # Spearmint
-    "220 220 240   3276 3276 3276"      # Wisteria
-    # Darks (only used if every pastel is taken)
-    "3 15 31       62965 62965 62965"   # Navy
-    "40 15 50      62965 62965 62965"   # Purple
-    "5 40 35       62965 62965 62965"   # Teal
-    "15 15 40      62965 62965 62965"   # Deep indigo
+    # Interleaved 2:1 pastel:dark. Pastels are 30°-stepped around the hue wheel
+    # (no near-duplicates); darks are 60°-stepped. Adjacent slots are always in
+    # different hue families so the first few open tabs land visibly distinct.
+    "245 200 200   3276 3276 3276"      # Coral (H~0)
+    "200 235 200   3276 3276 3276"      # Mint (H~120)
+    "25 30 80      62965 62965 62965"   # Navy (H~240)
+    "240 225 195   3276 3276 3276"      # Buttercream (H~50)
+    "210 210 240   3276 3276 3276"      # Periwinkle (H~240)
+    "90 30 40      62965 62965 62965"   # Burgundy (H~0)
+    "215 235 195   3276 3276 3276"      # Lime pastel (H~90)
+    "220 200 240   3276 3276 3276"      # Lilac (H~270)
+    "20 65 70      62965 62965 62965"   # Teal (H~180)
+    "195 235 215   3276 3276 3276"      # Seafoam (H~150)
+    "245 200 220   3276 3276 3276"      # Rose (H~330)
+    "70 65 30      62965 62965 62965"   # Olive (H~60)
+    "195 230 235   3276 3276 3276"      # Aqua (H~180)
+    "240 200 230   3276 3276 3276"      # Pink-purple (H~300)
+    "30 70 45      62965 62965 62965"   # Forest (H~120)
+    "200 215 235   3276 3276 3276"      # Sky blue (H~210)
+    "240 215 195   3276 3276 3276"      # Peach (H~25)
+    "70 30 80      62965 62965 62965"   # Royal purple (H~280)
   )
 
   local MY_TTY=$(tty)
