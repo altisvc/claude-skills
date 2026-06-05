@@ -1,37 +1,51 @@
 {
   "font": {
-    "primary": {
-      "$value": "Inter",
+    "sans": {
+      "$value": "ABC Diatype",
       "$type": "fontFamily",
-      "comment": "Body text, bullets, captions, UI elements. Native Google Slides font."
+      "comment": "Primary / global default. Set on body — inherited everywhere unless overridden, including most headings and company names. Licensed local webfont (public/fonts/abc-diatype-variable.woff2); NOT a Google/Slides font."
     },
-    "heading": {
-      "$value": "Inter Tight",
+    "ui": {
+      "$value": "DM Sans",
       "$type": "fontFamily",
-      "comment": "Headlines, section headers, slide titles. Native Google Slides font."
+      "comment": "Most explicitly-applied font — UI copy, form fields, dialog body, labels, and hero/display headlines (font-dm-sans). Free Google font, available in Google Slides."
+    },
+    "serif": {
+      "$value": "Freight Text Pro",
+      "$type": "fontFamily",
+      "comment": "Small editorial accent only — source citations, signal links, footnotes (text-xs/sm). NOT a display serif; never use for large headings. Licensed local webfont (public/fonts/freight-text-pro-book.woff2)."
     }
   },
   "text": {
-    "display": { "$value": "48px", "$type": "dimension" },
-    "h1":      { "$value": "36px", "$type": "dimension" },
-    "h2":      { "$value": "28px", "$type": "dimension" },
-    "h3":      { "$value": "22px", "$type": "dimension" },
-    "h4":      { "$value": "18px", "$type": "dimension" },
-    "body":    { "$value": "16px", "$type": "dimension" },
-    "small":   { "$value": "14px", "$type": "dimension" },
-    "label":   { "$value": "12px", "$type": "dimension" },
-    "caption": { "$value": "11px", "$type": "dimension" }
+    "display": { "$value": "48px", "$type": "dimension", "comment": "Hero headlines — 32px mobile → 48px. Often font-dm-sans, weight 400–500." },
+    "h1":      { "$value": "30px", "$type": "dimension", "comment": "Utility/legal page titles — text-3xl, bold" },
+    "h2":      { "$value": "24px", "$type": "dimension", "comment": "Section headings — medium weight" },
+    "subhead": { "$value": "20px", "$type": "dimension", "comment": "Secondary headings, TOC — normal weight" },
+    "lead":    { "$value": "18px", "$type": "dimension", "comment": "Lead/emphasis body — medium weight" },
+    "body":    { "$value": "16px", "$type": "dimension", "comment": "Primary body" },
+    "body-sm": { "$value": "14px", "$type": "dimension", "comment": "Workhorse UI text — the most common size in the product" },
+    "caption": { "$value": "12px", "$type": "dimension", "comment": "Sub-labels, helper/meta text" },
+    "eyebrow": { "$value": "11px", "$type": "dimension", "comment": "Uppercase kicker labels — 10–12px, semibold, em-tracked" },
+    "micro":   { "$value": "10px", "$type": "dimension", "comment": "Dense table / artifact text" }
   },
   "weight": {
-    "regular": { "$value": 400, "$type": "number" },
-    "medium":  { "$value": 500, "$type": "number" },
-    "semibold":{ "$value": 600, "$type": "number" },
-    "bold":    { "$value": 700, "$type": "number" }
+    "regular":  { "$value": 400, "$type": "number", "comment": "Default body/UI weight" },
+    "medium":   { "$value": 500, "$type": "number", "comment": "Emphasis / headings" },
+    "semibold": { "$value": 600, "$type": "number", "comment": "Uppercase eyebrows almost exclusively" },
+    "bold":     { "$value": 700, "$type": "number", "comment": "Utility/legal titles only" }
   },
   "leading": {
-    "tight":   { "$value": 1.1, "$type": "number" },
-    "snug":    { "$value": 1.2, "$type": "number" },
-    "normal":  { "$value": 1.5, "$type": "number" },
-    "relaxed": { "$value": 1.6, "$type": "number" }
+    "none":    { "$value": 1.0, "$type": "number", "comment": "Display / large stats" },
+    "normal":  { "$value": 1.5, "$type": "number", "comment": "Small UI text (leading-normal)" },
+    "relaxed": { "$value": 1.4, "$type": "number", "comment": "Body and headings (leading-[1.4]) — the dominant line height" }
+  },
+  "tracking": {
+    "comment": "web-v2 uses small positive px tracking that scales with size; eyebrows are the exception with em-based tracking.",
+    "caption": { "$value": "0.06px", "$type": "dimension", "comment": "~12px text" },
+    "body-sm": { "$value": "0.07px", "$type": "dimension", "comment": "~14px text" },
+    "body":    { "$value": "0.08px", "$type": "dimension", "comment": "~16px text" },
+    "heading": { "$value": "0.12px", "$type": "dimension", "comment": "18–24px text" },
+    "display": { "$value": "0.24px", "$type": "dimension", "comment": "32–48px text" },
+    "eyebrow": { "$value": "0.2em", "$type": "dimension", "comment": "Uppercase kickers — range 0.14em–0.25em" }
   }
 }

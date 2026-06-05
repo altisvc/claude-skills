@@ -28,23 +28,26 @@ const tokens = JSON.parse(
 const ASSETS = path.join(__dirname, '../assets');
 
 // ── Brand colors ──────────────────────────────────────────────────────────────
+// Altis Reports use the REPORTS/PRINT system (original palette + Inter Tight),
+// which is print-optimized. The web system lives under tokens.colors.web.
+const reportColors = tokens.colors.reports;
 const COLORS = {
-  blue:         tokens.colors.core.blue.hex,          // #015AE9
-  navy:         tokens.colors.core.navy.hex,          // #030F1F
-  cyan:         tokens.colors.core.cyan.hex,          // #01B2F4
-  white:        tokens.colors.core.white.hex,         // #FFFFFF
+  blue:         reportColors.core.blue.hex,          // #015AE9
+  navy:         reportColors.core.navy.hex,          // #030F1F
+  cyan:         reportColors.core.cyan.hex,          // #01B2F4
+  white:        reportColors.core.white.hex,         // #FFFFFF
   // Expanded — data viz sequence
   chartColors: [
-    tokens.colors.expanded['blue-core'].hex,          // #015AE9
-    tokens.colors.expanded['teal-core'].hex,          // #00A6A6
-    tokens.colors.expanded['purple-core'].hex,        // #814DC6
-    tokens.colors.expanded['coral-core'].hex,         // #FF6663
-    tokens.colors.expanded['orange-core'].hex,        // #F28C59
-    tokens.colors.expanded['yellow-core'].hex,        // #F2DA3D
-    tokens.colors.expanded['green-core'].hex,         // #4BD66A
-    tokens.colors.expanded['sky-core'].hex,           // #01B2F4
-    tokens.colors.expanded['blue-mid'].hex,           // #4089FF
-    tokens.colors.expanded['teal-mid'].hex,           // #60BFBF
+    reportColors.expanded['blue-core'].hex,          // #015AE9
+    reportColors.expanded['teal-core'].hex,          // #00A6A6
+    reportColors.expanded['purple-core'].hex,        // #814DC6
+    reportColors.expanded['coral-core'].hex,         // #FF6663
+    reportColors.expanded['orange-core'].hex,        // #F28C59
+    reportColors.expanded['yellow-core'].hex,        // #F2DA3D
+    reportColors.expanded['green-core'].hex,         // #4BD66A
+    reportColors.expanded['sky-core'].hex,           // #01B2F4
+    reportColors.expanded['blue-mid'].hex,           // #4089FF
+    reportColors.expanded['teal-mid'].hex,           // #60BFBF
   ],
 };
 

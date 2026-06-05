@@ -1,100 +1,74 @@
 /**
- * Altis Design System — Tailwind Tokens
- * Auto-generated from tokens.json via build-tokens.mjs
+ * Altis Design System — Tailwind Tokens (WEB SYSTEM)
+ * Source of truth: altisvc/web-v2. Re-derived 2026-06-05.
  * Import into tailwind.config.js as: const altis = require('./design-system/build/tailwind-tokens')
+ *
+ * NOTE: This is the WEB system (ABC Diatype / DM Sans / Freight Text Pro + navy-slate palette).
+ * Altis Reports PDFs and decks use the separate REPORTS/PRINT system (Inter Tight + original
+ * palette) — see tokens.json → colors.reports / typography.reports and the PDF template.
  */
 
 module.exports = {
 
   colors: {
-    // Core brand colors
-    'altis-navy':  '#030F1F',
+    // Brand (shared with reports)
     'altis-blue':  '#015AE9',
-    'altis-cyan':  '#01B2F4',
+    'altis-cyan':  '#02B3F4', // web accent (reports/print use #01B2F4)
     'altis-white': '#FFFFFF',
 
-    // Secondary palette
-    'altis-purple': '#814DC6',
-    'altis-teal':   '#00A6A6',
-    'altis-coral':  '#FF6663',
-    'altis-orange': '#F28C59',
-    'altis-yellow': '#F2DA3D',
-    'altis-green':  '#4BD66A',
+    // Ink — navy text + dark surfaces
+    'altis-ink-900': '#030D1F', // dark bg, max-contrast text
+    'altis-ink-800': '#081830', // headings / high-emphasis
+    'altis-ink-700': '#162840', // primary body text
+    'altis-ink-600': '#2E4660', // mid sub-copy
 
-    // Expanded — Navy family
-    'altis-navy-dark':  '#030F1F',
-    'altis-navy-mid':   '#0A3166',
-    'altis-navy-light': '#0F4A99',
+    // Slate — muted text
+    'altis-slate-500': '#5C6F80', // secondary / muted
+    'altis-slate-400': '#7A8B9B', // tertiary / eyebrow / placeholder
+    'altis-slate-300': '#98A6B5', // faint / disabled
 
-    // Expanded — Blue family
-    'altis-blue-core':  '#015AE9',
-    'altis-blue-mid':   '#4089FF',
-    'altis-blue-light': '#AAC5F2',
+    // Surfaces & border
+    'altis-surface':        '#F6F7FA', // off-white page bg
+    'altis-surface-raised': '#E8EDF5', // card / panel
+    'altis-border':         '#CBD4DF', // divider
 
-    // Expanded — Sky family
-    'altis-sky-core':  '#01B2F4',
-    'altis-sky-mid':   '#86D6F4',
-    'altis-sky-light': '#ACD6E5',
-
-    // Expanded — Teal family
-    'altis-teal-core':  '#00A6A6',
-    'altis-teal-mid':   '#60BFBF',
-    'altis-teal-light': '#A3D9D9',
-
-    // Expanded — Purple family
-    'altis-purple-core':  '#814DC6',
-    'altis-purple-mid':   '#AD92D1',
-    'altis-purple-light': '#DECEF2',
-
-    // Expanded — Coral family
-    'altis-coral-core':  '#FF6663',
-    'altis-coral-mid':   '#FF8987',
-    'altis-coral-light': '#FFC0BF',
-
-    // Expanded — Orange family
-    'altis-orange-core':  '#F28C59',
-    'altis-orange-mid':   '#F2A985',
-    'altis-orange-light': '#FFCCB2',
-
-    // Expanded — Yellow family
-    'altis-yellow-core':  '#F2DA3D',
-    'altis-yellow-mid':   '#F2E279',
-    'altis-yellow-light': '#F2ECC2',
-
-    // Expanded — Green family
-    'altis-green-core':  '#4BD66A',
-    'altis-green-mid':   '#82ED9A',
-    'altis-green-light': '#B8F5C5',
+    // Semantic
+    'altis-positive':        '#21A87A',
+    'altis-positive-strong': '#156634',
+    'altis-negative':        '#E84040',
+    'altis-negative-strong': '#B52318',
+    'altis-danger':          '#B84040',
   },
 
   fontFamily: {
-    // Body text, bullets, captions, UI elements
-    'altis-primary': ['Inter', 'system-ui', '-apple-system', "'Segoe UI'", 'Roboto', 'sans-serif'],
-    // Headlines, section headers, slide titles
-    'altis-heading': ['Inter Tight', 'Inter', 'system-ui', '-apple-system', "'Segoe UI'", 'Roboto', 'sans-serif'],
-    // Email-safe fallback (Inter may not be installed on all email clients)
-    'altis-email':   ['Inter', 'Arial', 'Helvetica', 'sans-serif'],
-    // NOTE: The Altis logo wordmark uses a proprietary font embedded in the SVG.
-    // Never apply it to any other text. Use logo SVG files only.
+    // Primary / global default — body + most headings (licensed local webfont)
+    'altis-sans':  ['var(--font-abc-diatype)', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+    // UI workhorse + hero display (Google font, Slides-safe)
+    'altis-ui':    ['var(--font-dm-sans-family)', 'ui-sans-serif', 'sans-serif'],
+    // Small editorial accent — citations, footnotes (NOT display)
+    'altis-serif': ['var(--font-freight-text-pro-book)', 'ui-serif', 'serif'],
+    // NOTE: The Altis logo wordmark is set in Neue Haas Grotesk Display Pro 65 (Medium),
+    // embedded as outlines in the logo SVG. Never apply it to any other text.
   },
 
   fontSize: {
-    'altis-display': ['48px', { lineHeight: '1.1' }],
-    'altis-h1':      ['36px', { lineHeight: '1.15' }],
-    'altis-h2':      ['28px', { lineHeight: '1.2' }],
-    'altis-h3':      ['22px', { lineHeight: '1.25' }],
-    'altis-h4':      ['18px', { lineHeight: '1.3' }],
-    'altis-body':    ['16px', { lineHeight: '1.6' }],
-    'altis-small':   ['14px', { lineHeight: '1.5' }],
-    'altis-label':   ['12px', { lineHeight: '1.4' }],
-    'altis-caption': ['11px', { lineHeight: '1.4' }],
+    'altis-display': ['48px', { lineHeight: '1.4', letterSpacing: '0.24px' }], // 32px mobile
+    'altis-h1':      ['30px', { lineHeight: '1.2' }],
+    'altis-h2':      ['24px', { lineHeight: '1.4', letterSpacing: '0.12px' }],
+    'altis-subhead': ['20px', { lineHeight: '1.4' }],
+    'altis-lead':    ['18px', { lineHeight: '1.4', letterSpacing: '0.12px' }],
+    'altis-body':    ['16px', { lineHeight: '1.4', letterSpacing: '0.08px' }],
+    'altis-body-sm': ['14px', { lineHeight: '1.5', letterSpacing: '0.07px' }], // workhorse
+    'altis-caption': ['12px', { lineHeight: '1.5', letterSpacing: '0.06px' }],
+    'altis-eyebrow': ['11px', { lineHeight: '1.0', letterSpacing: '0.2em' }],   // uppercase
+    'altis-micro':   ['10px', { lineHeight: '1.4' }],
   },
 
   fontWeight: {
-    'altis-regular': '400',
-    'altis-medium':  '500',
-    'altis-bold':    '700',
-    'altis-black':   '800',
+    'altis-regular':  '400',
+    'altis-medium':   '500',
+    'altis-semibold': '600', // eyebrows
+    'altis-bold':     '700', // utility/legal titles
   },
 
   spacing: {
@@ -113,12 +87,17 @@ module.exports = {
   },
 
   borderRadius: {
-    'altis-none': '0',
-    'altis-sm':   '4px',
-    'altis-md':   '8px',
-    'altis-lg':   '16px',
-    'altis-xl':   '24px',
-    'altis-full': '9999px',
+    'altis-none':     '0',
+    'altis-sm':       '6px',
+    'altis-md':       '8px',   // default — cards, buttons, inputs
+    'altis-lg':       '16px',
+    'altis-brand-md': '32px',
+    'altis-brand-lg': '64px',  // signature oversized radius
+    'altis-full':     '9999px',
+  },
+
+  maxWidth: {
+    'altis-container': '1440px',
   },
 
 };

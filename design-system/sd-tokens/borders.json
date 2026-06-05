@@ -5,24 +5,34 @@
       "$type": "dimension"
     },
     "sm": {
-      "$value": "4px",
-      "$type": "dimension"
+      "$value": "6px",
+      "$type": "dimension",
+      "comment": "Small controls (rounded-md)"
     },
     "md": {
       "$value": "8px",
-      "$type": "dimension"
+      "$type": "dimension",
+      "comment": "Default radius — cards, buttons, inputs, panels (rounded-lg)"
     },
     "lg": {
       "$value": "16px",
-      "$type": "dimension"
+      "$type": "dimension",
+      "comment": "Larger cards / containers (rounded-2xl)"
     },
-    "xl": {
-      "$value": "24px",
-      "$type": "dimension"
+    "brand-md": {
+      "$value": "32px",
+      "$type": "dimension",
+      "comment": "Mid-large feature containers"
+    },
+    "brand-lg": {
+      "$value": "64px",
+      "$type": "dimension",
+      "comment": "Signature oversized radius — large feature/hero surfaces (rounded-[64px])"
     },
     "full": {
       "$value": "9999px",
-      "$type": "dimension"
+      "$type": "dimension",
+      "comment": "Pills, primary CTA buttons, avatars (rounded-full)"
     }
   }
 }

@@ -4,48 +4,30 @@
 
 :root {
   --altis-radius-none: 0px;
-  --altis-radius-sm: 4px;
-  --altis-radius-md: 8px;
-  --altis-radius-lg: 16px;
-  --altis-radius-xl: 24px;
-  --altis-radius-full: 9999px;
-  --altis-color-core-navy: #030f1f; /** Primary dark background, body text on light, headings */
-  --altis-color-core-blue: #015ae9; /** Hero brand color — CTAs, primary backgrounds, key UI elements, icon fills */
-  --altis-color-core-cyan: #01b2f4; /** Secondary accent — highlights, secondary links, data callouts */
-  --altis-color-core-white: #ffffff; /** Light backgrounds, reverse text on dark, icon fills on dark backgrounds */
-  --altis-color-secondary-purple: #814dc6; /** Secondary palette — data viz, charts, accent elements */
-  --altis-color-secondary-teal: #00a6a6; /** Secondary palette — data viz, supplemental UI */
-  --altis-color-secondary-coral: #ff6663; /** Secondary palette — alerts, data viz warm accents */
-  --altis-color-secondary-orange: #f28c59; /** Secondary palette — warm accent, data viz */
-  --altis-color-secondary-yellow: #f2da3d; /** Secondary palette — highlight, data viz */
-  --altis-color-secondary-green: #4bd66a; /** Secondary palette — positive signals, data viz */
-  --altis-color-expanded-navy-dark: #030f1f;
-  --altis-color-expanded-navy-mid: #0a3166;
-  --altis-color-expanded-navy-light: #0f4a99;
-  --altis-color-expanded-blue-core: #015ae9;
-  --altis-color-expanded-blue-mid: #4089ff;
-  --altis-color-expanded-blue-light: #aac5f2;
-  --altis-color-expanded-sky-core: #01b2f4;
-  --altis-color-expanded-sky-mid: #86d6f4;
-  --altis-color-expanded-sky-light: #acd6e5;
-  --altis-color-expanded-teal-core: #00a6a6;
-  --altis-color-expanded-teal-mid: #60bfbf;
-  --altis-color-expanded-teal-light: #a3d9d9;
-  --altis-color-expanded-purple-core: #814dc6;
-  --altis-color-expanded-purple-mid: #ad92d1;
-  --altis-color-expanded-purple-light: #decef2;
-  --altis-color-expanded-coral-core: #ff6663;
-  --altis-color-expanded-coral-mid: #ff8987;
-  --altis-color-expanded-coral-light: #ffc0bf;
-  --altis-color-expanded-orange-core: #f28c59;
-  --altis-color-expanded-orange-mid: #f2a985;
-  --altis-color-expanded-orange-light: #ffccb2;
-  --altis-color-expanded-yellow-core: #f2da3d;
-  --altis-color-expanded-yellow-mid: #f2e279;
-  --altis-color-expanded-yellow-light: #f2ecc2;
-  --altis-color-expanded-green-core: #4bd66a;
-  --altis-color-expanded-green-mid: #82ed9a;
-  --altis-color-expanded-green-light: #b8f5c5;
+  --altis-radius-sm: 6px; /** Small controls (rounded-md) */
+  --altis-radius-md: 8px; /** Default radius — cards, buttons, inputs, panels (rounded-lg) */
+  --altis-radius-lg: 16px; /** Larger cards / containers (rounded-2xl) */
+  --altis-radius-brand-md: 32px; /** Mid-large feature containers */
+  --altis-radius-brand-lg: 64px; /** Signature oversized radius — large feature/hero surfaces (rounded-[64px]) */
+  --altis-radius-full: 9999px; /** Pills, primary CTA buttons, avatars (rounded-full) */
+  --altis-color-brand-blue: #015ae9; /** WEB SYSTEM. Hero brand color — primary CTA background, accent borders, highlight tints. Shared with the report system. */
+  --altis-color-brand-cyan: #02b3f4; /** WEB SYSTEM. Accent only — uppercase eyebrow/kicker labels. Never a primary content background. (Reports/print use the original #01B2F4.) */
+  --altis-color-ink-600: #2e4660; /** WEB SYSTEM. Mid-tone sub-copy on light backgrounds */
+  --altis-color-ink-700: #162840; /** WEB SYSTEM. Primary body text — the most common text color in the product */
+  --altis-color-ink-800: #081830; /** WEB SYSTEM. Heading / high-emphasis text */
+  --altis-color-ink-900: #030d1f; /** WEB SYSTEM. Darkest navy — dark section backgrounds and max-contrast text. (Reports/print use the original navy #030F1F.) */
+  --altis-color-slate-300: #98a6b5; /** WEB SYSTEM. Faint / disabled text */
+  --altis-color-slate-400: #7a8b9b; /** WEB SYSTEM. Tertiary muted text, eyebrow label color, placeholders */
+  --altis-color-slate-500: #5c6f80; /** WEB SYSTEM. Secondary / muted text — primary muted token */
+  --altis-color-surface-white: #ffffff; /** WEB SYSTEM. Page background, reverse text on dark, primary button text */
+  --altis-color-surface-page: #f6f7fa; /** WEB SYSTEM. Off-white section background; also light text on dark surfaces */
+  --altis-color-surface-raised: #e8edf5; /** WEB SYSTEM. Card / panel surface on light */
+  --altis-color-border-default: #cbd4df; /** WEB SYSTEM. Primary border / divider */
+  --altis-color-semantic-positive: #21a87a; /** WEB SYSTEM. Positive / bull signal text. About-page variant: #1A9D6F. */
+  --altis-color-semantic-positive-strong: #156634; /** WEB SYSTEM. Positive accent — borders, strong headings */
+  --altis-color-semantic-negative: #e84040; /** WEB SYSTEM. Negative / bear signal text. About-page variant: #D9482F. */
+  --altis-color-semantic-negative-strong: #b52318; /** WEB SYSTEM. Negative accent — borders, strong headings */
+  --altis-color-semantic-danger: #b84040; /** WEB SYSTEM. UI destructive action — destructive button bg, error text, focus ring */
   --altis-space-s1: 4px;
   --altis-space-s2: 8px;
   --altis-space-s3: 12px;
@@ -58,23 +40,30 @@
   --altis-space-s16: 64px;
   --altis-space-s20: 80px;
   --altis-space-s24: 96px;
-  --altis-font-primary: Inter; /** Body text, bullets, captions, UI elements. Native Google Slides font. */
-  --altis-font-heading: 'Inter Tight'; /** Headlines, section headers, slide titles. Native Google Slides font. */
-  --altis-text-display: 48px;
-  --altis-text-h1: 36px;
-  --altis-text-h2: 28px;
-  --altis-text-h3: 22px;
-  --altis-text-h4: 18px;
-  --altis-text-body: 16px;
-  --altis-text-small: 14px;
-  --altis-text-label: 12px;
-  --altis-text-caption: 11px;
-  --altis-weight-regular: 400;
-  --altis-weight-medium: 500;
-  --altis-weight-semibold: 600;
-  --altis-weight-bold: 700;
-  --altis-leading-tight: 1.1;
-  --altis-leading-snug: 1.2;
-  --altis-leading-normal: 1.5;
-  --altis-leading-relaxed: 1.6;
+  --altis-font-sans: 'ABC Diatype'; /** Primary / global default. Set on body — inherited everywhere unless overridden, including most headings and company names. Licensed local webfont (public/fonts/abc-diatype-variable.woff2); NOT a Google/Slides font. */
+  --altis-font-ui: 'DM Sans'; /** Most explicitly-applied font — UI copy, form fields, dialog body, labels, and hero/display headlines (font-dm-sans). Free Google font, available in Google Slides. */
+  --altis-font-serif: 'Freight Text Pro'; /** Small editorial accent only — source citations, signal links, footnotes (text-xs/sm). NOT a display serif; never use for large headings. Licensed local webfont (public/fonts/freight-text-pro-book.woff2). */
+  --altis-text-display: 48px; /** Hero headlines — 32px mobile → 48px. Often font-dm-sans, weight 400–500. */
+  --altis-text-h1: 30px; /** Utility/legal page titles — text-3xl, bold */
+  --altis-text-h2: 24px; /** Section headings — medium weight */
+  --altis-text-subhead: 20px; /** Secondary headings, TOC — normal weight */
+  --altis-text-lead: 18px; /** Lead/emphasis body — medium weight */
+  --altis-text-body: 16px; /** Primary body */
+  --altis-text-body-sm: 14px; /** Workhorse UI text — the most common size in the product */
+  --altis-text-caption: 12px; /** Sub-labels, helper/meta text */
+  --altis-text-eyebrow: 11px; /** Uppercase kicker labels — 10–12px, semibold, em-tracked */
+  --altis-text-micro: 10px; /** Dense table / artifact text */
+  --altis-weight-regular: 400; /** Default body/UI weight */
+  --altis-weight-medium: 500; /** Emphasis / headings */
+  --altis-weight-semibold: 600; /** Uppercase eyebrows almost exclusively */
+  --altis-weight-bold: 700; /** Utility/legal titles only */
+  --altis-leading-none: 1; /** Display / large stats */
+  --altis-leading-normal: 1.5; /** Small UI text (leading-normal) */
+  --altis-leading-relaxed: 1.4; /** Body and headings (leading-[1.4]) — the dominant line height */
+  --altis-tracking-caption: 0.06px; /** ~12px text */
+  --altis-tracking-body-sm: 0.07px; /** ~14px text */
+  --altis-tracking-body: 0.08px; /** ~16px text */
+  --altis-tracking-heading: 0.12px; /** 18–24px text */
+  --altis-tracking-display: 0.24px; /** 32–48px text */
+  --altis-tracking-eyebrow: 0.2em; /** Uppercase kickers — range 0.14em–0.25em */
 }
