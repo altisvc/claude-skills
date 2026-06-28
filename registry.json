@@ -1255,5 +1255,51 @@
     "status": "beta",
     "version": "1.0.0",
     "updatedAt": "2026-05-13"
+  },
+  {
+    "id": "advisor-seo-aeo",
+    "slug": "advisor-seo-aeo",
+    "name": "SEO / AEO Advisor",
+    "type": "advisor",
+    "category": "advisors",
+    "summary": "SEO/AEO expert for getting paywalled research cited by AI answer engines (ChatGPT, Perplexity, Google AI Overviews, Claude) while keeping the payload gated. Reasons in \"cite the abstract, sell the payload\"; benchmarks an approach against current best practices and rates it honestly. Self-refreshes: web-searches the latest engine behavior and updates its own spec on each consult.",
+    "whenToUse": "When pressure-testing a content/SEO/AEO decision, auditing a page for AI-search citability, choosing a crawler/paywall-schema posture, or benchmarking an approach against current best practices.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "I'd like to add the SEO / AEO advisor. The files are in https://github.com/altisvc/claude-skills — a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-seo-aeo.md → .claude/agents/advisor-seo-aeo.md\n2. commands/consult.md → .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md → .claude/skills/consult-advisor/SKILL.md\n\nNote: this advisor runs a freshness check (web search) and updates its own spec file on each consult — so its file path in the spec should point at your local copy. Try it with: /consult advisor-seo-aeo",
+    "invocation": {
+      "command": "/consult advisor-seo-aeo",
+      "example": "We paywall our reports but want AI search to cite us by name for '[company] TAM'. What's the move, and rate our current approach against best practice."
+    },
+    "requires": [
+      "consult-advisor"
+    ],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        {
+          "key": "content_setup",
+          "label": "Your content + paywall setup",
+          "description": "Replace Altis-specific references (the research storefront, the investor-term taxonomy, web-v2) with your own content, gating, and target queries",
+          "required": true
+        }
+      ]
+    },
+    "persona": {
+      "role": "Head of SEO / AEO",
+      "voice": "Systems-thinking growth operator; sparring partner not cheerleader; rates honestly against best practice and names gaps; says 'I don't know, let me measure' when an engine's behavior is unclear",
+      "lenses": [
+        "Cite the abstract, sell the payload",
+        "Crawler taxonomy split (training vs retrieval)",
+        "Branded constructs force attribution",
+        "Off-domain consensus signal",
+        "Presence not value",
+        "Paywall structured data (cloaking-safe)"
+      ]
+    },
+    "badge": "new",
+    "status": "stable",
+    "version": "1.0",
+    "updatedAt": "2026-06-28"
   }
 ]
