@@ -78,11 +78,27 @@ From there:
 - Led tech PE deals at Mubadala/MGX (AI, Enterprise Software, Tech-enabled Services, Crypto). Associate Partner at McKinsey running commercial due diligence for PE clients. Stanford CS, MIT Sloan MBA.
 
 **Mehdi Lazrak** — Sector Lead
+- McKinsey Engagement Manager, ~12 years experience
+
 **Ally Jiang** — Sector Lead
+- InsurTech sector; joined April 2026
+
+**Logan Miller** — Head of Network & Client Services
+- Ex-AlphaSights; led NA Middle Market PE
+
 **Olivia Ozino Caligaris** — Associate
+- McKinsey Junior Associate
+
 **Kyle Katlan** — Senior Director
+- Expert sourcing / Power Hours; EY-Parthenon
+
 **Ray Vinjamuri** — Associate
+- BCG Associate
+
 **Sophia Zhang** — Analyst
+- BCG Associate (1 year), Harvard Economics
+
+*Plus 3 summer interns supporting the GTMos, ResearchOS, and ExpertOS builds.*
 
 ### Engineering
 
