@@ -42,8 +42,8 @@ If any of the following appear in the session, route as sensitive without asking
 - Verbatim transcripts of meetings with attorneys, board members, or investors discussing terms
 - Specific damages calculations or settlement-range intel
 - Off-record intel from any party (phrases like "off the record," "back-channel," "don't put this in writing," "the recording was turned off")
-- Outside-investor signals naming funds not currently on the deal (e.g., any named competing leads)
-- Specific cap-table math tied to a named investor's internal targets (e.g., "an investor's internal ownership target")
+- Outside-investor signals naming funds not currently on the deal (any named competing leads)
+- Specific cap-table math tied to a named investor's internal targets (an investor's internal ownership target)
 - Personnel evaluations or HR matters (terminations, severance, performance disputes)
 - Privileged-adjacent material: anything you'd send to outside counsel and not to the team
 
@@ -70,7 +70,7 @@ When entering sensitive mode, adjust every subsequent step. The adjustments are 
 | 2. Daily log | Tracked file in `06-daily-log/`, full content | **Add explicit gitignore rule for the day's file BEFORE writing**, then write full content |
 | 3. Trello cards (open items) | Public to board members | Pause and ask user about board visibility; offer (a) generic card names, (b) personal-list routing, (c) skip Trello entirely and capture action items in archive only |
 | 4. Trello intel cards | Public to board members | Same options as Step 3. Generic Intel tags do not adequately mask sensitive matters — default to skipping. |
-| 5.5. Marketplace sync log | Header uses session title verbatim | Header uses a generic descriptor that does not name the matter (e.g., "fundraise strategy session," "ongoing engagement"). NEVER use words like "malpractice," "[counsel]," "[counsel]," or named-counsel/named-fund references in the header. |
+| 5.5. Marketplace sync log | Header uses session title verbatim | Header uses a generic descriptor that does not name the matter (e.g., "fundraise strategy session," "ongoing engagement"). NEVER use matter-specific legal terms, counsel firm names, or named-fund references in the header. |
 | 6. Wiki compile | Update any relevant article, including tracked ones | Restrict updates to gitignored wiki files ONLY: `coaching-fundraising.md`, `coaching-collison.md`, `fundraise-strategy.md`, `fundraise-narrative.md`. **Do not edit tracked wiki files** (ben-sun, primary-relationship, ESOP, governance, etc.) even if relevant. |
 | 6D. Changelog | Append entry naming the session | Skip entirely OR use a generic descriptor that does not name the matter. The changelog is tracked. |
 | 6C. Content registry | Add new source pointers | Skip if the source pointer would reveal the matter. Content registry is tracked. |
@@ -81,7 +81,7 @@ When entering sensitive mode, adjust every subsequent step. The adjustments are 
 Before writing any new file in the session that contains sensitive content (transcripts, malpractice timelines, counsel correspondence, cap-table strategy memos), add an explicit `.gitignore` rule for the file or its parent folder BEFORE creating it. The patterns currently in place cover:
 
 - `02-projects/legal/` (entire folder)
-- `02-projects/fundraise/<matter-specific patterns>`
+- `02-projects/fundraise/<matter-specific patterns>` — one wildcard rule per sensitive matter (counsel names, matter keywords)
 - `02-projects/**/*-transcript*.md`
 - `06-daily-log/<date>.md` (per-day rule, added during sensitive wrap)
 - `05-archive/` (entire folder)
@@ -162,7 +162,7 @@ Append to or create `$MAIN_REPO/06-daily-log/YYYY-MM-DD.md`.
 **Sensitive mode:** PAUSE before any Trello write. Surface the visibility question to the user with this exact prompt:
 
 > "This session is sensitive. The Trello board is visible to anyone with board access (currently includes team members and possibly Primary). I can route Trello in one of three ways:
-> (a) **Generic card names** — create cards but use language that doesn't reveal the matter (e.g., "Christopher: Internal corporate-counsel decision" instead of "naming the firms involved")
+> (a) **Generic card names** — create cards but use language that doesn't reveal the matter (e.g., "Owner: Internal corporate-counsel decision" instead of naming the firms involved)
 > (b) **Personal/private list** — if you have a private list on the board (or a separate board), I can create cards there only
 > (c) **Skip Trello entirely** — capture all action items in the archive file and skip Trello. You'll need to track these yourself.
 > Which?"
@@ -280,7 +280,7 @@ Context: [The insight with enough detail to be useful without reading the full s
 - `"ongoing engagement"`
 - `"deal mechanics review"`
 
-NEVER pass any of: counsel firm names ([counsel], [counsel], [counsel], etc.), fund names not on the public deal (Patrick [fund], [fund], etc.), "malpractice," "claim," "dispute," "litigation," or named-team-member personnel matters.
+NEVER pass any of: counsel firm names, fund names not on the public deal, matter-specific legal terms ("claim," "dispute," "litigation," etc.), or named-team-member personnel matters.
 
 **Why:** Skills and agents are built/modified in altis-brain but the marketplace (`altisvc/claude-skills` registry + `altisvc/altis-venture-insight` app) drifts silently. This step catches changes mechanically so they accumulate in a visible backlog.
 

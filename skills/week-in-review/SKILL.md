@@ -142,6 +142,17 @@ The agent should produce a SHORT section rather than padding with optimistic nar
 
 **Research section is CEO-level.** Report milestones (published, in progress, blocked) and operational decisions only. If Christopher was on a specific call, mention what he learned — but don't position it as representative of the team's full research effort.
 
+**Always report campaign paywall bumps.** For any report/email campaign that went out during the week, include how many Wall-e paywall bumps it drove — i.e. people who clicked through and hit a gated report. Lead with the campaign-attributed number (gated `report_viewed` events carrying the `mc_eid` Mailchimp token, distinct people), since those are provably email-driven rather than organic. Pull it from PostHog scoped to the campaign's report slugs since the send date:
+```
+node -e '/* in ~/GTM_Agents */' # HogQL via lib/posthog.js:
+# SELECT properties.slug, count(), countDistinct(distinct_id)
+# FROM events WHERE event='report_viewed' AND properties.gated='true'
+#   AND properties.slug IN (<campaign slugs>)
+#   AND positionCaseInsensitive(properties.$current_url,'mc_eid') > 0
+#   AND timestamp >= toDateTime('<send date>') GROUP BY 1 ORDER BY 2 DESC
+```
+Use aggregate counts (single-row results) to avoid the PostHog 100-row HogQL cap. This is a standing line — surface it even when the count is low.
+
 ---
 
 ## Stage 1: Gather
@@ -218,6 +229,10 @@ This produces `/tmp/week-in-review-traction.json` with the metrics defined in th
 
 **If the script fails or doesn't exist yet:** Skip this stage gracefully. Use `agent-status.json` metrics as a fallback, and flag in the draft that traction numbers are approximate.
 
+**Also pull the two partner-ops metrics** (unlocks come from the traction script above; these two are separate). Until `weekly-traction-pull.js` is extended to fetch them automatically, pull manually:
+- **Credits burned this week** (paid vs trial) — from the partner-ops credit ledger (`~/partner-ops`, `account_credit_ledger` `kind='unlock'`, joined to each lot's `credit_type` for paid/trial). This is a DIFFERENT table from the reader-facing `user_unlocks` (which drives the unlock count) — do not conflate them.
+- **New trial accounts set up this week** — from partner-ops `accounts` where `created_at >= week_start` and `plan_status='trial'`. Exclude special cases (renamed existing customers, internal/test accounts) and say so.
+
 ---
 
 ## Stage 3: Draft
@@ -244,6 +259,12 @@ NEXT WEEK
 ```
 
 **Traction leads with pipeline milestones, not metrics.** Scan daily logs and session wraps for deal closings, partnership confirmations, significant prospect meetings, and credible next steps. These are the headline — they tell the team what's moving. Compress platform metrics (unlocks, readers, contacts synced) into a single summary line at the end of the section. The audience is the team, not a dashboard. When Lola (linkedin-tracker) data becomes available, add top-of-funnel metrics to the summary line.
+
+**Standing weekly metrics — ALWAYS include these three, every week, even in a quiet week:**
+1. **Report unlocks** (count + unique readers) — reader-facing `user_unlocks`.
+2. **Credits burned** (total, split paid vs trial) — partner-ops credit ledger.
+3. **New trial accounts set up** (count + names, special cases excluded) — partner-ops `accounts`.
+These are the recurring health line for the business; include them whether or not a campaign shipped. If a campaign DID ship, also give its Wall-e paywall-bump count (see the "Always report campaign paywall bumps" rule above) and, where it clarifies, present the campaign slate as a funnel: paywall bumps → unlocks → credits burned → new trial accounts. Never conflate `user_unlocks` (reader event) with credit-ledger burns (credit accounting) — they are different tables and different magnitudes.
 
 ### GitHub Version (`weekly/YYYY-WXX.md`)
 
@@ -343,7 +364,22 @@ Each thread becomes a standalone markdown file optimized for Montis retrieval:
 
 Send the Slack version to #primary-altis (channel ID: C0A6MCUSTQS) using Slack MCP tools.
 
-**Important:** Use `mcp__slack__conversations_add_message` (not native Slack connector) since native connector may not be loaded in overnight sessions. If MCP is unavailable, fall back to native `slack_send_message`.
+**Important:** Use the bot token via `chat.postMessage` (curl with `$SLACK_BOT_TOKEN` from `~/GTM_Agents/.env`) — #primary-altis is a Slack Connect channel and the native `slack_send_message` connector rejects it with `mcp_externally_shared_channel_restricted`. The bot is a member of the channel and can post via the API. Capture the returned `ts` value.
+
+**Then immediately post the GitHub link as a thread reply to that same message** (this is mandatory, not optional):
+
+```bash
+curl -s -X POST https://slack.com/api/chat.postMessage \
+  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{
+    "channel": "C0A6MCUSTQS",
+    "thread_ts": "<top-level ts from previous post>",
+    "text": "Full detail: https://github.com/altisvc/notes/blob/main/weekly/YYYY-WXX.md"
+  }'
+```
+
+The thread reply is part of the deliverable — readers expect the GitHub link in the thread, not a separate top-level message. Do not consider the publish complete until both the top-level message and the thread reply are posted.
 
 ### 5C. Cleanup
 
