@@ -649,7 +649,7 @@
   {
     "id": "room-booker",
     "slug": "room-booker",
-    "name": "Meeting Room Booker",
+    "name": "Primary Office Meeting Booker",
     "type": "utility",
     "category": "hacks",
     "summary": "Dual-account Google Calendar room auto-booker. Scans your next 7 days, finds events with in-office guests but no room, checks availability across all conference rooms, and books the best fit. Runs on a 15-minute cron.",
