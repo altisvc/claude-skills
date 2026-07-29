@@ -1326,5 +1326,67 @@
     "status": "beta",
     "version": "1.0.0",
     "updatedAt": "2026-07-28"
+  },
+  {
+    "id": "case-team",
+    "slug": "case-team",
+    "name": "Case Team",
+    "type": "skill",
+    "category": "research",
+    "summary": "Orchestration layer that makes four advisors argue. Freeberg sets the quality baseline, then Emily Man, Jason Shuman, and Ben Sun assess independently in isolation, disagreements go one round of cross-examination, and the skill assembles a memo that reports tension as tension instead of averaging it away. Four checkpoints calibrate the debate to how mature the work is.",
+    "whenToUse": "At natural checkpoints in a research project — sprint kickoff (--first-look), first draft (--day1), midpoint (--mid), and before shipping (--pre-ship). Use it when a single advisor keeps agreeing with your framing and you need the lenses to collide. Read ARCHITECTURE.md to build a case team from your own voices instead.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "I'd like to install the Case Team skill from the Altis skills registry at https://github.com/altisvc/claude-skills. It orchestrates four advisors that must be installed first: advisor-freeberg, advisor-emily, advisor-shuman, and advisor-ben-sun. Install those, then download skills/case-team/SKILL.md and skills/case-team/ARCHITECTURE.md to .claude/skills/case-team/, and commands/case-team.md to .claude/commands/case-team.md. Then walk me through the Calibration section — I need to point it at my reports directory, my quality checksum, and my report format guide.",
+    "invocation": {
+      "command": "/case-team <subject> --first-look | --day1 | --mid | --pre-ship",
+      "example": "/case-team Acme Corp --pre-ship"
+    },
+    "requires": [
+      "advisor-freeberg",
+      "advisor-emily",
+      "advisor-shuman",
+      "advisor-ben-sun",
+      "consult-advisor"
+    ],
+    "integrations": [],
+    "calibration": {
+      "level": "moderate",
+      "items": [
+        {
+          "key": "reports_dir",
+          "label": "Reports directory",
+          "description": "Where your work-in-progress reports live — the skill reads from and writes memos to this path",
+          "required": true
+        },
+        {
+          "key": "quality_checksum",
+          "label": "Quality checksum",
+          "description": "Point Freeberg at your firm's writing standard and quality bar instead of the Altis researcher checksum",
+          "required": true
+        },
+        {
+          "key": "format_guide",
+          "label": "Report format guide",
+          "description": "The document defining your section order and headline conventions — drives the assertion-title standard",
+          "required": true
+        },
+        {
+          "key": "section_flow",
+          "label": "Deck section order",
+          "description": "Story-page ordering in first-look mode. Defaults to TAM/SAM, Company Overview, Product + GTM, Competitive Dynamics, Team & Culture",
+          "required": false
+        },
+        {
+          "key": "checkpoints",
+          "label": "Checkpoint cadence",
+          "description": "The four stages assume a roughly 10-day research sprint. Compress or extend to match your cycle",
+          "required": false
+        }
+      ]
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-07-29"
   }
 ]
