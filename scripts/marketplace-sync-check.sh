@@ -14,9 +14,9 @@ SESSION_TITLE="${1:-untitled session}"
 TODAY=$(date +%Y-%m-%d)
 
 # Published skills in marketplace registry (update when new skills are published)
-PUBLISHED_SKILLS="meeting-sync checkin wrap week-in-review audit consult-advisor"
+PUBLISHED_SKILLS="meeting-sync checkin wrap week-in-review audit consult-advisor case-team"
 PUBLISHED_AGENTS="advisor-ben-sun advisor-collison advisor-harrison-chase advisor-gartner-cso advisor-founding-pitchbook-cso advisor-mom-test advisor-founding-tegus-cio"
-PUBLISHED_COMMANDS=""
+PUBLISHED_COMMANDS="case-team"
 PUBLISHED_SCRIPTS="trello-sync"
 
 # Detect changes in .claude/ relative to HEAD
