@@ -1388,5 +1388,29 @@
     "status": "beta",
     "version": "1.0.0",
     "updatedAt": "2026-07-29"
+  },
+  {
+    "id": "adhd",
+    "slug": "adhd",
+    "name": "ADHD Comms Mode",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "Presentation-layer output style: answer or action first, steps numbered, no filler sign-offs. On /adhd it rewrites the previous response in the new style, then asks whether to keep it on for the session.",
+    "whenToUse": "Any time responses feel padded or the answer keeps getting buried under preamble. Toggle on for a session; guardrails and processes are unaffected.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "I'd like to install the ADHD Comms Mode skill from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/adhd/SKILL.md from that repo, set it up at .claude/skills/adhd/SKILL.md, and add the /adhd trigger command at .claude/commands/adhd.md as described in the skill's Install section.",
+    "invocation": {
+      "command": "/adhd",
+      "example": "/adhd"
+    },
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-07-21"
   }
 ]
