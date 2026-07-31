@@ -1311,21 +1311,25 @@
     "summary": "Turns a finished to-camera script into a shot-by-shot storyboard for Altis short-form videos — branded overlays, burned-in captions, the recurring question card, and the end card, prescriptive enough to build in Descript without follow-up questions.",
     "whenToUse": "Use when you have a finished to-camera script (or the outline from the script agent) for an Altis short-form video and need a prescriptive, buildable visual plan: one supporting visual per point, the recurring “The question to be asking” card, burned-in captions, and the black end card.",
     "author": "molly@altis.vc",
-    "installPrompt": "I would like to install the storyboard skill from the Altis skills marketplace.\nSource URL: https://github.com/altisvc/claude-skills/tree/main/skills/storyboard\n\nPrerequisites:\n- No prerequisites declared.\n\nInstallation steps:\n1. Clone or pull https://github.com/altisvc/claude-skills.\n2. Copy `skills/storyboard/SKILL.md` → `.claude/skills/storyboard/SKILL.md` in my project.\n3. Copy `skills/storyboard/command.md` → `.claude/commands/storyboard.md` so Claude Code can resolve `/storyboard`.\n\nCalibration:\n- No calibration declared.\n\nTest:\n- Confirm the slash command `/storyboard` resolves (restart the Claude Code session if needed).\n- Run example invocation: `/storyboard`.",
+    "installPrompt": "I would like to install the storyboard skill from the Altis skills marketplace.\nSource URL: https://github.com/altisvc/claude-skills/tree/main/skills/storyboard\n\nPrerequisites:\n- python3 with Pillow + poppler (pdftoppm) for the rendering toolkit.\n\nInstallation steps:\n1. Clone or pull https://github.com/altisvc/claude-skills.\n2. Copy `skills/storyboard/SKILL.md` → `.claude/skills/storyboard/SKILL.md` in my project.\n3. Copy `skills/storyboard/command.md` → `.claude/commands/storyboard.md` so Claude Code can resolve `/storyboard`.\n4. Copy `skills/storyboard/production/make_cards.py` → `.claude/skills/storyboard/production/make_cards.py` (overlay-rendering toolkit).\n\nCalibration:\n- No calibration declared.\n\nTest:\n- Confirm the slash command `/storyboard` resolves (restart the Claude Code session if needed).\n- Run example invocation: `/storyboard`.",
     "invocation": {
       "command": "/storyboard",
       "example": "/storyboard"
     },
     "requires": [],
     "integrations": [],
-    "prerequisites": [],
+    "prerequisites": [
+      "python3 with Pillow (for production/make_cards.py)",
+      "poppler / pdftoppm (brew install poppler)",
+      "Optional: Descript API key for the no-copy-paste build workflow"
+    ],
     "calibration": {
       "level": "none"
     },
     "badge": "new",
     "status": "beta",
-    "version": "1.0.0",
-    "updatedAt": "2026-07-28"
+    "version": "1.1.0",
+    "updatedAt": "2026-07-31"
   },
   {
     "id": "case-team",
