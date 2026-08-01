@@ -138,3 +138,29 @@ Bank these as defaults:
 - **Cover band opener is the standard, locked opener** — blue header band ("The question to be asking" + Altis logo) across the top of Chris's first frame.
 - **Full sequence that shipped (~43s):** cover band on frame 1 → press headline → company logo → (Point 1 to camera) → framework card (narrow, low) → question card (full-frame blue, ~2s) → back to camera → speech-to-speech panel (mid-frame) → close to camera → black end card.
 - **Watch small crops:** a narrow framework crop reads tiny without a punch-in — either punch in or use an on-brand vertical treatment.
+
+## News-peg check (before the shoot locks)
+
+Verify the figure in the actual coverage before the take is final — **round size ≠ valuation** (a "$200M raise at a $2B valuation" misspoken as "a $2B round" will sit on screen directly under a headline overlay that contradicts it). Flag a retake at storyboard time, not in the edit.
+
+## Asset production — the toolkit (Simile build, 2026-07-31)
+
+`production/make_cards.py` ships with this skill — the reference implementation that renders every overlay as a drag-in-ready PNG: cover band, full-frame question card, end card, kickers with baked halo, rounded-shadow report crops, the composed press-headline card, and the closing logos trio. Adapt the source crops and card copy per video. Requires python3 + Pillow and poppler (`brew install poppler`); fonts and logos come from `design-system/assets/`.
+
+Hard-won sourcing rules:
+
+- **Altis lockup: rasterize `altis-logo-1c-positive.svg`** (`qlmanage -t -s 1200 -o . <svg>`), then darkness→alpha recolored white. Never extract the lockup from a deck page — every deck lockup's icon is a blue gradient and extracts ghosted (invisible on the black end card).
+- **Company/competitor logos come out of the report PDF itself.** Find the page with the logo and render just that region at 1200dpi (`pdftoppm -png -r 1200 -x <x> -y <y> -W <w> -H <h>`). Logos are vectors in the PDF, so region renders are native-crisp; upscaling a 300dpi page render reads blurry on screen — this is the difference between a logo that looks shipped and one that "looks like shit."
+- **Press-headline card:** screenshot the outlet masthead and the headline block separately in the browser, stack them into one white rounded-shadow card. Reads as a real screenshot with the outlet's branding.
+
+## Closing variant — reports trio
+
+When the CTA names multiple reports ("we have reports on X, Y, and Z"), replace the single report-cover thumbnail with a **stacked trio of white logos** (subject + the adjacent reports), halo-baked, mid-frame. It's tall — nudge captions above it while it's up.
+
+## Descript build — drive it via the API (no copy-paste)
+
+Descript's open-beta API (`https://descriptapi.com/v1`, docs at docs.descriptapi.com; Bearer key from app Settings → API keys, stored in `~/.config/descript/env`) removes the human-relay step:
+
+- **Import assets:** `POST /v1/jobs/import/project_media` with `project_id` + `add_media: {name: {content_type, file_size}}` → PUT the file bytes to the returned signed URLs → poll `/v1/jobs/{job_id}`. Filenames cannot overwrite existing project media — **version them (`-v2`) and have Underlord swap old for new** (same timing, size, position, layer).
+- **Edits:** `POST /v1/jobs/agent` with `{project_id, prompt}` — the same Underlord prompts, sent programmatically. **Anchor overlay instructions to spoken words ("while I say …"), never absolute timecodes** — timings shift after filler-word removal.
+- **Gotchas:** agent job-status JSON can contain raw control characters — parse leniently (`json.JSONDecoder(strict=False)`). There are no timeline/positioning endpoints, so precise overlay nudges stay manual in the app; treat every agent "success" as a claim to verify visually.
