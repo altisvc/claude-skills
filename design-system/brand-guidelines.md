@@ -38,12 +38,13 @@ The visual brand should feel like the written voice: direct, confident, precise.
 | Variant | File | Use on |
 |---------|------|--------|
 | 2C Positive | `assets/logos/altis-logo-2c-positive.svg` | White backgrounds — primary |
-| 2C Reverse | `assets/logos/altis-logo-2c-reverse.svg` | Navy / blue backgrounds |
+| 2C Reverse | `assets/logos/altis-logo-2c-reverse.svg` | Navy backgrounds only — never brand blue |
 | 1C Positive | `assets/logos/altis-logo-1c-positive.svg` | Single-color print, light bg |
-| 1C Reverse | `assets/logos/altis-logo-1c-reverse.svg` | Single-color print, dark bg |
+| 1C Reverse | `assets/logos/altis-logo-1c-reverse.svg` | Brand-blue backgrounds; single-color print, dark bg |
 
 ### Rules
 
+- On brand blue (#015AE9) use 1C Reverse (all white): the 2C Reverse mark is a blue gradient and disappears blue-on-blue
 - Always maintain clear space equal to the height of the chevron mark on all sides
 - Approved backgrounds: white, brand blue (#015AE9), cyan, navy, black
 - Never distort, rotate, recolor, or place on busy/photo backgrounds without a solid overlay
