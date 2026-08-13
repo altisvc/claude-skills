@@ -189,7 +189,7 @@ Tracking is small positive px that scales with size; eyebrows are the exception 
 - Sentence case everywhere — no ALL CAPS except very short labels / eyebrows (2–3 words)
 - No periods at the end of bullet points
 - Never mix more than two font families in a single document
-- **Logo font is proprietary** (Neue Haas Grotesk Display Pro 65 Medium, embedded as outlines in the logo SVG) — never apply to any other text, never recreate the wordmark in type
+- **Logo font is proprietary** (Neue Haas Grotesk Display Pro 65 Medium, embedded as outlines in the logo SVG) — never apply to any other text, never recreate the wordmark in type. For vendor tools that only offer a font list, see [Merch & promo](#merch--promo-vendor-printed)
 
 ---
 
@@ -245,6 +245,36 @@ Use at 5–20% opacity as section backgrounds, report covers, or dividers. Never
 - Subjects: mountain peaks, bridges, infrastructure, upward perspective views
 - Aesthetic: architectural, aspirational, precise framing. Never generic stock
 - Treatments: **untreated** (editorial — reports, data) · **focus effect** (brand blue gradient overlay — marketing, hero, covers)
+
+---
+
+## Merch & promo (vendor-printed)
+
+Screen print, embroidery, engraving, headwear, stickers, business cards — anything produced through a third party's design tool (Custom Ink, MOO). Color follows the **REPORTS / PRINT** system; logo variant rules above apply unchanged.
+
+### Place the logo as art — never re-set it
+
+Upload the SVG from `assets/logos/`. Do not rebuild the wordmark out of the vendor's type, even when the vendor's font list looks close. Every tool has an upload path (Custom Ink: Design Lab → Upload). Use 1C Positive/Reverse for single-color print, 1C Reverse on brand blue.
+
+### When the vendor forces a font choice
+
+Applies to secondary text only — tagline, names, back-of-garment copy. Never the wordmark.
+
+The logo is set in Neue Haas Grotesk Display Pro 65 Medium, which *is* Helvetica: Miedinger drew it as Haas Grotesk in 1957, it was renamed Helvetica in 1960, and Neue Haas Grotesk Display is the 2010 revival of those original drawings. So the on-brand pick in any vendor library is Helvetica, in this order:
+
+1. **Helvetica Bold** — listed as `Helvetica B` in Custom Ink. Closest to the wordmark and the safer weight in production
+2. **Helvetica Regular** — listed as `Helvetica`. Right shapes, too light: thin strokes choke in knit and stitch
+3. Anything else — Arial, Univers, Swiss 721 are near-misses, not matches, and read wrong beside the mark
+
+The wordmark's 65 Medium sits between Regular and Bold, so neither cut is exact. **Default to Bold** — under-weighting is the failure mode that survives a screen proof and dies on the garment.
+
+### Licensing
+
+Check that a typeface's licence covers physical production *before* sending the file to a vendor — webfont and trial licences generally do not. This is a separate grant from the web licence the same family may already have.
+
+### Open
+
+Minimum stitched/printed logo size is not specified here — confirm with the vendor before the first embroidery run rather than reusing the 120px digital minimum.
 
 ---
 
