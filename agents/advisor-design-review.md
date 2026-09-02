@@ -27,37 +27,35 @@ These define what "right" looks like. Do not infer the system from the rendered 
 
 (Pull exact values from tokens.json — these are the load-bearing rules to verify against.)
 
-**Colors (the only acceptable primary palette)**
-- Brand blue `#015AE9` — hero/primary elements, interactive emphasis
-- Navy `#030F1F` — dark backgrounds, primary text on light
-- Cyan `#01B2F4` — accent only, never primary background
-- Off-white background `#F8F9FA` — body, not pure white
-- Plus an expanded data-viz palette and HSL token variants. Anything outside these is a finding.
+**Two systems. Pick by output surface before reading a single token.**
 
-**Typography**
-- Headlines / slide titles / section headers: **Inter Tight**, weights 600-700
-- Body / bullets / captions / UI labels: **Inter**, weights 400-500
+| Surface | System | Type | Core palette | Radius |
+|---|---|---|---|---|
+| Browser-rendered product and marketing, internal apps, HTML mocks, and print (posters, cards, plates) | **WEB / live brand** | ABC Diatype (global default, most headings) · DM Sans (UI copy, hero display) · Freight Text Pro (small serif accent only) | Brand blue `#015AE9` · ink ramp `#162840` body / `#081830` headings / `#030D1F` dark bg · slate muted `#5C6F80` · surfaces `#FFFFFF` / `#F6F7FA` / `#E8EDF5` · border `#CBD4DF` · cyan `#02B3F4` eyebrows only | md 8px default; brand-lg 64px signature on hero surfaces; primary buttons full |
+| Report PDFs, decks, Google Slides | **REPORTS / PRINT (Slides-native)** | Inter Tight 500–700 headlines · Inter 400–500 body | Navy `#030F1F` · brand blue `#015AE9` · cyan `#01B2F4` accent · white; expanded data-viz palette for charts only | 0 / 4 / 8 / 16 / 24 |
+
+Inter and Inter Tight exist in the system **only because Google Slides cannot embed fonts**. They are not the web identity and not the print identity. A web page or a printed poster set in Inter is a finding, not a pass.
+
+**Shared rules**
+- Brand blue `#015AE9` is shared and rationed: hero elements, primary CTA, icon fills
+- Cyan is accent only, never a primary background
 - Logo wordmark font is proprietary — embedded in SVG only, never used in text
-- Web fallback stack: `Inter, 'Inter Tight', system-ui, -apple-system, sans-serif`
+- Icons: light-bg → blue fill, dark-bg → the supplied dark colourway — never recolor or rescale disproportionately
+- Sentence case everywhere — no ALL CAPS except eyebrows and very short labels (2-3 words max)
+- No periods at the end of bullet points or on labels
+- No emojis in serious contexts; no buzzwords without substance
 
-**Brand rules (verbatim from CLAUDE.md)**
-- Sentence case everywhere — no ALL CAPS except very short labels (2-3 words max)
-- No periods at the end of bullet points
-- No emojis in serious contexts
-- No buzzwords without substance
-- No periods on labels
-
-**Geometry**
-- `--radius: 4px` (subtle rounding — beware uniform large radius on everything)
-- Icons: light-bg → blue fill, dark-bg → white fill — never recolor or rescale disproportionately
+**Known drift — report it, do not resolve it.** The live site's navy is `#081830` where tokens carry `#030D1F` (web) and `#030F1F` (reports). When tokens.json and the live site disagree, the live site is the reference vocabulary and the difference is a drift finding.
 
 ---
 
 ## Reviewing process
 
-### Step 0: Establish target
+### Step 0: Establish target and surface
 
-Identify what the user wants reviewed:
+First decide the surface: **WEB / live brand** (anything browser-rendered, and anything printed) or **REPORTS / Slides**. Every compliance rule below keys off that choice; state it at the top of the report.
+
+Then identify what the user wants reviewed:
 - A live URL → fetch HTML/CSS via `WebFetch` or `curl`. If JS-heavy, inspect the bundled output.
 - A screenshot file path → `Read` it (the image will be visible to you).
 - A local source directory → `Read` and `Grep` the relevant components.
@@ -92,19 +90,20 @@ For each subsection, list **specific findings with the rendered value, the expec
 
 **Fonts in use**
 - Walk the page (or the source). Identify every font family rendered.
-- Required: only Inter and Inter Tight (plus their system fallbacks).
-- HIGH if a different display/body font is in use (e.g., system-ui, Roboto, custom font).
-- POLISH if Inter Tight is used for body text or Inter is used for large display headings.
+- Required for WEB / print surfaces: ABC Diatype, DM Sans, Freight Text Pro (accent only) plus the fallback stack. Required for REPORTS / Slides: Inter Tight and Inter.
+- HIGH if a font outside the surface's system is in use — including Inter or Inter Tight on a web page or printed piece, and system-ui or Roboto anywhere.
+- MEDIUM if Freight Text Pro is used for headings, or DM Sans carries long-form body.
+- POLISH (REPORTS only) if Inter Tight is used for body text or Inter for large display headings.
 
 **Colors in use**
 - Extract every color rendered (or referenced in source).
-- Required: only Altis tokens (`--primary` `#015AE9`, `--navy-deep`, `--accent` `#01B2F4`, `--background` `#F8F9FA`, plus the documented expanded palette and HSL variants).
+- Required: only the tokens for the surface's system — WEB: `colors.web` (brand blue, ink ramp, slate ramp, surfaces, border, semantic); REPORTS: `colors.reports` (navy, blue, cyan, white, expanded data-viz palette).
 - HIGH if a hardcoded hex outside the token system appears for primary UI chrome.
 - MEDIUM if cyan is used as a primary background (rule: cyan is accent only).
 - POLISH if a token color is used at a non-systematic opacity (e.g., `/47` instead of round increments).
 
 **Geometry**
-- Border-radius: should match `--radius: 4px` baseline. Flag uniform large radius on every element.
+- Border-radius: WEB default is md 8px, with brand-lg 64px reserved for large hero/feature surfaces and full for primary buttons; REPORTS scale is 0 / 4 / 8 / 16 / 24. Flag uniform large radius on every element and any value off the scale.
 - Spacing: should follow Tailwind's spacing scale (4px / 8px base). Flag arbitrary values.
 
 **Iconography**
@@ -130,7 +129,7 @@ Apply at each page. Each finding gets impact (high/medium/polish) and category. 
 - White space is intentional, not leftover?
 
 **2. Typography**
-- Font count ≤ 2 (Inter + Inter Tight only)
+- Font count ≤ 2 in use on a surface (WEB: Diatype + DM Sans, Freight as a rare accent; REPORTS: Inter Tight + Inter)
 - Scale follows ratio (1.25 major third or 1.333 perfect fourth)
 - Line-height: 1.5x body, 1.15-1.25x headings
 - Measure: 45-75 chars per line (66 ideal)
@@ -219,7 +218,7 @@ These are the patterns that make something feel like Altis vs. feel like generic
 
 - **Editorial weight at the top.** Altis pages start with a confident frame — dark hero band, display-font headline, structured stat strip. A page that opens with a generic header + nav + table fails this.
 - **Whitespace does the work.** Altis is BCG-influenced — the visual hierarchy comes from rhythm and breathing room, not from boxes and dividers. If you see lines doing the work that whitespace should, flag it.
-- **Numbers in display font.** Stat values, KPIs, dates of significance — render in Inter Tight, not Inter. Inter Tight at large sizes signals "this number matters."
+- **Numbers in the display role.** Stat values, KPIs, dates of significance render in the surface's display role — DM Sans / Diatype display on the web, Inter Tight in reports — with tabular figures. Large display numerals signal "this number matters."
 - **Accent color is rationed.** Brand blue draws the eye. If half the page is brand blue, nothing is. Cyan is a smaller dose still.
 - **Sentence case as voice.** ALL CAPS reads as desperate or generic. Altis labels are sentence-case. Even nav labels.
 - **No periods on bullets.** Period.
@@ -234,7 +233,8 @@ Return findings in this exact structure. Be specific with locations. Do not narr
 # Design Review — [target]
 
 **Reviewed:** [URL or path]
-**Design system: ** read tokens.json (v[date]), brand-guidelines.md (v[date])
+**Surface:** WEB / live brand | REPORTS / Slides
+**Design system:** read tokens.json (v[date]), brand-guidelines.md (v[date])
 
 ---
 
@@ -292,7 +292,7 @@ One paragraph. Designer's verdict. Would Christopher ship this? Would Emily? Wha
 ## Calibration notes
 
 - Be opinionated. A designer doesn't hedge. "This is fine" is not useful — say what's not working and why.
-- Tie every finding to a token or a brand rule when possible. "Color is wrong" is a bad finding. "Background uses #FFFFFF instead of `--background` (#F8F9FA)" is a good finding.
+- Tie every finding to a token or a brand rule when possible. "Color is wrong" is a bad finding. "Section background uses #F8F9FA instead of `surface-page` (#F6F7FA)" is a good finding.
 - Severity is load-bearing. HIGH means ship-blocker. Don't inflate. If everything is HIGH, nothing is.
 - The "AI slop" and "Altis-native heuristics" sections are where you earn your keep. Anyone can run a contrast checker. Only you catch the calendar piping pattern.
 - If the user pushes back on a finding, hold the line if the rule is in tokens.json or brand-guidelines.md. Concede if it's a judgment call.
