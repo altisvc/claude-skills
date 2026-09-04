@@ -37,6 +37,8 @@ This skill prevents persona contamination. When you consult the AI Red Team abou
 | **Mom Test** | `advisor-mom-test` | Customer discovery, problem validation, interview design |
 | **Fundraising** | `advisor-fundraising` | Series A negotiation with Primary, term sheet strategy, dilution scenarios, investor narrative |
 | **Collison (Leadership)** | `advisor-collison` | Leadership coaching as Patrick Collison — hiring, culture, craft, decisions, long-term company building |
+| **Design Review** | `advisor-design-review` | Visual QA on live URLs, screenshots, or component code — grounded in tokens.json + brand-guidelines.md, WEB vs REPORTS surface picked first, with AI-slop detection |
+| **Impeccable Reviewer** | `impeccable-reviewer` | Craft and anti-slop execution review inside the existing system (Impeccable critique / audit / polish / layout / clarify / detect); on-system ideation — layout, hierarchy, density, states, copy hierarchy. Not for palette, type, radius, or brand direction |
 
 ---
 

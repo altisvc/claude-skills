@@ -17,6 +17,8 @@ Invoke an advisor persona with full context isolation.
 - `advisor-gartner-cso` — Analyst/research buyer perspective
 - `advisor-founding-pitchbook-cso` — Early-stage data business growth, perception-as-moat, capital efficiency
 - `advisor-fundraising` — Series A negotiation with Primary, term sheet strategy, dilution scenarios, investor narrative
+- `advisor-design-review` — Visual QA on live URLs, screenshots, or built component code, grounded in the design system; picks WEB vs REPORTS surface first
+- `impeccable-reviewer` — Craft and anti-slop execution review (Impeccable critique / audit / polish / layout / clarify / detect) strictly inside the existing design system; on-system ideation for layout, hierarchy, density, states, copy hierarchy. Never for new palette, type, radius, or "bolder"
 
 ## Examples
 

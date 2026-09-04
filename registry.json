@@ -1203,8 +1203,8 @@
       ]
     },
     "status": "stable",
-    "version": "1.0",
-    "updatedAt": "2026-04-29"
+    "version": "1.1",
+    "updatedAt": "2026-09-02"
   },
   {
     "id": "story-writer-single-company",
@@ -1416,5 +1416,42 @@
     "status": "beta",
     "version": "1.0.0",
     "updatedAt": "2026-07-21"
+  },
+  {
+    "id": "impeccable-reviewer",
+    "slug": "impeccable-reviewer",
+    "name": "Impeccable Reviewer",
+    "type": "advisor",
+    "category": "advisors",
+    "summary": "Craft and anti-slop execution reviewer for UI that already has a design system. Runs Impeccable's critique, audit, polish, layout, clarify, distill, harden and adapt playbooks plus its deterministic drift detector, strictly inside the existing tokens. Ideates layout, hierarchy, density, states and copy hierarchy without touching palette, type or radius.",
+    "whenToUse": "After the Design Review advisor has judged direction and before something ships: polish passes, drift checks against DESIGN.md, on-system layout options. Not for new visual identity; it refuses bolder, colorize, typeset, document, extract and init by design.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "I'd like to add the Impeccable Reviewer advisor. First run `npx impeccable install` in the project (it installs the Impeccable skill at .claude/skills/impeccable). Then from https://github.com/altisvc/claude-skills copy:\n\n1. agents/impeccable-reviewer.md \u2192 .claude/agents/impeccable-reviewer.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nGive the project a DESIGN.md at the root whose frontmatter copies your real design tokens (colors, typography, rounded, spacing), so Impeccable's detector can flag drift. Try it with: /consult impeccable-reviewer",
+    "invocation": {
+      "command": "/consult impeccable-reviewer",
+      "example": "polish src/app/research/page.tsx \u2014 hierarchy and density only; the palette and type are settled."
+    },
+    "requires": [
+      "consult-advisor"
+    ],
+    "integrations": [
+      "impeccable"
+    ],
+    "calibration": {
+      "level": "none"
+    },
+    "persona": {
+      "role": "Craft reviewer",
+      "voice": "Specific, execution-focused, ties every finding to a token or a named heuristic, refuses identity decisions and routes them",
+      "lenses": [
+        "Deterministic drift vs DESIGN.md",
+        "Impeccable critique and polish",
+        "On-system ideation",
+        "Anti-slop execution"
+      ]
+    },
+    "status": "beta",
+    "version": "1.0",
+    "updatedAt": "2026-09-02"
   }
 ]
