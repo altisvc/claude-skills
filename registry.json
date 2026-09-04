@@ -1453,5 +1453,117 @@
     "status": "beta",
     "version": "1.0",
     "updatedAt": "2026-09-02"
+  },
+  {
+    "id": "coverage-craft",
+    "slug": "coverage-craft",
+    "name": "Coverage Craft",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "Composition doctrine for surfaces that sell completeness \u2014 coverage matrices, inventories, service graphs, status grids. Enforces high information density with low chrome density: many facts, few containers. The cramp reviewers complain about comes from boxes and padding, not from information, so it deletes containers and keeps rows. Depth is peekable rather than dumped, absence is a visible state, and the FOMO comes from the map instead of the copy.",
+    "whenToUse": "Any surface whose job is to show how complete you are \u2014 a coverage matrix, an inventory, a catalog, a service graph, a status grid. Use plan mode before writing code and review mode against a live surface. Reach for it specifically when a general-purpose design reviewer keeps talking you out of the density that is the whole product argument.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "I'd like to install the Coverage Craft skill from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/coverage-craft/SKILL.md to .claude/skills/coverage-craft/SKILL.md, skills/coverage-craft/CRAFT.md to my repo root, and commands/coverage-craft.md to .claude/commands/coverage-craft.md. Then walk me through the Calibration section \u2014 I need to point it at my design tokens, my real component inventory, and whichever agent owns identity decisions.",
+    "invocation": {
+      "command": "/coverage-craft plan | review <surface, path, URL, or screenshot>",
+      "example": "/coverage-craft review https://staging.example.com/research"
+    },
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "light",
+      "items": [
+        {
+          "key": "design_tokens",
+          "label": "Design tokens",
+          "description": "The file your colours, type roles, radius, and spacing live in \u2014 every token-pass finding cites a role from it",
+          "required": true
+        },
+        {
+          "key": "component_inventory",
+          "label": "Component inventory",
+          "description": "The real components in your app the coverage canvas should reuse. The live vocabulary outranks the token file where they differ",
+          "required": true
+        },
+        {
+          "key": "design_advisor",
+          "label": "Design advisor",
+          "description": "The agent that owns identity decisions, so token and brand findings have somewhere to be routed",
+          "required": false
+        }
+      ]
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-09-04"
+  },
+  {
+    "id": "chika",
+    "slug": "chika",
+    "name": "Chika",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "A meta-skill that sequences your design agents through nine enforced steps, rotating up to three rounds: frame, composition plan, advisor direction consult before any code, build, capture, three parallel reviews, and a verify pass that must re-render. The failure in design work is rarely the agents; it is the sequence \u2014 a direction consult that happened after the build, a review that read code instead of renders, a fix presented as verified when nothing re-rendered. A state file on disk makes the order mechanical.",
+    "whenToUse": "Any design-forward build that will be judged visually, where you already have a design advisor and a craft reviewer but keep running them in the wrong order. Especially where a fix has been declared done without a re-render. Not for a one-line CSS change \u2014 nine steps is real ceremony and it should earn its keep.",
+    "author": "Christopher Freeberg",
+    "installPrompt": "I'd like to install the Chika design loop from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/chika/SKILL.md to .claude/skills/chika/SKILL.md, skills/chika/scripts/chika-loop.mjs and skills/chika/scripts/chika-loop.test.mjs to .claude/skills/chika/scripts/, and commands/chika.md to .claude/commands/chika.md. Then add .chika/ to my .gitignore, run `node --test .claude/skills/chika/scripts/chika-loop.test.mjs` to confirm the state machine works, and walk me through the Calibration section \u2014 I need to name my design advisor, my composition doctrine, my craft reviewer, and my viewport widths.",
+    "invocation": {
+      "command": "/chika <slug> <surface>",
+      "example": "/chika research-coverage app/research/page.tsx"
+    },
+    "requires": [
+      "coverage-craft",
+      "advisor-design-review",
+      "impeccable-reviewer"
+    ],
+    "integrations": [
+      "playwright"
+    ],
+    "calibration": {
+      "level": "moderate",
+      "items": [
+        {
+          "key": "design_advisor",
+          "label": "Design advisor",
+          "description": "The agent consulted at steps 3, 6 and 9. Defaults to advisor-design-review",
+          "required": true
+        },
+        {
+          "key": "composition_doctrine",
+          "label": "Composition doctrine",
+          "description": "The skill run at steps 2 and 7. Defaults to coverage-craft; substitute your own if you have one",
+          "required": true
+        },
+        {
+          "key": "craft_reviewer",
+          "label": "Craft reviewer",
+          "description": "The on-token polish agent at step 8. Defaults to impeccable-reviewer",
+          "required": true
+        },
+        {
+          "key": "viewports",
+          "label": "Viewport widths",
+          "description": "VIEWPORTS at the top of chika-loop.mjs, default desktop 1512 and mobile 390. The PNG width check keys off these",
+          "required": false
+        },
+        {
+          "key": "round_cap",
+          "label": "Round cap",
+          "description": "MAX_ROUNDS, default 3. At the cap the loop refuses another fix round and escalates to a human",
+          "required": false
+        },
+        {
+          "key": "state_dir",
+          "label": "State directory",
+          "description": "Loop state lives in .chika/ at the repo root. Add it to .gitignore \u2014 it carries local paths and in-flight findings",
+          "required": false
+        }
+      ]
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-09-04"
   }
 ]
