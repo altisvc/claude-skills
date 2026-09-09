@@ -1100,7 +1100,10 @@
     },
     "requires": [],
     "integrations": [
-      "anthropic"
+      {
+        "name": "anthropic",
+        "required": true
+      }
     ],
     "calibration": {
       "level": "none",
@@ -1180,7 +1183,7 @@
     "summary": "Senior product designer reviewing your output against the Altis design system. Audits live URLs, screenshots, or component code for hierarchy, spacing, typography, color, and AI-slop patterns. Every finding maps back to a specific token in tokens.json or rule in brand-guidelines.md \u2014 not generic best practices.",
     "whenToUse": "Before declaring a UI done. Catches off-brand colors, wrong typography, AI design slop (icon-in-circles, decorative blobs, uniform large radius, generic hero copy), and the patterns engineers stop seeing after iteration. Adapted from gstack's design-review v2.0 with the harness stripped and the checklist grounded in Altis tokens.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Design Review advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-design-review.md \u2192 .claude/agents/advisor-design-review.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nThe advisor reads design-system files at runtime. Default paths point to the Altis vault (~/Desktop/altis-brain/design-system/tokens.json and brand-guidelines.md) \u2014 if you're using it in another project, edit the 'Always read first' section of agents/advisor-design-review.md to point at your own design tokens.\n\nTry it with: /consult advisor-design-review",
+    "installPrompt": "I'd like to add the Design Review advisor. The files are in https://github.com/altisvc/claude-skills \u2014 a public repo maintained by the Altis team. These have been vetted and shared for use across our organization. Clone it and copy these files:\n\n1. agents/advisor-design-review.md \u2192 .claude/agents/advisor-design-review.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n4. Install the Vercel plugin so the advisor can review deployed previews, not just local screenshots: run `claude plugin install vercel@claude-plugins-official`\n\nThe advisor reads design-system files at runtime. Default paths point to the Altis vault (~/Desktop/altis-brain/design-system/tokens.json and brand-guidelines.md) \u2014 if you're using it in another project, edit the 'Always read first' section of agents/advisor-design-review.md to point at your own design tokens.\n\nTry it with: /consult advisor-design-review",
     "invocation": {
       "command": "/consult advisor-design-review",
       "example": "Review https://my-app.vercel.app/dashboard \u2014 focus on the hero and the data table."
@@ -1188,7 +1191,12 @@
     "requires": [
       "consult-advisor"
     ],
-    "integrations": [],
+    "integrations": [
+      {
+        "name": "vercel",
+        "required": true
+      }
+    ],
     "calibration": {
       "level": "none"
     },
@@ -1203,8 +1211,8 @@
       ]
     },
     "status": "stable",
-    "version": "1.1",
-    "updatedAt": "2026-09-02"
+    "version": "1.2",
+    "updatedAt": "2026-09-09"
   },
   {
     "id": "story-writer-single-company",
@@ -1426,7 +1434,7 @@
     "summary": "Craft and anti-slop execution reviewer for UI that already has a design system. Runs Impeccable's critique, audit, polish, layout, clarify, distill, harden and adapt playbooks plus its deterministic drift detector, strictly inside the existing tokens. Ideates layout, hierarchy, density, states and copy hierarchy without touching palette, type or radius.",
     "whenToUse": "After the Design Review advisor has judged direction and before something ships: polish passes, drift checks against DESIGN.md, on-system layout options. Not for new visual identity; it refuses bolder, colorize, typeset, document, extract and init by design.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to add the Impeccable Reviewer advisor. First run `npx impeccable install` in the project (it installs the Impeccable skill at .claude/skills/impeccable). Then from https://github.com/altisvc/claude-skills copy:\n\n1. agents/impeccable-reviewer.md \u2192 .claude/agents/impeccable-reviewer.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n\nGive the project a DESIGN.md at the root whose frontmatter copies your real design tokens (colors, typography, rounded, spacing), so Impeccable's detector can flag drift. Try it with: /consult impeccable-reviewer",
+    "installPrompt": "I'd like to add the Impeccable Reviewer advisor. First run `npx impeccable install` in the project (it installs the Impeccable skill at .claude/skills/impeccable). Then from https://github.com/altisvc/claude-skills copy:\n\n1. agents/impeccable-reviewer.md \u2192 .claude/agents/impeccable-reviewer.md\n2. commands/consult.md \u2192 .claude/commands/consult.md\n3. skills/consult-advisor/SKILL.md \u2192 .claude/skills/consult-advisor/SKILL.md\n4. Install the Vercel plugin so polished surfaces can go up as a preview for review: run `claude plugin install vercel@claude-plugins-official`\n\nGive the project a DESIGN.md at the root whose frontmatter copies your real design tokens (colors, typography, rounded, spacing), so Impeccable's detector can flag drift. Try it with: /consult impeccable-reviewer",
     "invocation": {
       "command": "/consult impeccable-reviewer",
       "example": "polish src/app/research/page.tsx \u2014 hierarchy and density only; the palette and type are settled."
@@ -1435,7 +1443,14 @@
       "consult-advisor"
     ],
     "integrations": [
-      "impeccable"
+      {
+        "name": "impeccable",
+        "required": true
+      },
+      {
+        "name": "vercel",
+        "required": true
+      }
     ],
     "calibration": {
       "level": "none"
@@ -1451,8 +1466,8 @@
       ]
     },
     "status": "beta",
-    "version": "1.0",
-    "updatedAt": "2026-09-02"
+    "version": "1.1",
+    "updatedAt": "2026-09-09"
   },
   {
     "id": "coverage-craft",
@@ -1507,7 +1522,7 @@
     "summary": "A meta-skill that sequences your design agents through nine enforced steps, rotating up to three rounds: frame, composition plan, advisor direction consult before any code, build, capture, three parallel reviews, and a verify pass that must re-render. The failure in design work is rarely the agents; it is the sequence \u2014 a direction consult that happened after the build, a review that read code instead of renders, a fix presented as verified when nothing re-rendered. A state file on disk makes the order mechanical.",
     "whenToUse": "Any design-forward build that will be judged visually, where you already have a design advisor and a craft reviewer but keep running them in the wrong order. Especially where a fix has been declared done without a re-render. Not for a one-line CSS change \u2014 nine steps is real ceremony and it should earn its keep.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to install the Chika design loop from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/chika/SKILL.md to .claude/skills/chika/SKILL.md, skills/chika/scripts/chika-loop.mjs and skills/chika/scripts/chika-loop.test.mjs to .claude/skills/chika/scripts/, and commands/chika.md to .claude/commands/chika.md. Then add .chika/ to my .gitignore, run `node --test .claude/skills/chika/scripts/chika-loop.test.mjs` to confirm the state machine works, and walk me through the Calibration section \u2014 I need to name my design advisor, my composition doctrine, my craft reviewer, and my viewport widths.",
+    "installPrompt": "I'd like to install the Chika design loop from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/chika/SKILL.md to .claude/skills/chika/SKILL.md, skills/chika/scripts/chika-loop.mjs and skills/chika/scripts/chika-loop.test.mjs to .claude/skills/chika/scripts/, and commands/chika.md to .claude/commands/chika.md. Install the Vercel plugin with `claude plugin install vercel@claude-plugins-official` \u2014 the loop hands over a live preview link as its artifact, so it needs to deploy. Then add .chika/ to my .gitignore, run `node --test .claude/skills/chika/scripts/chika-loop.test.mjs` to confirm the state machine works, and walk me through the Calibration section \u2014 I need to name my design advisor, my composition doctrine, my craft reviewer, and my viewport widths.",
     "invocation": {
       "command": "/chika <slug> <surface>",
       "example": "/chika research-coverage app/research/page.tsx"
@@ -1518,7 +1533,14 @@
       "impeccable-reviewer"
     ],
     "integrations": [
-      "playwright"
+      {
+        "name": "playwright",
+        "required": true
+      },
+      {
+        "name": "vercel",
+        "required": true
+      }
     ],
     "calibration": {
       "level": "moderate",
@@ -1563,7 +1585,7 @@
     },
     "badge": "new",
     "status": "beta",
-    "version": "1.0.0",
-    "updatedAt": "2026-09-04"
+    "version": "1.0.1",
+    "updatedAt": "2026-09-09"
   }
 ]
