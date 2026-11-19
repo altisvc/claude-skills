@@ -71,7 +71,8 @@ skip *silently*.
 URL the loop is about.
 
 ```
-/chika research-coverage app/research/page.tsx
+/chika research-coverage http://localhost:3000/research
+/chika pricing-card site/pricing.html
 /chika status research-coverage
 ```
 
@@ -87,6 +88,8 @@ node .claude/skills/chika/scripts/chika-loop.mjs init <slug> --surface <path-or-
 node .claude/skills/chika/scripts/chika-loop.mjs status <slug>
 node .claude/skills/chika/scripts/chika-loop.mjs advance <slug> --step N -e "<evidence>" [-e "<evidence>"...]
 node .claude/skills/chika/scripts/chika-loop.mjs close <slug> --verdict pass|fix|escalate
+node .claude/skills/chika/scripts/chika-loop.mjs check [<slug>]
+node .claude/skills/chika/scripts/chika-loop.mjs reopen <slug> [--escalate]
 ```
 
 Evidence specs:
@@ -97,6 +100,32 @@ Evidence specs:
 | `file:<path>` | findings or a spec on disk | exists, non-empty, written this round |
 | `shot:desktop:<path>` | a desktop capture | real PNG, right width, written this round (step 9: after step 5) |
 | `shot:mobile:<path>` | a mobile capture | same |
+| `lint:<path>` | render-lint JSON for the surface | `pass:true`, same surface as the loop, written this round (step 9: after the step-5 capture) |
+
+**Steps 5 and 9 also demand a render lint.**
+`node .claude/skills/chika/scripts/render-lint.mjs <surface> --out <round>/lint.json`
+runs deterministic geometry checks (element overflow, footer gap of at least 24px,
+wrapped single-line roles, links split across lines, shared-row alignment, a 13px type
+floor, mobile horizontal overflow) and the gate reads the JSON. Geometry is numbers,
+not judgment: an advisor regression pass scoped to its own findings list will walk
+straight past a wrapped heading. The lint opens the surface in a browser, so for a
+framework page (Next.js, SvelteKit) **start the loop with the URL of the running page
+as the surface**, not the source file path. The lint report must name the same surface
+the loop was started with.
+
+**A pass is fingerprinted.** `close --verdict pass` records a sha256 of every local
+surface file. `chika-loop.mjs check` exits 2 with the reason while a passed surface
+differs from its hash, until you run `chika-loop.mjs reopen <slug>` (round + 1, back to
+step 4) or `reopen <slug> --escalate` at the round cap. URL surfaces and directories
+are not enrolled. To make that a gate rather than a command you remember to run, add
+it as a `Stop` hook in `.claude/settings.json`:
+
+```json
+{ "hooks": { "Stop": [ { "hooks": [ { "type": "command",
+  "command": "node .claude/skills/chika/scripts/chika-loop.mjs check" } ] } ] } }
+```
+
+Claude Code caps consecutive Stop blocks, so this is a strong gate, not an absolute one.
 
 **Never hand-maintain the state file.** If `advance` rejects your evidence, the answer
 is to produce the evidence, not to edit the JSON. Read the rejection: it names exactly
@@ -119,11 +148,11 @@ Evidence artifacts go in your session scratchpad under
 | 2 | Composition plan | your coverage/composition doctrine | `file:` |
 | 3 | Advisor direction consult | your design advisor | `file:` |
 | 4 | Build | you, plus framework skills | `note:` |
-| 5 | Capture | headless browser | `shot:` × 2 |
+| 5 | Capture | headless browser | `shot:` × 2 + `lint:` |
 | 6 | Advisor review | your design advisor | `file:` |
 | 7 | Composition review | your composition doctrine | `file:` |
 | 8 | Craft polish | your on-token craft reviewer | `file:` |
-| 9 | Verify & gate | advisor, regression-scoped | `file:` + `shot:` × 2 |
+| 9 | Verify & gate | advisor, regression-scoped | `file:` + `shot:` × 2 + `lint:` |
 
 Steps 1–3 run once, in round 1. A `fix` verdict rotates to step 4, so every later round
 is build → capture → review → verify.
@@ -195,6 +224,8 @@ server over an SSO-gated deploy host: identical code, no auth wall.
 
 The gate reads the PNG header, so a mislabelled or copy-pasted capture is rejected on
 its width. Viewport widths are configurable in `VIEWPORTS` at the top of the script.
+
+Then run the render lint on the same surface and pass its JSON as `lint:` evidence.
 
 ### Steps 6, 7, 8 — the review fan-out
 
@@ -295,6 +326,7 @@ human, not resolved in the loop.
 | Reviewing code or rendered text instead of screenshots | Text sweeps supplement, never substitute |
 | Desktop only | Both viewports, every round, every affected surface |
 | Presenting a fix as verified without step 9 | A fix applied from findings is a claim, not a result |
+| Editing the surface after `close pass` without `reopen` | Passed work changed with nothing re-verified is how visible defects ship. `check` catches it |
 | A fresh full audit at step 9 | Guarantees non-convergence. Step 9 is a regression check |
 | Launching the review agents sequentially or in background | Sequential wastes wall clock; background loses outputs |
 | Rotating past three rounds | Escalate to a human instead |
@@ -307,10 +339,11 @@ human, not resolved in the loop.
 The state machine ships with its suite:
 
 ```bash
-node --test .claude/skills/chika/scripts/chika-loop.test.mjs
+node --test .claude/skills/chika/scripts/chika-loop.test.mjs .claude/skills/chika/scripts/render-lint.test.mjs
 ```
 
-32 tests. They are worth re-running after any edit to the script, and the suite is
+40 state-machine tests plus 2 render-lint tests (the lint pair opens fixtures in a
+headless browser, so it needs `playwright` installed). They are worth re-running after any edit to the script, and the suite is
 built to fail when a gate is disabled rather than merely when the code crashes —
 disabling any one of the nine gates breaks at least one test.
 

@@ -23,19 +23,34 @@
 //   chika-loop.mjs status [<slug>]
 //   chika-loop.mjs advance <slug> --step N --evidence <spec> [--evidence <spec>...]
 //   chika-loop.mjs close <slug> --verdict pass|fix|escalate
+//   chika-loop.mjs check [<slug>]              exit 2 (stderr reason) if a PASSED surface changed
+//   chika-loop.mjs reopen <slug> [--escalate]  reopen a passed loop at step 4 (round+1); --escalate at the cap
 //   chika-loop.mjs list
 //
 // Evidence specs:
 //   note:<text>              free text (steps 1, 4)
 //   file:<path>              non-empty file written this round (steps 2,3,6,7,8,9)
 //   shot:<viewport>:<path>   PNG at desktop|mobile width, written this round (5, 9)
+//   lint:<path>              render-lint JSON (pass:true, same surface), written this round (5, 9)
+//
+// Two gates beyond ordering, both added after a loop closed "pass", the surface
+// was regenerated afterwards with nothing watching it, and it shipped a footer
+// collision and a wrapped column head:
+//   - steps 5 and 9 also demand a render-lint JSON (geometry is numbers, not
+//     judgment: footer gap, wrapped single-line roles, overflow, type floor)
+//   - `close --verdict pass` records a sha256 of every local surface file. If
+//     you wire `check` into a Stop hook in .claude/settings.json, it blocks the
+//     turn from ending while a passed surface differs from its hash until the
+//     loop is reopened (`reopen`) or escalated. Claude Code caps consecutive
+//     Stop blocks, so this is a strong gate, not an absolute one.
 
 import {
   readFileSync, writeFileSync, existsSync, mkdirSync, statSync, readdirSync, copyFileSync,
 } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, resolve, isAbsolute } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 // Derive the repo root from THIS script's location, never a hardcoded path.
 // Agent sessions commonly run in git worktrees; a hardcoded root makes a
@@ -67,16 +82,16 @@ export const STEPS = [
     brief: 'Consult your design advisor on the SPEC, before any code exists. Editorial findings are blockers, not polish. Save the findings to a file.' },
   { n: 4, id: 'build', title: 'Build', requires: { notes: 1, noteMin: 20 },
     brief: 'Build it yourself — never delegate the build. Note what was built and every file touched.' },
-  { n: 5, id: 'capture', title: 'Capture', requires: { shots: ['desktop', 'mobile'] },
-    brief: 'Capture LIVE full-page screenshots at branch HEAD, every affected surface, desktop 1512 and mobile 390.' },
+  { n: 5, id: 'capture', title: 'Capture', requires: { shots: ['desktop', 'mobile'], lint: 1 },
+    brief: 'Capture LIVE full-page screenshots at branch HEAD, every affected surface, desktop 1512 and mobile 390. Then run the render lint on the surface and pass its JSON.' },
   { n: 6, id: 'advisor-review', title: 'Advisor review', requires: { files: 1 },
     brief: 'Consult your design advisor on the captured renders, BOTH viewports. Save severity-rated findings to a file.' },
   { n: 7, id: 'coverage-review', title: 'Coverage Craft review', requires: { files: 1 },
     brief: 'Review against the live surface, not the screenshots alone, so structure and tokens can be checked. Save the verdict to a file.' },
   { n: 8, id: 'polish', title: 'Impeccable polish', requires: { files: 1 },
     brief: 'Run your on-token craft reviewer for the chrome pass plus any deterministic drift check. Save findings to a file.' },
-  { n: 9, id: 'verify', title: 'Verify & gate', requires: { files: 1, shots: ['desktop', 'mobile'] },
-    brief: 'RE-CAPTURE after the fixes, then confirm the step-6 findings specifically are resolved. This is a regression check, not a fresh audit — new findings go to the NEXT round, not this one.' },
+  { n: 9, id: 'verify', title: 'Verify & gate', requires: { files: 1, shots: ['desktop', 'mobile'], lint: 1 },
+    brief: 'RE-CAPTURE after the fixes and RE-RUN the render lint, then confirm the step-6 findings specifically are resolved. This is a regression check, not a fresh audit — new findings go to the NEXT round, not this one.' },
 ];
 
 export const AWAITING_CLOSE = STEPS.length + 1;
@@ -93,6 +108,11 @@ export function parseEvidence(specs) {
     if (typeof spec !== 'string') throw new Error('evidence must be a string');
     if (spec.startsWith('note:')) return { kind: 'note', text: spec.slice(5).trim() };
     if (spec.startsWith('file:')) return { kind: 'file', path: spec.slice(5).trim() };
+    if (spec.startsWith('lint:')) {
+      const path = spec.slice(5).trim();
+      if (!path) throw new Error(`lint evidence needs a path: "${spec}"`);
+      return { kind: 'lint', path };
+    }
     if (spec.startsWith('shot:')) {
       const rest = spec.slice(5);
       const sep = rest.indexOf(':');
@@ -105,7 +125,7 @@ export function parseEvidence(specs) {
       if (!path) throw new Error(`shot evidence needs a path: "${spec}"`);
       return { kind: 'shot', viewport, path };
     }
-    throw new Error(`unrecognised evidence "${spec}" — use note:, file:, or shot:<viewport>:`);
+    throw new Error(`unrecognised evidence "${spec}" — use note:, file:, lint:, or shot:<viewport>:`);
   });
 }
 
@@ -135,11 +155,34 @@ export function viewportMatches(viewport, width) {
 export function fsProbe(path) {
   if (!existsSync(path)) return { exists: false };
   const st = statSync(path);
-  let png = null;
+  let png = null, json;
   if (st.size > 0) {
-    try { png = pngSize(readFileSync(path)); } catch { png = null; }
+    let buf = null;
+    try { buf = readFileSync(path); } catch { buf = null; }
+    if (buf) {
+      png = pngSize(buf);
+      if (!png) { try { json = JSON.parse(buf.toString('utf8')); } catch { json = undefined; } }
+    }
   }
-  return { exists: true, size: st.size, mtimeMs: st.mtimeMs, png };
+  return { exists: true, size: st.size, mtimeMs: st.mtimeMs, png, json };
+}
+
+// Two spellings of the same surface must compare equal: the loop was started
+// with a repo-relative path and the lint was pointed at an absolute one. URLs
+// compare after trailing-slash trim. A surface may list several files, comma-separated.
+export const isUrl = (s) => /^https?:\/\//i.test(String(s || ''));
+export function surfaceKey(surface, root = '') {
+  return String(surface || '').split(',').map((s) => s.trim()).filter(Boolean).map((s) => {
+    if (isUrl(s)) return s.replace(/\/+$/, '');
+    return isAbsolute(s) ? resolve(s) : resolve(root || '/', s);
+  }).sort().join(',');
+}
+
+export function sha256File(path) {
+  try {
+    if (!existsSync(path) || !statSync(path).isFile()) return null;
+    return createHash('sha256').update(readFileSync(path)).digest('hex');
+  } catch { return null; }
 }
 
 // How fresh evidence has to be. Normally "after this round started". For step 9
@@ -159,7 +202,7 @@ export function evidenceFloor(state, step) {
   return state.roundStartedAt;
 }
 
-export function checkEvidence(state, step, parsed, probe) {
+export function checkEvidence(state, step, parsed, probe, root = '') {
   const def = stepDef(step);
   if (!def) throw new Error(`no such step: ${step}`);
   const req = def.requires;
@@ -171,6 +214,7 @@ export function checkEvidence(state, step, parsed, probe) {
   const notes = parsed.filter((e) => e.kind === 'note');
   const files = parsed.filter((e) => e.kind === 'file');
   const shots = parsed.filter((e) => e.kind === 'shot');
+  const lints = parsed.filter((e) => e.kind === 'lint');
 
   if (req.notes) {
     if (notes.length < req.notes) problems.push(`step ${step} needs ${req.notes} note: evidence, got ${notes.length}`);
@@ -219,6 +263,28 @@ export function checkEvidence(state, step, parsed, probe) {
     }
   }
 
+  if (req.lint) {
+    if (lints.length < req.lint) {
+      problems.push(`step ${step} needs a lint: evidence — run: node .claude/skills/chika/scripts/render-lint.mjs ${state.surface} --out <path>.json`);
+    }
+    for (const l of lints) {
+      const p = probe(l.path);
+      if (!p.exists) { problems.push(`lint report does not exist: ${l.path}`); continue; }
+      if (!p.size) { problems.push(`lint report is empty: ${l.path}`); continue; }
+      if (!p.json || typeof p.json !== 'object') { problems.push(`lint report is not JSON: ${l.path}`); continue; }
+      if (p.mtimeMs <= roundStart) {
+        problems.push(`lint report predates ${since}: ${l.path} — re-run the lint${step === 9 ? ' AFTER the fixes' : ''}`);
+      }
+      if (!('surface' in p.json) || surfaceKey(p.json.surface, root) !== surfaceKey(state.surface, root)) {
+        problems.push(`lint report is for "${p.json.surface}", not this loop's surface "${state.surface}"`);
+      }
+      if (p.json.pass !== true) {
+        const failed = Array.isArray(p.json.checks) ? p.json.checks.filter((c) => c && c.pass === false).map((c) => c.detail || c.id) : [];
+        problems.push(`render lint did not pass: ${l.path}${failed.length ? ` — ${failed.join('; ')}` : ''}`);
+      }
+    }
+  }
+
   if (problems.length) {
     const e = new Error(`step ${step} (${def.title}) evidence rejected:\n  - ${problems.join('\n  - ')}`);
     e.problems = problems;
@@ -236,7 +302,7 @@ export function newState({ slug, surface, now }) {
   };
 }
 
-export function advanceState(state, { step, evidence, now, probe }) {
+export function advanceState(state, { step, evidence, now, probe, root = '' }) {
   if (state.closed) throw new Error(`loop "${state.slug}" is closed (${state.outcome}) — init a new one`);
   if (state.step === AWAITING_CLOSE) {
     throw new Error(`step 9 is complete — run: close ${state.slug} --verdict pass|fix|escalate`);
@@ -246,7 +312,7 @@ export function advanceState(state, { step, evidence, now, probe }) {
     throw new Error(`out of order: loop is at step ${state.step} (${at.title}), you tried to advance step ${step}. No skipping, no redoing in place.`);
   }
   const parsed = parseEvidence(evidence);
-  checkEvidence(state, step, parsed, probe);
+  checkEvidence(state, step, parsed, probe, root);
   return {
     ...state,
     step: step + 1,
@@ -254,12 +320,24 @@ export function advanceState(state, { step, evidence, now, probe }) {
   };
 }
 
-export function closeState(state, { verdict, now }) {
+// Every local file in the surface gets a sha256 at pass time; URLs and
+// directories record null (not enrolled) so `check` can never fail on them.
+export function passHashes(surface, hasher = sha256File, root = '') {
+  const out = {};
+  for (const s of String(surface || '').split(',').map((x) => x.trim()).filter(Boolean)) {
+    out[s] = isUrl(s) ? null : hasher(isAbsolute(s) ? s : resolve(root || '/', s));
+  }
+  return out;
+}
+
+export function closeState(state, { verdict, now, hasher = sha256File, root = '' }) {
   if (state.closed) throw new Error(`loop "${state.slug}" is already closed (${state.outcome})`);
   if (state.step !== AWAITING_CLOSE) {
     throw new Error(`step 9 is not complete — loop is at step ${state.step}. Finish the round before closing.`);
   }
-  if (verdict === 'pass') return { ...state, closed: true, outcome: 'pass', closedAt: now };
+  if (verdict === 'pass') {
+    return { ...state, closed: true, outcome: 'pass', closedAt: now, passHash: passHashes(state.surface, hasher, root) };
+  }
   if (verdict === 'escalate') return { ...state, closed: true, outcome: 'escalate', closedAt: now };
   if (verdict === 'fix') {
     if (state.round >= MAX_ROUNDS) {
@@ -270,6 +348,31 @@ export function closeState(state, { verdict, now }) {
   throw new Error(`unknown verdict "${verdict}" — use pass, fix, or escalate`);
 }
 
+// A passed loop whose surface no longer matches its hash. Legacy states (no
+// passHash) and null hashes (URL / directory surfaces) are "not enrolled" and
+// never reported. Pure: the hasher is injected.
+export function surfaceDrift(state, hasher = sha256File, root = '') {
+  if (!state || !state.closed || state.outcome !== 'pass' || !state.passHash || typeof state.passHash !== 'object') return [];
+  const changed = [];
+  for (const [path, was] of Object.entries(state.passHash)) {
+    if (was === null || was === undefined) continue;
+    const now = hasher(isAbsolute(path) ? path : resolve(root || '/', path));
+    if (now !== was) changed.push({ path, was, now });
+  }
+  return changed;
+}
+
+export function reopenState(state, { now, escalate = false, reason = '' }) {
+  if (!state.closed || state.outcome !== 'pass') throw new Error(`loop "${state.slug}" is not a passed loop (${state.closed ? state.outcome : 'open'}) — nothing to reopen`);
+  const entry = { round: state.round, step: 'reopen', at: now, reason: reason || 'surface changed after pass' };
+  if (escalate) return { ...state, outcome: 'escalate', escalatedAt: now, history: [...state.history, { ...entry, step: 'escalate' }] };
+  if (state.round >= MAX_ROUNDS) {
+    throw new Error(`round cap reached (${MAX_ROUNDS} rounds) — the passed surface changed but there is no round left. Hand it to a human: reopen ${state.slug} --escalate`);
+  }
+  const { passHash, closedAt, ...rest } = state;
+  return { ...rest, closed: false, outcome: null, round: state.round + 1, step: 4, roundStartedAt: now, reopenedAt: now, history: [...state.history, entry] };
+}
+
 export function describeNext(state) {
   if (state.closed) return `closed (${state.outcome})`;
   if (state.step === AWAITING_CLOSE) return `round ${state.round}: step 9 done — close --verdict pass|fix|escalate`;
@@ -278,6 +381,7 @@ export function describeNext(state) {
   if (d.requires.notes) req.push(`${d.requires.notes}x note:<text> (min ${d.requires.noteMin} chars)`);
   if (d.requires.files) req.push(`${d.requires.files}x file:<path> (non-empty, written this round)`);
   if (d.requires.shots) req.push(d.requires.shots.map((v) => `shot:${v}:<path> (${VIEWPORTS[v]}px PNG, this round)`).join(' + '));
+  if (d.requires.lint) req.push(`lint:<path>.json (pass:true, this round — node .claude/skills/chika/scripts/render-lint.mjs ${state.surface} --out <path>.json)`);
   return `round ${state.round}/${MAX_ROUNDS} · step ${d.n} — ${d.title}\n  ${d.brief}\n  evidence: ${req.join(', ')}`;
 }
 
@@ -309,6 +413,7 @@ export function parseArgv(argv) {
     const a = argv[i];
     if (a === '--evidence' || a === '-e') { out.evidence.push(argv[++i]); continue; }
     if (a === '--force') { out.force = true; continue; }
+    if (a === '--escalate') { out.escalate = true; continue; }
     if (a.startsWith('--')) { out[a.slice(2)] = argv[++i]; continue; }
     out._.push(a);
   }
@@ -344,8 +449,9 @@ function dispatch(argv) {
     const files = readdirSync(dir).filter((f) => f.endsWith('.json'));
     if (!files.length) { console.log('no chika loops yet'); return 0; }
     for (const f of files) {
-      const s = JSON.parse(readFileSync(join(dir, f), 'utf8'));
-      console.log(`${s.slug.padEnd(24)} r${s.round} step ${s.step === AWAITING_CLOSE ? '9(done)' : s.step}${s.closed ? ` — closed: ${s.outcome}` : ''}`);
+      let s;
+      try { s = JSON.parse(readFileSync(join(dir, f), 'utf8')); } catch { console.log(`${f.padEnd(24)} UNREADABLE — do not hand-edit; init <slug> --force backs it up`); continue; }
+      console.log(`${String(s.slug || f).padEnd(24)} r${s.round} step ${s.step === AWAITING_CLOSE ? '9(done)' : s.step}${s.closed ? ` — closed: ${s.outcome}` : ''}`);
     }
     return 0;
   }
@@ -373,7 +479,10 @@ function dispatch(argv) {
     console.log(`${state.slug} — ${state.surface}\n${describeNext(state)}`);
     if (state.history.length) {
       console.log('\ncompleted:');
-      for (const h of state.history) console.log(`  r${h.round} step ${h.step} (${stepDef(h.step).title}) ${h.at}`);
+      for (const h of state.history) {
+        const d = stepDef(h.step);
+        console.log(`  r${h.round} ${d ? `step ${h.step} (${d.title})` : `${h.step}${h.reason ? ` — ${h.reason}` : ''}`} ${h.at}`);
+      }
     }
     return 0;
   }
@@ -383,7 +492,7 @@ function dispatch(argv) {
     const step = Number(args.step);
     if (!Number.isInteger(step)) { console.error('--step N is required'); return 1; }
     try {
-      const next = advanceState(state, { step, evidence: args.evidence, now, probe: fsProbe });
+      const next = advanceState(state, { step, evidence: args.evidence, now, probe: fsProbe, root });
       writeState(next, root);
       console.log(`step ${step} recorded.\n\n${describeNext(next)}`);
       return 0;
@@ -393,15 +502,51 @@ function dispatch(argv) {
   if (cmd === 'close') {
     const state = readState(slug, root);
     try {
-      const next = closeState(state, { verdict: args.verdict, now });
+      const next = closeState(state, { verdict: args.verdict, now, root });
       writeState(next, root);
-      if (next.closed) console.log(`loop "${slug}" closed: ${next.outcome}`);
+      if (next.closed && next.outcome === 'pass') {
+        const enrolled = Object.entries(next.passHash || {}).filter(([, h]) => h).map(([p]) => p);
+        const skipped = Object.entries(next.passHash || {}).filter(([, h]) => !h).map(([p]) => p);
+        console.log(`loop "${slug}" closed: pass — surface hash recorded for ${enrolled.length ? enrolled.join(', ') : 'nothing'}`);
+        if (skipped.length) console.error(`not enrolled (URL, directory or missing): ${skipped.join(', ')} — \`check\` will not watch these`);
+      } else if (next.closed) console.log(`loop "${slug}" closed: ${next.outcome}`);
       else console.log(`round ${state.round} closed with fixes needed.\n\n${describeNext(next)}`);
       return 0;
     } catch (e) { console.error(e.message); return 1; }
   }
 
-  console.error(`unknown command "${cmd}" — try: init, status, advance, close, list`);
+  if (cmd === 'reopen') {
+    const state = readState(slug, root);
+    try {
+      const next = reopenState(state, { now, escalate: Boolean(args.escalate), reason: args.reason });
+      writeState(next, root);
+      if (next.closed) console.log(`loop "${slug}" escalated — hand it to a human`);
+      else console.log(`loop "${slug}" reopened.\n\n${describeNext(next)}`);
+      return 0;
+    } catch (e) { console.error(e.message); return 1; }
+  }
+
+  // The Stop-hook gate. Never throws, never blocks on legacy or unreadable state;
+  // exit 2 + a block decision only when a PASSED surface differs from its hash.
+  if (cmd === 'check') {
+    const dir = stateDir(root);
+    if (!existsSync(dir)) return 0;
+    const files = slug ? [`${slug}.json`] : readdirSync(dir).filter((f) => f.endsWith('.json'));
+    const drift = [];
+    for (const f of files) {
+      let st;
+      try { st = JSON.parse(readFileSync(join(dir, f), 'utf8')); } catch { console.error(`chika check: ${f} is unreadable — not gating on it`); continue; }
+      for (const d of surfaceDrift(st, sha256File, root)) drift.push({ slug: st.slug, ...d });
+    }
+    if (!drift.length) return 0;
+    const lines = drift.map((d) => `${d.slug}: ${d.path} changed after the loop passed`);
+    const reason = `${lines.join('; ')}. Passed design work was edited without re-verification. Run \`node .claude/skills/chika/scripts/chika-loop.mjs reopen <slug>\` and take it back through steps 4–9 (or \`reopen <slug> --escalate\` at the round cap) before ending the turn.`;
+    // Exit 2 is the documented Stop-hook block; stderr is what Claude sees.
+    console.error(`CHIKA GATE: ${reason}`);
+    return 2;
+  }
+
+  console.error(`unknown command "${cmd}" — try: init, status, advance, close, check, reopen, list`);
   return 1;
 }
 

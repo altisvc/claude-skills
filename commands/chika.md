@@ -13,7 +13,8 @@ Run the enforced design loop: nine steps, up to three rounds, across your compos
 ## Examples
 
 ```
-/chika research-coverage app/research/page.tsx
+/chika research-coverage http://localhost:3000/research
+/chika pricing-card site/pricing.html
 /chika sector-matrix https://staging.example.com/research
 /chika status research-coverage
 ```
@@ -24,13 +25,15 @@ Run the enforced design loop: nine steps, up to three rounds, across your compos
 2. **Composition plan** — spec before any code
 3. **Advisor direction consult** — on the spec, pre-build; editorial findings are blockers
 4. **Build** — you execute, framework skills for implementation
-5. **Capture** — live screenshots at branch HEAD, desktop and mobile
+5. **Capture** — live screenshots at branch HEAD, desktop and mobile, plus a passing render lint
 6. **Advisor review** — the renders, both viewports
 7. **Composition review** — against the live surface, not the screenshots alone
 8. **Craft polish** — on-token chrome pass plus the deterministic detector
-9. **Verify & gate** — re-capture after the fixes, confirm the step-6 findings are resolved
+9. **Verify & gate** — re-capture and re-lint after the fixes, confirm the step-6 findings are resolved
 
 Steps 6, 7 and 8 run in parallel in one message. A `fix` verdict rotates to step 4 for another round. Three rounds is the cap; past that it escalates to a human.
+
+The surface is something a browser can open: the URL of the running page, or a static HTML file. For a framework page, pass the URL, not the source file.
 
 ## Behavior
 

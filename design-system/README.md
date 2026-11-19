@@ -53,7 +53,7 @@ Before building any Altis-branded frontend, UI, presentation, or visual output:
 - Navy `#030F1F`, Blue `#015AE9`, Cyan `#01B2F4`, White `#FFFFFF`; expanded palette for charts
 - Fonts: Inter Tight (headings) + Inter (body) — native Google Slides fonts
 
-**Logo:** `altis-logo-2c-positive.svg` on white; `altis-logo-2c-reverse.svg` on blue/navy
+**Logo:** `altis-logo-2c-positive.svg` on white; `altis-logo-2c-reverse.svg` on navy; `altis-logo-1c-reverse.svg` (all white) on brand blue — the 2c mark is blue-gradient and vanishes blue-on-blue
 **Icons:** `-light` variant on white, `-dark` variant on blue/navy
 
 ---

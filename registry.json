@@ -856,7 +856,7 @@
     "badge": "new",
     "status": "stable",
     "version": "1.0.0",
-    "updatedAt": "2026-04-04"
+    "updatedAt": "2026-11-19"
   },
   {
     "id": "advisor-harrison-chase",
@@ -1316,10 +1316,10 @@
     "name": "storyboard",
     "type": "skill",
     "category": "productivity",
-    "summary": "Turns a finished to-camera script into a shot-by-shot storyboard for Altis short-form videos — branded overlays, burned-in captions, the recurring question card, and the end card, prescriptive enough to build in Descript without follow-up questions.",
-    "whenToUse": "Use when you have a finished to-camera script (or the outline from the script agent) for an Altis short-form video and need a prescriptive, buildable visual plan: one supporting visual per point, the recurring “The question to be asking” card, burned-in captions, and the black end card.",
+    "summary": "Turns a finished to-camera script into a shot-by-shot storyboard for Altis short-form videos \u2014 branded overlays, burned-in captions, the recurring question card, and the end card, prescriptive enough to build in Descript without follow-up questions.",
+    "whenToUse": "Use when you have a finished to-camera script (or the outline from the script agent) for an Altis short-form video and need a prescriptive, buildable visual plan: one supporting visual per point, the recurring \u201cThe question to be asking\u201d card, burned-in captions, and the black end card.",
     "author": "molly@altis.vc",
-    "installPrompt": "I would like to install the storyboard skill from the Altis skills marketplace.\nSource URL: https://github.com/altisvc/claude-skills/tree/main/skills/storyboard\n\nPrerequisites:\n- python3 with Pillow + poppler (pdftoppm) for the rendering toolkit.\n\nInstallation steps:\n1. Clone or pull https://github.com/altisvc/claude-skills.\n2. Copy `skills/storyboard/SKILL.md` → `.claude/skills/storyboard/SKILL.md` in my project.\n3. Copy `skills/storyboard/command.md` → `.claude/commands/storyboard.md` so Claude Code can resolve `/storyboard`.\n4. Copy `skills/storyboard/production/make_cards.py` → `.claude/skills/storyboard/production/make_cards.py` (overlay-rendering toolkit).\n\nCalibration:\n- No calibration declared.\n\nTest:\n- Confirm the slash command `/storyboard` resolves (restart the Claude Code session if needed).\n- Run example invocation: `/storyboard`.",
+    "installPrompt": "I would like to install the storyboard skill from the Altis skills marketplace.\nSource URL: https://github.com/altisvc/claude-skills/tree/main/skills/storyboard\n\nPrerequisites:\n- python3 with Pillow + poppler (pdftoppm) for the rendering toolkit.\n\nInstallation steps:\n1. Clone or pull https://github.com/altisvc/claude-skills.\n2. Copy `skills/storyboard/SKILL.md` \u2192 `.claude/skills/storyboard/SKILL.md` in my project.\n3. Copy `skills/storyboard/command.md` \u2192 `.claude/commands/storyboard.md` so Claude Code can resolve `/storyboard`.\n4. Copy `skills/storyboard/production/make_cards.py` \u2192 `.claude/skills/storyboard/production/make_cards.py` (overlay-rendering toolkit).\n\nCalibration:\n- No calibration declared.\n\nTest:\n- Confirm the slash command `/storyboard` resolves (restart the Claude Code session if needed).\n- Run example invocation: `/storyboard`.",
     "invocation": {
       "command": "/storyboard",
       "example": "/storyboard"
@@ -1346,9 +1346,9 @@
     "type": "skill",
     "category": "research",
     "summary": "Orchestration layer that makes four advisors argue. Freeberg sets the quality baseline, then Emily Man, Jason Shuman, and Ben Sun assess independently in isolation, disagreements go one round of cross-examination, and the skill assembles a memo that reports tension as tension instead of averaging it away. Four checkpoints calibrate the debate to how mature the work is.",
-    "whenToUse": "At natural checkpoints in a research project — sprint kickoff (--first-look), first draft (--day1), midpoint (--mid), and before shipping (--pre-ship). Use it when a single advisor keeps agreeing with your framing and you need the lenses to collide. Read ARCHITECTURE.md to build a case team from your own voices instead.",
+    "whenToUse": "At natural checkpoints in a research project \u2014 sprint kickoff (--first-look), first draft (--day1), midpoint (--mid), and before shipping (--pre-ship). Use it when a single advisor keeps agreeing with your framing and you need the lenses to collide. Read ARCHITECTURE.md to build a case team from your own voices instead.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to install the Case Team skill from the Altis skills registry at https://github.com/altisvc/claude-skills. It orchestrates four advisors that must be installed first: advisor-freeberg, advisor-emily, advisor-shuman, and advisor-ben-sun. Install those, then download skills/case-team/SKILL.md and skills/case-team/ARCHITECTURE.md to .claude/skills/case-team/, and commands/case-team.md to .claude/commands/case-team.md. Then walk me through the Calibration section — I need to point it at my reports directory, my quality checksum, and my report format guide.",
+    "installPrompt": "I'd like to install the Case Team skill from the Altis skills registry at https://github.com/altisvc/claude-skills. It orchestrates four advisors that must be installed first: advisor-freeberg, advisor-emily, advisor-shuman, and advisor-ben-sun. Install those, then download skills/case-team/SKILL.md and skills/case-team/ARCHITECTURE.md to .claude/skills/case-team/, and commands/case-team.md to .claude/commands/case-team.md. Then walk me through the Calibration section \u2014 I need to point it at my reports directory, my quality checksum, and my report format guide.",
     "invocation": {
       "command": "/case-team <subject> --first-look | --day1 | --mid | --pre-ship",
       "example": "/case-team Acme Corp --pre-ship"
@@ -1367,7 +1367,7 @@
         {
           "key": "reports_dir",
           "label": "Reports directory",
-          "description": "Where your work-in-progress reports live — the skill reads from and writes memos to this path",
+          "description": "Where your work-in-progress reports live \u2014 the skill reads from and writes memos to this path",
           "required": true
         },
         {
@@ -1379,7 +1379,7 @@
         {
           "key": "format_guide",
           "label": "Report format guide",
-          "description": "The document defining your section order and headline conventions — drives the assertion-title standard",
+          "description": "The document defining your section order and headline conventions \u2014 drives the assertion-title standard",
           "required": true
         },
         {
@@ -1519,13 +1519,13 @@
     "name": "Chika",
     "type": "skill",
     "category": "productivity",
-    "summary": "A meta-skill that sequences your design agents through nine enforced steps, rotating up to three rounds: frame, composition plan, advisor direction consult before any code, build, capture, three parallel reviews, and a verify pass that must re-render. The failure in design work is rarely the agents; it is the sequence \u2014 a direction consult that happened after the build, a review that read code instead of renders, a fix presented as verified when nothing re-rendered. A state file on disk makes the order mechanical.",
+    "summary": "A meta-skill that sequences your design agents through nine enforced steps, rotating up to three rounds: frame, composition plan, advisor direction consult before any code, build, capture, three parallel reviews, and a verify pass that must re-render. The failure in design work is rarely the agents; it is the sequence \u2014 a direction consult that happened after the build, a review that read code instead of renders, a fix presented as verified when nothing re-rendered. A state file on disk makes the order mechanical. Steps 5 and 9 also demand a passing render lint (deterministic geometry checks), and a passed surface is fingerprinted so a later edit cannot ride on the old pass.",
     "whenToUse": "Any design-forward build that will be judged visually, where you already have a design advisor and a craft reviewer but keep running them in the wrong order. Especially where a fix has been declared done without a re-render. Not for a one-line CSS change \u2014 nine steps is real ceremony and it should earn its keep.",
     "author": "Christopher Freeberg",
-    "installPrompt": "I'd like to install the Chika design loop from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/chika/SKILL.md to .claude/skills/chika/SKILL.md, skills/chika/scripts/chika-loop.mjs and skills/chika/scripts/chika-loop.test.mjs to .claude/skills/chika/scripts/, and commands/chika.md to .claude/commands/chika.md. Install the Vercel plugin with `claude plugin install vercel@claude-plugins-official` \u2014 the loop hands over a live preview link as its artifact, so it needs to deploy. Then add .chika/ to my .gitignore, run `node --test .claude/skills/chika/scripts/chika-loop.test.mjs` to confirm the state machine works, and walk me through the Calibration section \u2014 I need to name my design advisor, my composition doctrine, my craft reviewer, and my viewport widths.",
+    "installPrompt": "I'd like to install the Chika design loop from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/chika/SKILL.md to .claude/skills/chika/SKILL.md; skills/chika/scripts/chika-loop.mjs, chika-loop.test.mjs, render-lint.mjs and render-lint.test.mjs to .claude/skills/chika/scripts/; skills/chika/scripts/fixtures/ to .claude/skills/chika/scripts/fixtures/; and commands/chika.md to .claude/commands/chika.md. The capture step and the render lint need Playwright: if this repo does not already have it, run `npm install --save-dev playwright` and `npx playwright install chromium` (ask me first if the repo is shared, and keep the change out of my commits if so). Then add .chika/ to my .gitignore, run `node --test .claude/skills/chika/scripts/chika-loop.test.mjs .claude/skills/chika/scripts/render-lint.test.mjs` to confirm the state machine and the lint work, offer to add the optional Stop hook from the skill's \"A pass is fingerprinted\" section to .claude/settings.json, and walk me through the Calibration section \u2014 I need to name my design advisor, my composition doctrine, my craft reviewer, and my viewport widths.",
     "invocation": {
       "command": "/chika <slug> <surface>",
-      "example": "/chika research-coverage app/research/page.tsx"
+      "example": "/chika research-coverage http://localhost:3000/research"
     },
     "requires": [
       "coverage-craft",
@@ -1585,7 +1585,86 @@
     },
     "badge": "new",
     "status": "beta",
-    "version": "1.0.1",
-    "updatedAt": "2026-09-09"
+    "version": "1.1.0",
+    "updatedAt": "2026-11-19"
+  },
+  {
+    "id": "uicheck",
+    "slug": "uicheck",
+    "name": "UI Check",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "Browser-driven interaction QA on a running web app. Clicks every button, tab and link, fills and then breaks every form, walks empty, loading and error states, watches the console, and repeats the core checks at phone width. Returns severity-rated findings with screenshots, a weighted health score and a one-line ship verdict. Adapted from gstack /qa v2.0.",
+    "whenToUse": "After a build looks right and before the PR. Design gates verify composition; this verifies that clicking things works. Use --quick for a smoke test, the default before a PR, --exhaustive for a full sweep, and --fix to let it fix critical and high findings and re-test. It reports what is broken, not what is ugly.",
+    "installPrompt": "I'd like to install the UI Check skill from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/uicheck/SKILL.md to .claude/skills/uicheck/SKILL.md. It drives the browser through the Claude in Chrome extension, so confirm the extension is connected, then try it with: /uicheck http://localhost:3000 --quick",
+    "invocation": {
+      "command": "/uicheck <url> [--quick | --exhaustive] [--fix]",
+      "example": "/uicheck http://localhost:3000/careers"
+    },
+    "author": "Christopher Freeberg",
+    "requires": [],
+    "integrations": [
+      {
+        "name": "claude-in-chrome",
+        "required": true
+      }
+    ],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-11-19"
+  },
+  {
+    "id": "ship-pr",
+    "slug": "ship-pr",
+    "name": "Ship PR",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "SOP for taking a change from branch to merged: go green locally, raise a PR whose description stands on its own months later, run an independent subagent review on the diff alone, address real findings with tests, re-loop until clean, then merge per the repo's policy. On a production repo with an engineering owner it stops at green and the owner merges. Adapted from the Altis engineering pr-sop.",
+    "whenToUse": "Any time a change should go out as a PR. Especially when an agent wrote the code: the independent reviewer never saw the implementation reasoning, which is the whole value.",
+    "installPrompt": "I'd like to install the Ship PR skill from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/ship-pr/SKILL.md to .claude/skills/ship-pr/SKILL.md and commands/ship-pr.md to .claude/commands/ship-pr.md. Then read this repo's CLAUDE.md, AGENTS.md and branch protection and tell me which row of the skill's merge-policy table this repo falls in.",
+    "invocation": {
+      "command": "/ship-pr [no-deploy]",
+      "example": "/ship-pr"
+    },
+    "author": "Christopher Freeberg",
+    "requires": [],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-11-19"
+  },
+  {
+    "id": "design-system",
+    "slug": "design-system",
+    "name": "Altis Design System",
+    "type": "skill",
+    "category": "productivity",
+    "summary": "The skill that makes Claude read the Altis design system before building any branded output. Picks WEB (ABC Diatype, DM Sans, the navy-slate palette) or REPORTS / PRINT (Inter Tight, Inter) by output surface, then points at the right tokens, brand rules, logo and icon files and output templates. Pairs with the design-system/ folder in this repo.",
+    "whenToUse": "Before building a web page, deck, PDF report, graphic or email in the Altis brand. Install it in any repo where Claude builds Altis-branded UI so it stops inventing colours, fonts and radii.",
+    "installPrompt": "I'd like to install the Altis Design System skill from the Altis skills registry at https://github.com/altisvc/claude-skills. Download skills/design-system/SKILL.md to .claude/skills/design-system/SKILL.md. The skill reads design-system/tokens.json and design-system/brand-guidelines.md: keep a clone of claude-skills beside this repo and tell me the path you will read them from, rather than copying the folder into this repo. Font files are not in the registry; use the ones the site repo already ships.",
+    "invocation": {
+      "command": "(loads automatically before branded builds)",
+      "example": "Build the new careers section using the design system."
+    },
+    "author": "Christopher Freeberg",
+    "requires": [
+      "brand-guidelines"
+    ],
+    "integrations": [],
+    "calibration": {
+      "level": "none"
+    },
+    "badge": "new",
+    "status": "beta",
+    "version": "1.0.0",
+    "updatedAt": "2026-11-19"
   }
 ]
