@@ -66,7 +66,8 @@ Minimal punctuation in headings
 LOGO
 Never recreate the Altis logo in code. Use the SVG files from design-system/assets/logos/.
 On white background: altis-logo-2c-positive.svg
-On blue/navy background: altis-logo-2c-reverse.svg
+On navy background: altis-logo-2c-reverse.svg
+On brand-blue background: altis-logo-1c-reverse.svg (all white — the 2c mark disappears on blue)
 ```
 
 ---
@@ -413,7 +414,8 @@ module.exports = {
 | Card background | White `#FFFFFF` with `#E8ECF2` border |
 | Page background | `#F0F2F5` (light blue-gray) |
 | Logo on white | `altis-logo-2c-positive.svg` |
-| Logo on blue/dark | `altis-logo-2c-reverse.svg` |
+| Logo on navy/dark | `altis-logo-2c-reverse.svg` |
+| Logo on brand blue | `altis-logo-1c-reverse.svg` (all white) |
 | Cyan usage | Accent only — dividers, highlights, active states. Never primary bg |
 | Data viz colors | Use expanded palette in order: blue → cyan → teal → purple → coral → orange → yellow → green |
 

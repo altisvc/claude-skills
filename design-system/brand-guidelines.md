@@ -230,6 +230,15 @@ Icons: signal, echo, sweep, corner, crescent, arc, horizon, ring, stack, quarter
 - **Dark variant** (`icon-*-dark.svg`): white `#FFFFFF` fill — use on navy/blue backgrounds
 - Never use icons in secondary/data-viz colors · never mix icon styles · never add shadows, strokes, or effects
 
+### Artifact kind icons (added 2026-10-12)
+
+Three marks drawn by our designer for the research artifact kinds: **call** (call transcripts), **TAM** (TAM Models) and **survey** (Survey Data). They extend the brand set; they are not part of the 16 abstract icons above.
+
+- **When:** a row or card that knows its kind uses that kind's mark. The plain Altis mark stays for Research Artifacts *as a class* — section and tab headings, the methodology page, anything that means "artifacts" in general.
+- **Site and product:** solid brand blue `#015AE9` (`icon-{call,tam,survey}-light.svg`), like every other icon on the site. White on navy (`-dark`).
+- **Social and print:** the gradient as drawn, `#015AE9` → `#01B2F4` (`-gradient`). This is the one sanctioned use of cyan in an icon; it belongs to the social templates, never to site UI.
+- Files in `assets/icons/`; paths in `tokens.json → graphic_library.kind_icons`.
+
 ---
 
 ## Patterns
@@ -278,6 +287,40 @@ Check that a typeface's licence covers physical production *before* sending the 
 Minimum stitched/printed logo size is not specified here — confirm with the vendor before the first embroidery run rather than reusing the 120px digital minimum.
 
 ---
+
+## Sending artwork to a printer (added 2026-09-04)
+
+Applies to anything we have printed: posters, room plates, merch, report PDFs.
+
+**Always embed a colour profile. Never send an untagged file.** A lab interprets an untagged
+file as whatever it assumes. Three of six vendors assume Adobe RGB, so handing them sRGB
+numbers untagged asks for a far more saturated blue than authored — and saturated blue clips
+toward purple. This is the most likely way Altis print output comes back wrong, and it has
+nothing to do with resolution.
+
+| Vendor | Wants | Notes |
+|---|---|---|
+| Framebridge, Level Frames, Simply Framed, WhiteWall | Adobe RGB (1998) | Level Frames warns an unprofiled file "may print with additional saturation" |
+| Printique | sRGB | supplies no ICC profiles at all |
+| Bay Photo | sRGB or Adobe RGB, profile **must** be embedded | rejects 16-bit |
+
+- **No vendor in this class accepts CMYK.** Do not convert; let the lab's profile do it.
+  WhiteWall and Bay Photo publish ICC profiles for soft proofing only and say not to embed them.
+- Converting sRGB → Adobe RGB preserves appearance; it re-encodes the same colour in the wider
+  container the lab expects. It does not make anything more saturated.
+
+**Brand blue is the hard case.** `#015AE9` is L* 43, chroma 85, hue 294° — blue-violet already
+leaning magenta. It sits outside offset CMYK entirely and near the edge of most print gamuts.
+Dye-sublimation on metal renders it best; paper processes will pull it back. Expect a shift and
+decide whether it matters at the real viewing distance.
+
+**Low-contrast fields need to clear the visibility threshold.** The just-noticeable colour
+difference is ΔE 2.3. Anything subtler than that on screen will not read on paper — it is not a
+printing fault, it is below the threshold. Measure before assuming a texture will survive.
+Lustre/satin holds low-contrast variation better than matte (~200:1 against ~100:1 contrast).
+
+**Proof before any run.** Only Printique and WhiteWall sell a physical test print; Framebridge
+and Simply Framed publish nothing. Judge it under both daylight and the room's own lighting.
 
 ## Voice Alignment
 

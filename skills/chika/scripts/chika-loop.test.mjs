@@ -7,6 +7,7 @@ import {
   main, parseArgv,
   newState, advanceState, closeState, checkEvidence, parseEvidence, pngSize,
   viewportMatches, validSlug, describeNext, stepDef, STEPS, MAX_ROUNDS, AWAITING_CLOSE, evidenceFloor,
+  surfaceKey, passHashes, surfaceDrift, reopenState,
 } from './chika-loop.mjs';
 
 const T0 = '2026-09-04T10:00:00.000Z';
@@ -23,8 +24,10 @@ const probeFrom = (map) => (path) => map[path] || { exists: false };
 const FRESH = ms(T2) + 3_600_000;
 const goodFile = { exists: true, size: 120, mtimeMs: FRESH, png: null };
 const shot = (width) => ({ exists: true, size: 9000, mtimeMs: FRESH, png: { width, height: 3000 } });
+const lint = (over = {}) => ({ exists: true, size: 300, mtimeMs: FRESH, png: null, json: { surface: 'app/research', pass: true, checks: [], ...over } });
 
 const fresh = () => newState({ slug: 'demo', surface: 'app/research', now: T0 });
+const lintFor = (surface, mtimeMs = FRESH, over = {}) => ({ exists: true, size: 300, mtimeMs, png: null, json: { surface, pass: true, checks: [], ...over } });
 
 // Evidence that satisfies each step, given the probe below.
 const PROBE = probeFrom({
@@ -37,6 +40,11 @@ const PROBE = probeFrom({
   '/s/m.png': shot(390),
   '/s/d2.png': shot(1512),
   '/s/m2.png': shot(390),
+  '/s/lint.json': lint(),
+  '/s/lint2.json': lint(),
+  '/s/lint-fail.json': lint({ pass: false, checks: [{ id: 'footer-gap', pass: false, detail: 'footer gap 8px < 24px' }] }),
+  '/s/lint-other.json': lint({ surface: 'app/other' }),
+  '/s/lint-text.json': { exists: true, size: 20, mtimeMs: FRESH, png: null, json: undefined },
 });
 
 const EVIDENCE = {
@@ -44,20 +52,22 @@ const EVIDENCE = {
   2: ['file:/s/spec.md'],
   3: ['file:/s/advisor.md'],
   4: ['note:Built the coverage matrix in app/research/page.tsx'],
-  5: ['shot:desktop:/s/d.png', 'shot:mobile:/s/m.png'],
+  5: ['shot:desktop:/s/d.png', 'shot:mobile:/s/m.png', 'lint:/s/lint.json'],
   6: ['file:/s/advisor.md'],
   7: ['file:/s/coverage.md'],
   8: ['file:/s/polish.md'],
-  9: ['file:/s/verify.md', 'shot:desktop:/s/d2.png', 'shot:mobile:/s/m2.png'],
+  9: ['file:/s/verify.md', 'shot:desktop:/s/d2.png', 'shot:mobile:/s/m2.png', 'lint:/s/lint2.json'],
 };
 
-const runTo = (upTo, state = fresh()) => {
+const runTo = (upTo, state = fresh(), probe = PROBE) => {
   let s = state;
   for (let n = s.step; n <= upTo; n += 1) {
-    s = advanceState(s, { step: n, evidence: EVIDENCE[n], now: T1, probe: PROBE });
+    s = advanceState(s, { step: n, evidence: EVIDENCE[n], now: T1, probe });
   }
   return s;
 };
+// The shared probe's lint reports name 'app/research'; a loop on another surface needs its own.
+const probeForSurface = (surface) => (path) => (path === '/s/lint.json' || path === '/s/lint2.json') ? lintFor(surface) : PROBE(path);
 
 test('parseEvidence: recognises the three kinds and rejects malformed specs', () => {
   assert.deepEqual(parseEvidence(['note:hello']), [{ kind: 'note', text: 'hello' }]);
@@ -227,9 +237,10 @@ test('step 9 cannot reuse the step-5 captures — it must prove the fix landed',
     // taken at the same instant step 5 was recorded — i.e. not re-captured
     '/s/d.png': { exists: true, size: 9000, mtimeMs: ms(T1) - 1, png: { width: 1512, height: 900 } },
     '/s/m.png': { exists: true, size: 9000, mtimeMs: ms(T1) - 1, png: { width: 390, height: 900 } },
+    '/s/l.json': lintFor('app/research', ms(T1) + 5000),
   });
   assert.throws(() => advanceState(s, {
-    step: 9, evidence: ['file:/s/ver.md', 'shot:desktop:/s/d.png', 'shot:mobile:/s/m.png'],
+    step: 9, evidence: ['file:/s/ver.md', 'shot:desktop:/s/d.png', 'shot:mobile:/s/m.png', 'lint:/s/l.json'],
     now: T1, probe: sameShots,
   }), /step 9 proves the fix landed, it cannot reuse the step-5 captures/);
 
@@ -237,9 +248,10 @@ test('step 9 cannot reuse the step-5 captures — it must prove the fix landed',
     '/s/ver.md': { exists: true, size: 50, mtimeMs: ms(T1) + 5000, png: null },
     '/s/d2.png': { exists: true, size: 9000, mtimeMs: ms(T1) + 5000, png: { width: 1512, height: 900 } },
     '/s/m2.png': { exists: true, size: 9000, mtimeMs: ms(T1) + 5000, png: { width: 390, height: 900 } },
+    '/s/l.json': lintFor('app/research', ms(T1) + 5000),
   });
   const ok = advanceState(s, {
-    step: 9, evidence: ['file:/s/ver.md', 'shot:desktop:/s/d2.png', 'shot:mobile:/s/m2.png'],
+    step: 9, evidence: ['file:/s/ver.md', 'shot:desktop:/s/d2.png', 'shot:mobile:/s/m2.png', 'lint:/s/l.json'],
     now: T1, probe: recaptured,
   });
   assert.equal(ok.step, AWAITING_CLOSE);
@@ -258,18 +270,20 @@ test('close fix: rotates to step 4, bumps the round, and resets the freshness cl
   const roundOneEra = probeFrom({
     '/s/d.png': { exists: true, size: 9000, mtimeMs: ms(T1), png: { width: 1512, height: 900 } },
     '/s/m.png': { exists: true, size: 9000, mtimeMs: ms(T1), png: { width: 390, height: 900 } },
+    '/s/l.json': lintFor('app/research', ms(T2) + 1000),
   });
   const built = advanceState(r2, { step: 4, evidence: EVIDENCE[4], now: T2, probe: PROBE });
   assert.throws(() => advanceState(built, {
-    step: 5, evidence: ['shot:desktop:/s/d.png', 'shot:mobile:/s/m.png'], now: T2, probe: roundOneEra,
+    step: 5, evidence: ['shot:desktop:/s/d.png', 'shot:mobile:/s/m.png', 'lint:/s/l.json'], now: T2, probe: roundOneEra,
   }), /predates round 2/);
   // A genuine re-capture, taken after the round opened, passes.
   const recaptured = probeFrom({
     '/s/d3.png': { exists: true, size: 9000, mtimeMs: ms(T2) + 1000, png: { width: 1512, height: 3000 } },
     '/s/m3.png': { exists: true, size: 9000, mtimeMs: ms(T2) + 1000, png: { width: 390, height: 3000 } },
+    '/s/l3.json': lintFor('app/research', ms(T2) + 1000),
   });
   const ok = advanceState(built, {
-    step: 5, evidence: ['shot:desktop:/s/d3.png', 'shot:mobile:/s/m3.png'], now: T2, probe: recaptured,
+    step: 5, evidence: ['shot:desktop:/s/d3.png', 'shot:mobile:/s/m3.png', 'lint:/s/l3.json'], now: T2, probe: recaptured,
   });
   assert.equal(ok.step, 6);
 });
@@ -332,9 +346,10 @@ test('evidence landing exactly on the floor is rejected — the gate fails close
     '/s/ver.md': { exists: true, size: 50, mtimeMs: ms(floor) + 1, png: null },
     '/s/d.png': { exists: true, size: 9000, mtimeMs: ms(floor), png: { width: 1512, height: 900 } },
     '/s/m.png': { exists: true, size: 9000, mtimeMs: ms(floor), png: { width: 390, height: 900 } },
+    '/s/l.json': lintFor('app/research', ms(floor) + 1),
   });
   assert.throws(() => advanceState(s, {
-    step: 9, evidence: ['file:/s/ver.md', 'shot:desktop:/s/d.png', 'shot:mobile:/s/m.png'],
+    step: 9, evidence: ['file:/s/ver.md', 'shot:desktop:/s/d.png', 'shot:mobile:/s/m.png', 'lint:/s/l.json'],
     now: T1, probe: onTheDot,
   }), /predates the step-5 capture/);
 
@@ -343,9 +358,10 @@ test('evidence landing exactly on the floor is rejected — the gate fails close
     '/s/ver.md': { exists: true, size: 50, mtimeMs: ms(floor) + 1, png: null },
     '/s/d.png': { exists: true, size: 9000, mtimeMs: ms(floor) + 1, png: { width: 1512, height: 900 } },
     '/s/m.png': { exists: true, size: 9000, mtimeMs: ms(floor) + 1, png: { width: 390, height: 900 } },
+    '/s/l.json': lintFor('app/research', ms(floor) + 1),
   });
   assert.equal(advanceState(s, {
-    step: 9, evidence: ['file:/s/ver.md', 'shot:desktop:/s/d.png', 'shot:mobile:/s/m.png'],
+    step: 9, evidence: ['file:/s/ver.md', 'shot:desktop:/s/d.png', 'shot:mobile:/s/m.png', 'lint:/s/l.json'],
     now: T1, probe: justAfter,
   }).step, AWAITING_CLOSE);
 });
@@ -462,4 +478,101 @@ test('parseArgv: collects repeated evidence, flags, and survives a trailing flag
     { _: ['advance', 'x'], evidence: ['a', 'b'], step: '5' });
   assert.equal(parseArgv(['init', 'x', '--force']).force, true);
   assert.equal(parseArgv(['advance', 'x', '--step']).step, undefined);
+});
+
+// ------------------------------------------------------------ lint + fingerprint gates
+
+test('lint: step 5 without a lint report is refused and the message names the command', () => {
+  const s = runTo(4);
+  assert.throws(() => advanceState(s, { step: 5, evidence: ['shot:desktop:/s/d.png', 'shot:mobile:/s/m.png'], now: T1, probe: PROBE }),
+    /needs a lint: evidence — run: node \.claude\/skills\/chika\/scripts\/render-lint\.mjs app\/research/);
+});
+
+test('lint: a failing report, a report for another surface, and a non-JSON file are each refused', () => {
+  const s = runTo(4);
+  const base = ['shot:desktop:/s/d.png', 'shot:mobile:/s/m.png'];
+  assert.throws(() => advanceState(s, { step: 5, evidence: [...base, 'lint:/s/lint-fail.json'], now: T1, probe: PROBE }), /did not pass.*footer gap 8px/);
+  assert.throws(() => advanceState(s, { step: 5, evidence: [...base, 'lint:/s/lint-other.json'], now: T1, probe: PROBE }), /for "app\/other", not this loop's surface/);
+  assert.throws(() => advanceState(s, { step: 5, evidence: [...base, 'lint:/s/lint-text.json'], now: T1, probe: PROBE }), /not JSON/);
+  assert.equal(advanceState(s, { step: 5, evidence: [...base, 'lint:/s/lint.json'], now: T1, probe: PROBE }).step, 6);
+});
+
+test('lint: step 9 cannot reuse a lint report written before the step-5 capture', () => {
+  const s = runTo(5);
+  const captureAt = ms(s.history.at(-1).at);
+  const stale = { ...lint(), mtimeMs: captureAt - 1 };
+  const freshLint = { ...lint(), mtimeMs: FRESH };
+  const probe = probeFrom({ ...Object.fromEntries(['/s/advisor.md', '/s/coverage.md', '/s/polish.md', '/s/verify.md'].map((k) => [k, goodFile])),
+    '/s/d2.png': shot(1512), '/s/m2.png': shot(390), '/s/old.json': stale, '/s/new.json': freshLint });
+  let t = s;
+  for (const n of [6, 7, 8]) t = advanceState(t, { step: n, evidence: EVIDENCE[n], now: T1, probe });
+  const shots9 = ['file:/s/verify.md', 'shot:desktop:/s/d2.png', 'shot:mobile:/s/m2.png'];
+  assert.throws(() => advanceState(t, { step: 9, evidence: [...shots9, 'lint:/s/old.json'], now: T1, probe }), /lint report predates the step-5 capture/);
+  assert.equal(advanceState(t, { step: 9, evidence: [...shots9, 'lint:/s/new.json'], now: T1, probe }).step, AWAITING_CLOSE);
+});
+
+test('surfaceKey: relative and absolute spellings of the same file compare equal; URLs trim slashes; lists sort', () => {
+  assert.equal(surfaceKey('a/b.html', '/repo'), surfaceKey('/repo/a/b.html'));
+  assert.equal(surfaceKey('https://x.vc/p/'), surfaceKey('https://x.vc/p'));
+  assert.equal(surfaceKey('b.html, a.html', '/r'), surfaceKey('a.html,b.html', '/r'));
+  assert.notEqual(surfaceKey('a.html', '/r'), surfaceKey('b.html', '/r'));
+});
+
+test('close pass records a hash per local file; URLs and missing files record null', () => {
+  const hasher = (p) => (p.endsWith('card.html') ? 'abc' : null);
+  const surface = 'x/card.html, https://example.com/p';
+  const s = closeState(runTo(9, newState({ slug: 'demo', surface, now: T0 }), probeForSurface(surface)), { verdict: 'pass', now: T1, hasher });
+  assert.deepEqual(s.passHash, { 'x/card.html': 'abc', 'https://example.com/p': null });
+  assert.deepEqual(passHashes('x/card.html', hasher), { 'x/card.html': 'abc' });
+});
+
+test('surfaceDrift: unchanged passes, a changed file is named, legacy and null-hash states are never reported', () => {
+  const passed = closeState(runTo(9), { verdict: 'pass', now: T1, hasher: () => 'h1' });
+  assert.deepEqual(surfaceDrift(passed, () => 'h1'), []);
+  assert.equal(surfaceDrift(passed, () => 'h2')[0].path, 'app/research');
+  const legacy = { ...passed }; delete legacy.passHash;
+  assert.deepEqual(surfaceDrift(legacy, () => 'zzz'), []);
+  const urlOnly = closeState(runTo(9, newState({ slug: 'u', surface: 'https://a.vc', now: T0 }), probeForSurface('https://a.vc')), { verdict: 'pass', now: T1, hasher: () => 'x' });
+  assert.deepEqual(surfaceDrift(urlOnly, () => 'y'), []);
+  assert.deepEqual(surfaceDrift({ ...passed, outcome: 'escalate' }, () => 'h2'), []);
+});
+
+test('reopen: lands at step 4, round+1, fresh clock, hash dropped; refused at the cap unless --escalate', () => {
+  const passed = closeState(runTo(9), { verdict: 'pass', now: T1, hasher: () => 'h1' });
+  const re = reopenState(passed, { now: T2 });
+  assert.equal(re.closed, false); assert.equal(re.step, 4); assert.equal(re.round, 2);
+  assert.equal(re.roundStartedAt, T2); assert.equal(re.passHash, undefined);
+  assert.equal(re.history.at(-1).step, 'reopen');
+  assert.throws(() => reopenState(re, { now: T2 }), /not a passed loop/);
+  const atCap = { ...passed, round: MAX_ROUNDS };
+  assert.throws(() => reopenState(atCap, { now: T2 }), /round cap reached.*--escalate/);
+  const esc = reopenState(atCap, { now: T2, escalate: true });
+  assert.equal(esc.closed, true); assert.equal(esc.outcome, 'escalate');
+});
+
+test('CLI: check exits 0 on an untouched pass, exits 2 with a block decision once the surface changes, and reopen clears it', () => {
+  const root = mkdtempSync(join(tmpdir(), 'chika-'));
+  process.env.CHIKA_REPO = root;
+  try {
+    mkdirSync(join(root, 'site'), { recursive: true });
+    const surface = join(root, 'site', 'card.html');
+    writeFileSync(surface, '<html>v1</html>');
+    const dir = join(root, '.chika'); mkdirSync(dir, { recursive: true });
+    const passed = closeState(runTo(9, newState({ slug: 'cli', surface, now: T0 }), probeForSurface(surface)), { verdict: 'pass', now: T1 });
+    writeFileSync(join(dir, 'cli.json'), JSON.stringify(passed));
+    writeFileSync(join(dir, 'legacy.json'), JSON.stringify({ slug: 'legacy', surface: 'x', closed: true, outcome: 'pass', history: [] }));
+    writeFileSync(join(dir, 'broken.json'), '{not json');
+    assert.equal(main(['check']), 0);
+    assert.equal(main(['list']), 0, 'list must not throw on a corrupt state file');
+    writeFileSync(surface, '<html>v2</html>');
+    assert.equal(main(['check']), 2);
+    assert.equal(main(['check', 'cli']), 2);
+    assert.equal(main(['reopen', 'cli']), 0);
+    assert.equal(JSON.parse(readFileSync(join(dir, 'cli.json'), 'utf8')).step, 4);
+    assert.equal(main(['status', 'cli']), 0, 'status must render the reopen history entry, which has no step definition');
+    assert.equal(main(['check']), 0);
+  } finally {
+    delete process.env.CHIKA_REPO;
+    rmSync(root, { recursive: true, force: true });
+  }
 });
